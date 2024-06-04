@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] | 3D Truck</title>
+  <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/lib/datatable/css/dataTables.bootstrap5.min.css" />
+  <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<body>
+  @RenderBody()
+  <script src="~/lib/jquery/js/jquery.min.js"></script>
+  <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="~/lib/datatable/js/dataTables.min.js"></script>
+  <script src="~/lib/datatable/js/dataTables.bootstrap5.min.js"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  @await RenderSectionAsync("JS", required: false)
+</body>
+
+</html>

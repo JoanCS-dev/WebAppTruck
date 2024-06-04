@@ -1,0 +1,84 @@
+@{
+  Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="auto">
+
+</html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión | 3D Truck</title>
+  <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+
+    .form-signin {
+      max-width: 330px;
+      padding: 1rem;
+    }
+
+    .form-signin .form-floating:focus-within {
+      z-index: 2;
+    }
+
+    .form-signin input[type="email"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+      margin-bottom: 10px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  </style>
+
+</head>
+
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+
+  <main class="form-signin w-100 m-auto">
+    <form>
+    
+      <h1 class="h3 mb-3">
+        <span class="fw-bold text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="30" height="30" fill="#777">
+            <path
+              d="M640 0V400c0 61.9-50.1 112-112 112c-61 0-110.5-48.7-112-109.3L48.4 502.9c-17.1 4.6-34.6-5.4-39.3-22.5s5.4-34.6 22.5-39.3L352 353.8V64c0-35.3 28.7-64 64-64H640zM576 400a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM23.1 207.7c-4.6-17.1 5.6-34.6 22.6-39.2l46.4-12.4 20.7 77.3c2.3 8.5 11.1 13.6 19.6 11.3l30.9-8.3c8.5-2.3 13.6-11.1 11.3-19.6l-20.7-77.3 46.4-12.4c17.1-4.6 34.6 5.6 39.2 22.6l41.4 154.5c4.6 17.1-5.6 34.6-22.6 39.2L103.7 384.9c-17.1 4.6-34.6-5.6-39.2-22.6L23.1 207.7z" />
+          </svg>
+          Fill Truck
+        </span> |
+        <span class="fw-bold">Ingresar</span>
+        </h1>
+
+      <div class="form-floating">
+        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Correo electrónico</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Contraseña</label>
+      </div>
+
+      <div class="form-check text-start my-3">
+        <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault">
+          Recordarme
+        </label>
+      </div>
+      <button class="btn btn-primary w-100 py-2" type="submit">Validar datos</button>
+      <small class="mb-3 text-center text-body-secondary">&copy; Power by CST Software | 2024 - @DateTime.Now.ToString("yyyy")</small>
+    </form>
+  </main>
+  <script src="~/lib/jquery/js/jquery.min.js"></script>
+  <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
