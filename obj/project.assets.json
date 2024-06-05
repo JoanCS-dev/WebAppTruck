@@ -2660,24 +2660,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/cst/.nuget/packages/": {}
+    "C:\\Users\\jaudi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/cst/Desktop/CSharp/netcore/WebAppTruck/WebAppTruck.csproj",
+      "projectUniqueName": "C:\\Users\\jaudi\\OneDrive\\Desktop\\WebAppTruck\\WebAppTruck.csproj",
       "projectName": "WebAppTruck",
-      "projectPath": "/Users/cst/Desktop/CSharp/netcore/WebAppTruck/WebAppTruck.csproj",
-      "packagesPath": "/Users/cst/.nuget/packages/",
-      "outputPath": "/Users/cst/Desktop/CSharp/netcore/WebAppTruck/obj/",
+      "projectPath": "C:\\Users\\jaudi\\OneDrive\\Desktop\\WebAppTruck\\WebAppTruck.csproj",
+      "packagesPath": "C:\\Users\\jaudi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jaudi\\OneDrive\\Desktop\\WebAppTruck\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/cst/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\jaudi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2690,6 +2692,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -2720,7 +2727,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/Users/cst/.vscode-dotnet-sdk/.dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

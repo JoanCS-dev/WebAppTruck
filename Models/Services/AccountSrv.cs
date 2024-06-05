@@ -8,6 +8,10 @@ namespace WebAppTruck.Models.Services
 {
   public class AccountSrv
   {
-
+    private DBAccess cnx;
+    public AccountSrv(string connectionString)
+    {
+      this.cnx = new DBAccess(connectionString);
+    }
   }
 }
