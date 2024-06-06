@@ -306,7 +306,7 @@
  <script>
     $(document).ready(function() {
         cargarAccount();
-        
+      
     });
 
     function cargarAccount() {
@@ -329,7 +329,7 @@
             }
         });
     }
-
+          var tabla;
     function LlenarTabla(lista) {
         if ($.fn.DataTable.isDataTable("#tmain")) {
             $("#tmain").DataTable().destroy();
@@ -337,7 +337,7 @@
 
         $("#tmain").empty();
 
-        $("#tmain").DataTable({
+        tabla = $("#tmain").DataTable({
          
             data: lista,
             columns: [
@@ -374,19 +374,106 @@
                     }
                 }
             ],
-            layout : {
-                topStart :{
-                    buttons: ['excel', 'csv', 'copy', 'pdf', 'print']
-                }
-            },
             
+            buttons : [
+                    'excel', 'csv', 'copy', 'pdf', 'print'
+            ],
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
             }
         });
         
     }
+    // Acción para exportar a Excel
+      $('#exportExcel').click(function() {
+        tabla.button('.buttons-excel').trigger();
+        const toast = `
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Exito</strong>
+            <small>EXCEL</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+           Tu tabla se ha exportado en formato EXCEL exitosamente 
+        </div>
+    </div>`;
+    $("#Toast_alert").html(toast);
+    $(".toast").toast("show");
+    });
 
+    // Acción para exportar a CSV
+    $('#exportCSV').click(function() {
+        tabla.button('.buttons-csv').trigger();
+        const toast = `
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Exito</strong>
+            <small>CSV</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+           Tu tabla se ha exportado en formato CSV exitosamente 
+        </div>
+    </div>`;
+    $("#Toast_alert").html(toast);
+    $(".toast").toast("show");
+    });
+
+    // Acción para copiar al portapapeles
+    $('#exportCopy').click(function() {
+         const toast = `
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Exito</strong>
+            <small>Copiar</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+           Tu tabla se ha copiado exitosamente en el portapapeles
+        </div>
+    </div>`;
+    $("#Toast_alert").html(toast);
+    $(".toast").toast("show");
+        tabla.button('.buttons-copy').trigger();
+
+    });
+
+    // Acción para exportar a PDF
+    $('#exportPDF').click(function() {
+        tabla.button('.buttons-pdf').trigger();
+        const toast = `
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Exito</strong>
+            <small>PDF</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+           Tu tabla se ha exportado en formato PDF exitosamente
+        </div>
+    </div>`;
+    $("#Toast_alert").html(toast);
+    $(".toast").toast("show");
+    });
+
+    // Acción para imprimir
+    $('#exportPrint').click(function() {
+        tabla.button('.buttons-print').trigger();
+        const toast = `
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Exito</strong>
+            <small>Imprimir</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Tu impresion de la tabla se ha generado con exito!
+        </div>
+    </div>`;
+    $("#Toast_alert").html(toast);
+    $(".toast").toast("show");
+    });
 
 function mostrarToast(titulo, mensaje, tipo) {
     const toast = `
