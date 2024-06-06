@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Data.SqlClient;
 
 namespace WebAppTruck.Models.ViewModels
 {
@@ -60,6 +61,10 @@ namespace WebAppTruck.Models.ViewModels
             SetData(false, "Información no encontrada", "Info", "", "");
         }
 
+        public void HasRow(SqlDataReader sqlDataReader){
+            if(sqlDataReader.HasRows) Find();
+            else NotFind();
+        }
         private void SetData(bool ok, string message, string type, string exception, string other)
         {
             Ok = ok;
