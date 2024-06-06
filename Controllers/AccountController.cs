@@ -28,7 +28,7 @@ namespace WebAppTruck.Controllers
 
             if (response.Ok)
             {
-                return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
+                return Json(new { success = true, redirectUrl = Url.Action("Dashboard", "Dashboard") });
             }
             else
             {

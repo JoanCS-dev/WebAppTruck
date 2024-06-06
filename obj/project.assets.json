@@ -2354,19 +2354,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\cesar\\.nuget\\packages\\": {}
+    "C:\\Users\\jaudi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\WebAppTruck.csproj",
+      "projectUniqueName": "C:\\Users\\jaudi\\OneDrive\\Desktop\\Nueva carpeta\\WebAppTruck\\WebAppTruck.csproj",
       "projectName": "WebAppTruck",
-      "projectPath": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\WebAppTruck.csproj",
-      "packagesPath": "C:\\Users\\cesar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\obj\\",
+      "projectPath": "C:\\Users\\jaudi\\OneDrive\\Desktop\\Nueva carpeta\\WebAppTruck\\WebAppTruck.csproj",
+      "packagesPath": "C:\\Users\\jaudi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jaudi\\OneDrive\\Desktop\\Nueva carpeta\\WebAppTruck\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\cesar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\jaudi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2425,7 +2425,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
