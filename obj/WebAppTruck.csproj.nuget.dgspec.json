@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jaudi\\OneDrive\\Desktop\\WebAppTruck\\WebAppTruck.csproj": {}
+    "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\WebAppTruck.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jaudi\\OneDrive\\Desktop\\WebAppTruck\\WebAppTruck.csproj": {
+    "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\WebAppTruck.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jaudi\\OneDrive\\Desktop\\WebAppTruck\\WebAppTruck.csproj",
+        "projectUniqueName": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\WebAppTruck.csproj",
         "projectName": "WebAppTruck",
-        "projectPath": "C:\\Users\\jaudi\\OneDrive\\Desktop\\WebAppTruck\\WebAppTruck.csproj",
-        "packagesPath": "C:\\Users\\jaudi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jaudi\\OneDrive\\Desktop\\WebAppTruck\\obj\\",
+        "projectPath": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\WebAppTruck.csproj",
+        "packagesPath": "C:\\Users\\cesar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jaudi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\cesar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,6 +45,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.2.1, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -69,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

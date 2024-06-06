@@ -1,11 +1,9 @@
 @{
-  Layout = null;
+    Layout = null;
 }
 
 <!DOCTYPE html>
 <html lang="es" data-bs-theme="auto">
-
-</html>
 
 <head>
   <meta charset="utf-8" />
@@ -45,7 +43,7 @@
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
 
   <main class="form-signin w-100 m-auto">
-    <form>
+    <form id="loginForm" method="post">
     
       <h1 class="h3 mb-3">
         <span class="fw-bold text-primary">
@@ -56,29 +54,63 @@
           Fill Truck
         </span> |
         <span class="fw-bold">Ingresar</span>
-        </h1>
+      </h1>
 
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-        <label for="floatingInput">Correo electrónico</label>
+        <input type="email" class="form-control" id="txtEmail" name="email" placeholder="name@example.com">
+        <label for="txtEmail">Correo electrónico</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-        <label for="floatingPassword">Contraseña</label>
+        <input type="password" class="form-control" id="txtPassword" name="password" placeholder="Password">
+        <label for="txtPassword">Contraseña</label>
       </div>
 
       <div class="form-check text-start my-3">
-        <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-        <label class="form-check-label" for="flexCheckDefault">
+        <input class="form-check-input" type="checkbox" value="remember-me" id="rememberMe">
+        <label class="form-check-label" for="rememberMe">
           Recordarme
         </label>
       </div>
-      <button class="btn btn-primary w-100 py-2" type="submit">Iniciar Sesión</button>
+      <button class="btn btn-primary w-100 py-2" type="button" onclick="Login()">Iniciar Sesión</button>
       <small class="mb-3 text-center text-body-secondary">&copy; Power by CST Software | 2024 - @DateTime.Now.ToString("yyyy")</small>
     </form>
   </main>
   <script src="~/lib/jquery/js/jquery.min.js"></script>
   <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function Login() {
+    var email = document.getElementById("txtEmail").value;
+    var password = document.getElementById("txtPassword").value;
+
+    if (email.trim() === '' || password.trim() === '') {
+      alert("Por favor ingresa tu correo electrónico y contraseña.");
+      return;
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/Account/Login",
+      data: {
+        email: email,
+        password: password
+      },
+      success: function (response) {
+        if (response.success) {
+          window.location.href = response.redirectUrl;
+        } else {
+          alert(response.message);
+        }
+      },
+      error: function () {
+        alert("Ocurrió un error al procesar tu solicitud. Por favor intenta de nuevo más tarde.");
+      }
+    });
+  }
+</script>
+
+
+
 </body>
 
 </html>
