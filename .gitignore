@@ -1,4 +1,3 @@
-
-bin/Debug/net8.0/
-obj/
-obj/Debug/
+# Ignorar carpetas generadas automáticamente por .NET
+/bin
+/obj
