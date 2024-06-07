@@ -34,5 +34,12 @@ namespace WebAppTruck.Controllers
         {
            return Json(_accountDAO.List(accountDTO));
         }
+
+  [HttpPost]
+        public JsonResult AddUpdate(AccountDTO accountDTO)
+        {
+           return Json(_accountDAO.AddUpdate(accountDTO));
+        }
   }
+
 }

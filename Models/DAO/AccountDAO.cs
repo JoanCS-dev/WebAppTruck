@@ -99,6 +99,26 @@ namespace WebAppTruck.Models.DAO
             return res;
         }
 
+        public ResponseVM AddUpdate(AccountDTO accountDTO){
+            ResponseVM res = new ResponseVM();
+
+            try{
+                var command = new SqlCommand("SPAccountNew", Open()) {CommandType = System.Data.CommandType.StoredProcedure};
+               command.Parameters.AddRange(_parameters(accountDTO, accountDTO.AccountID == 0 ? "ADD" : "UPDATE"));
+                using (var dr = command.ExecuteReader())
+                {
+                    
+                    if(dr.Read()){
+                        res.DBCatchResponseInOneLine(dr);
+                    }
+
+                }
+            }catch (Exception e){
+                Close();
+                res.Error(e);
+            }
+            return res;
+        }
        
         private SqlParameter [] _parameters(AccountDTO accountDTO, String Action){
             return new SqlParameter[]{

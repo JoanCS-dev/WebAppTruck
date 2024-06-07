@@ -65,6 +65,37 @@ namespace WebAppTruck.Models.ViewModels
             if(sqlDataReader.HasRows) Find();
             else NotFind();
         }
+         public void DBCatchResponseInOneLine(SqlDataReader sqlDataReader)
+            {
+                if (sqlDataReader != null)
+                {
+                    string _message = sqlDataReader["Message"].ToString();
+                    bool _ok = Convert.ToBoolean(sqlDataReader["Ok"]);
+
+                    if (_message != null)
+                    {
+                        if (_ok)
+                        {
+                            Success(_message);
+
+                        }
+                        else
+                        {
+                            Error(_message);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
         private void SetData(bool ok, string message, string type, string exception, string other)
         {
             Ok = ok;
