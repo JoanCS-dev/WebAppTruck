@@ -1,7 +1,4 @@
-# Ignorar carpetas generadas automáticamente por .NET
-bin/
-obj/
 
-# Ignorar otros archivos o carpetas si es necesario
-# *.log
-# *.tmp
+bin/Debug/net8.0/
+obj/
+obj/Debug/
