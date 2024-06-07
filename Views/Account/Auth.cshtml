@@ -13,47 +13,73 @@
     html,
     body {
       height: 100%;
+      background-color: #1e1e1e;
     }
 
     .form-signin {
       max-width: 330px;
       padding: 1rem;
+      background-color: #121212;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
     .form-signin .form-floating:focus-within {
       z-index: 2;
     }
 
+    .form-signin input[type="email"],
+    .form-signin input[type="password"] {
+      margin-bottom: 10px;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+    }
+
     .form-signin input[type="email"] {
-      margin-bottom: -1px;
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
     }
 
     .form-signin input[type="password"] {
-      margin-bottom: 10px;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
-  </style>
 
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .footer-text {
+      color: white;
+      text-align: center;
+      display: block;
+      width: 100%;
+    }
+  </style>
 </head>
 
-<body class="d-flex align-items-center py-4 bg-body-tertiary">
+<body class="d-flex align-items-center py-4 bg-dark text-white">
 
   <main class="form-signin w-100 m-auto">
     <form id="loginForm" method="post">
-    
       <h1 class="h3 mb-3">
         <span class="fw-bold text-primary">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="30" height="30" fill="#777">
-            <path
-              d="M640 0V400c0 61.9-50.1 112-112 112c-61 0-110.5-48.7-112-109.3L48.4 502.9c-17.1 4.6-34.6-5.4-39.3-22.5s5.4-34.6 22.5-39.3L352 353.8V64c0-35.3 28.7-64 64-64H640zM576 400a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM23.1 207.7c-4.6-17.1 5.6-34.6 22.6-39.2l46.4-12.4 20.7 77.3c2.3 8.5 11.1 13.6 19.6 11.3l30.9-8.3c8.5-2.3 13.6-11.1 11.3-19.6l-20.7-77.3 46.4-12.4c17.1-4.6 34.6 5.6 39.2 22.6l41.4 154.5c4.6 17.1-5.6 34.6-22.6 39.2L103.7 384.9c-17.1 4.6-34.6-5.6-39.2-22.6L23.1 207.7z" />
+            <path d="M640 0V400c0 61.9-50.1 112-112 112c-61 0-110.5-48.7-112-109.3L48.4 502.9c-17.1 4.6-34.6-5.4-39.3-22.5s5.4-34.6 22.5-39.3L352 353.8V64c0-35.3 28.7-64 64-64H640zM576 400a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM23.1 207.7c-4.6-17.1 5.6-34.6 22.6-39.2l46.4-12.4 20.7 77.3c2.3 8.5 11.1 13.6 19.6 11.3l30.9-8.3c8.5-2.3 13.6-11.1 11.3-19.6l-20.7-77.3 46.4-12.4c17.1-4.6 34.6 5.6 39.2 22.6l41.4 154.5c4.6 17.1-5.6 34.6-22.6 39.2L103.7 384.9c-17.1 4.6-34.6-5.6-39.2-22.6L23.1 207.7z"/>
           </svg>
           Fill Truck
         </span> |
         <span class="fw-bold">Ingresar</span>
       </h1>
+
+      <div id="alertContainer"></div>
 
       <div class="form-floating">
         <input type="email" class="form-control" id="txtEmail" name="email" placeholder="name@example.com">
@@ -71,7 +97,7 @@
         </label>
       </div>
       <button class="btn btn-primary w-100 py-2" type="button" onclick="Login()">Iniciar Sesión</button>
-      <small class="mb-3 text-center text-body-secondary">&copy; Power by CST Software | 2024 - @DateTime.Now.ToString("yyyy")</small>
+      <small class="footer-text mt-2">&copy; Power by CST Software | 2024 - @DateTime.Now.ToString("yyyy")</small>
     </form>
   </main>
   <script src="~/lib/jquery/js/jquery.min.js"></script>
@@ -85,22 +111,36 @@
         fecha.setTime(fecha.getTime() + (dias * 24 * 60 * 60 * 1000));
         expires = "; expires=" + fecha.toUTCString();
       }
-      document.cookie = nombre + "=" + (valor || "")  + expires + "; path=/";
+      document.cookie = nombre + "=" + (valor || "") + expires + "; path=/";
     }
 
     function obtenerCookie(nombre) {
       var nombreEQ = nombre + "=";
       var ca = document.cookie.split(';');
-      for(var i=0;i < ca.length;i++) {
+      for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1,c.length);
-        if (c.indexOf(nombreEQ) == 0) return c.substring(nombreEQ.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nombreEQ) == 0) return c.substring(nombreEQ.length, c.length);
       }
       return null;
     }
 
-    function borrarCookie(nombre) {   
-      document.cookie = nombre + '=; Max-Age=-99999999;';  
+    function borrarCookie(nombre) {
+      document.cookie = nombre + '=; Max-Age=-99999999;';
+    }
+
+    function mostrarAlerta(mensaje, tipo) {
+      var alertContainer = document.getElementById('alertContainer');
+      var alertDiv = document.createElement('div');
+      alertDiv.className = 'alert alert-' + tipo + ' alert-dismissible fade show';
+      alertDiv.role = 'alert';
+      alertDiv.innerHTML = mensaje + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+      alertContainer.appendChild(alertDiv);
+    }
+
+    function ocultarAlerta() {
+      var alertContainer = document.getElementById('alertContainer');
+      alertContainer.innerHTML = '';
     }
 
     function Login() {
@@ -109,7 +149,7 @@
       var recordarme = document.getElementById("rememberMe").checked;
 
       if (email.trim() === '' || password.trim() === '') {
-        alert("Por favor ingresa tu correo electrónico y contraseña.");
+        mostrarAlerta('Por favor ingresa tu correo electrónico y contraseña.', 'warning');
         return;
       }
 
@@ -120,7 +160,7 @@
           email: email,
           password: password
         },
-        success: function (response) {
+        success: function(response) {
           if (response.success) {
             if (recordarme) {
               establecerCookie("recordarme", email, 30);
@@ -129,11 +169,11 @@
             }
             window.location.href = response.redirectUrl;
           } else {
-            alert(response.message);
+            mostrarAlerta(response.message, 'danger');
           }
         },
-        error: function () {
-          alert("Ocurrió un error al procesar tu solicitud. Por favor intenta de nuevo más tarde.");
+        error: function() {
+          mostrarAlerta('Ocurrió un error al procesar tu solicitud. Por favor intenta de nuevo más tarde.', 'danger');
         }
       });
     }
@@ -144,6 +184,9 @@
         document.getElementById("txtEmail").value = emailRecordado;
         document.getElementById("rememberMe").checked = true;
       }
+
+      document.getElementById("txtEmail").addEventListener("input", ocultarAlerta);
+      document.getElementById("txtPassword").addEventListener("input", ocultarAlerta);
     });
   </script>
 </body>
