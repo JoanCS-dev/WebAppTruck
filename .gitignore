@@ -1,0 +1,7 @@
+# Ignorar carpetas generadas automáticamente por .NET
+bin/
+obj/
+
+# Ignorar otros archivos o carpetas si es necesario
+# *.log
+# *.tmp
