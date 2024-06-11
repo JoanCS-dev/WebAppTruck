@@ -1,25 +1,22 @@
 using WebAppTruck.Models.ViewModels;
-using System;
 using Microsoft.Data.SqlClient;
-using System.Data;
-using WebAppTruck.Models.DTO;
 
-namespace WebAppTruck.Models.DAO{
-    public class ProfileDAO : DBAccess{
-        public ProfileDAO(string connectionString) : base (connectionString){}
+namespace WebAppTruck.Models.Services{
+    public class ProfileSrv : DBAccess{
+        public ProfileSrv(string connectionString) : base (connectionString){}
 
-        public ResponseVM<List<ProfileDTO>> List (ProfileDTO profileDTO){
-            ResponseVM<List<ProfileDTO>> res = new ResponseVM<List<ProfileDTO>>(){
-                Data = new List<ProfileDTO>()
+        public ResponseVM<List<ProfileVM>> List (ProfileVM profileVM){
+            ResponseVM<List<ProfileVM>> res = new ResponseVM<List<ProfileVM>>(){
+                Data = new List<ProfileVM>()
             };
             try{
                 var command = new SqlCommand("SPProfiles", Open()) {CommandType = System.Data.CommandType.StoredProcedure};
-                command.Parameters.AddRange(_parameters(profileDTO, profileDTO.ProfileID == 0 ? "SELECT_ALL": "SELECT_BY_ID"));
+                command.Parameters.AddRange(_parameters(profileVM, profileVM.ProfileID == 0 ? "SELECT_ALL": "SELECT_BY_ID"));
                 using (var dr = command.ExecuteReader())
                 {
                     res.HasRow(dr);
                     while(dr.Read()){
-                        res.Data.Add(new ProfileDTO(){
+                        res.Data.Add(new ProfileVM(){
                            ProfileID = GetInt(dr,"ProfileID"),
                            ProDescription = GetString(dr,"ProDescription"),
                            ProStatus = GetString(dr,"ProStatus"),
@@ -37,12 +34,12 @@ namespace WebAppTruck.Models.DAO{
             return res;
         }
 
-        private SqlParameter[] _parameters(ProfileDTO profileDTO, String Action) {
+        private SqlParameter[] _parameters(ProfileVM profileVM, String Action) {
             return new SqlParameter[] {
-                new SqlParameter("@Id", profileDTO.ProfileID),
-                new SqlParameter("@Descripcion", profileDTO.ProDescription),
-                new SqlParameter("@Estatus", profileDTO.ProStatus),
-                new SqlParameter("@Fecha", profileDTO.ProRDate),
+                new SqlParameter("@Id", profileVM.ProfileID),
+                new SqlParameter("@Descripcion", profileVM.ProDescription),
+                new SqlParameter("@Estatus", profileVM.ProStatus),
+                new SqlParameter("@Fecha", profileVM.ProRDate),
                 new SqlParameter("@Action", Action)
             };
         }

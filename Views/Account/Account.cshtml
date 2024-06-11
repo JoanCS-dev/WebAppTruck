@@ -556,7 +556,7 @@
         };
 
         $.ajax({
-          url: "/AccountDsh/AddUpdate",
+          url: "/Account/AddUpdate",
           data: JSON.stringify(data_account),
           type: "POST",
           dataType: "JSON",
@@ -625,7 +625,7 @@
     }
     function cargarAccount() {
       $.ajax({
-        url: "/AccountDsh/List",
+        url: "/Account/List",
         type: "POST",
         dataType: "JSON",
         contentType: "application/json; charset=utf-8;",

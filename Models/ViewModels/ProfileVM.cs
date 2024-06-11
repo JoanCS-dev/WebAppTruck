@@ -1,5 +1,5 @@
-namespace WebAppTruck.Models.DTO{
-    public class ProfileDTO{
+namespace WebAppTruck.Models.ViewModels{
+    public class ProfileVM{
         public int ProfileID { get; set; } = 0;
         public string ProDescription { get; set; } = "";
         public string ProStatus { get; set; } = "";

@@ -1,7 +1,6 @@
-using System;
-namespace WebAppTruck.Models.DTO
+namespace WebAppTruck.Models.ViewModels
 {
-    public class AccountDTO
+    public class AccountVM
     {
         public int AccountID { get; set; } = 0;
         public string AcUser { get; set; } = "";

@@ -1,23 +1,22 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using WebAppTruck.Models.DAO;
-using WebAppTruck.Models.DTO;
+using WebAppTruck.Models.Services;
+using WebAppTruck.Models.ViewModels;
 
 namespace WebAppTruck.Controllers;
 
 public class ProfileController : Controller
 {
  private readonly IConfiguration _configuration;
- private readonly ProfileDAO profileDAO;
+ private readonly ProfileSrv profileSrv;
 
  public ProfileController(IConfiguration configuration)
  {
    _configuration = configuration;
-    profileDAO = new ProfileDAO(_configuration["ConnectionStrings:Cnx"]?? "");
+    profileSrv = new ProfileSrv(_configuration["ConnectionStrings:Cnx"]?? "");
  }
 
  [HttpPost]
- public JsonResult List(ProfileDTO profileDTO){
-    return Json(profileDAO.List(profileDTO));
+ public JsonResult List(ProfileVM profileVM){
+    return Json(profileSrv.List(profileVM));
  }
 }
