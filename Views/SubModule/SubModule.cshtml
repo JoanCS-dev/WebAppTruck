@@ -1,0 +1,262 @@
+@{
+    ViewData["Title"] = "SubModule";
+}
+
+@await Html.PartialAsync("~/Views/Dashboard/Dashboard.cshtml")
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="col-md-12">
+        <br />
+        <h1 class="text-xl-center">SubMódulos</h1>
+        <div>
+            <button type="button" class="btn btn-outline-success" id="btnSubModule">Agregar Sub Módulo</button>
+        </div>
+        <button type="button" class="btn btn-success btn-sm my-3" onclick="exportCSV('tmain', 'SubMódulo.csv')"
+            data-toggle="tooltip" data-placement="top" title="Exportar a CSV">
+            <i class="bi bi-file-earmark-spreadsheet-fill"></i> CSV
+        </button>
+        <button type="button" class="btn btn-danger btn-sm my-3" onclick="exportPDF('tmain', 'Tabla Submodulo')"
+            data-toggle="tooltip" data-placement="top" title="Exportar a PDF">
+            <i class="bi bi-file-earmark-pdf-fill"></i>PDF
+        </button>
+        <button type="button" class="btn btn-dark btn-sm my-3" onclick="printTableSub()" data-toggle="tooltip"
+            data-placement="top" title="Imprimir">
+            <i class="bi bi-printer-fill"></i>Print
+        </button>
+        <button type="button" class="btn btn-success btn-sm btn-excel my-3"
+            onclick="exportExcel('tmain', 'Tabla Submodulo')" data-toggle="tooltip" data-placement="top"
+            title="Exportar a Excel">
+            <i class="bi bi-file-earmark-excel-fill"></i> Excel
+        </button>
+        <table class="table table-sm table-bordered" id="tmain">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Descripción</td>
+                    <td>Acción</td>
+                    <td>Estatus</td>
+                    <td>Posición</td>
+                    <td>Fecha</td>
+                    <td>Módulo</td>
+                    <td>Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+</main>
+</div>
+<div class="modal fade" tabindex="-1" id="modalSubModule">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sub Módulo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="txtDescription">Descripción</label>
+                    <input type="hidden" id="_id_submodule_" value="0" />
+                    <input type="text" id="txtSubDescription" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="txtController">Acción</label>
+                    <input type="text" id="txtAction" class="form-control" />
+                </div>
+                <div class="form-group form-check form-switch">
+                    <label>Estatus</label>
+                    <input type="checkbox" id="chkStatusS" class="form-check-input" />
+                    <label class="form-check-label" for="chkStatus">Activo/Inactivo)</label>
+                </div>
+                <div class="form-group">
+                    <label for="txtPosition">Posición</label>
+                    <input type="number" id="txtSubPosition" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="txtRDate">Fecha</label>
+                    <input type="datetime-local" id="txtSubRDate" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Modulo</label>
+                    <select class="form-control" id="listModulo">
+                        <option value="-1">Seleccione</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSaveSubModule">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JS {
+    <script>
+        cargarSubModulo();
+
+        $("#btnSubModule").click(function () {
+            LimpiarFormularioSubModule();
+            $("#modalSubModule").modal("show");
+        });
+
+        $("#btnSaveSubModule").click(function () {
+            const dateValue = $("#txtSubRDate").val();
+            const data_submodule = {
+                SubModuleID: $("#_id_submodule_").val(),
+                SubDescription: $("#txtSubDescription").val(),
+                SubAction: $("#txtAction").val(),
+                SubStatus: $("#chkStatusS").is(":checked") ? 1 : 0,
+                SubPosition: $("#txtSubPosition").val(),
+                SubRDate: dateValue ? new Date(dateValue).toISOString() : null,
+                ModuleID: $("#listModulo").val(),
+            };
+
+            $.ajax({
+                url: "/Submodule/AddUpdate",
+                data: JSON.stringify(data_submodule),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        alert(res.message);
+                        cargarSubModulo();
+                        $("#modalSubModule").modal("hide");
+                        LimpiarFormularioSubModule();
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        });
+
+        function ShowModalSubEdit(_SubModuleID) {
+            const data_submodule_id = { SubModuleID: _SubModuleID };
+            $.ajax({
+                url: "/SubModule/ListSubModule",
+                data: JSON.stringify(data_submodule_id),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        const subModule = res.data[0];
+                        $("#_id_submodule_").val(subModule.SubModuleID);
+                        $("#txtSubDescription").val(subModule.SubDescription);
+                        $("#txtAction").val(subModule.SubAction);
+                        $("#chkStatusS").prop("checked", subModule.SubStatus === 1);
+                        $("#txtSubPosition").val(subModule.SubPosition);
+                        let subRDate = subModule.SubRDate;
+                        let timestampMatch = subRDate.match(/\/Date\((\d+)\)\//);
+                        if (timestampMatch) {
+                            let timestamp = parseInt(timestampMatch[1], 10);
+                            let date = new Date(timestamp);
+                            let isoDate = date.toISOString().slice(0, 16);
+                            $("#txtSubRDate").val(isoDate);
+                        } else {
+                            let date = new Date(subRDate);
+                            if (!isNaN(date.getTime())) {
+                                let isoDate = date.toISOString().slice(0, 16);
+                                $("#txtSubRDate").val(isoDate);
+                            } else {
+                                $("#txtSubRDate").val('');
+                            }
+                        }
+                        $("#listModulo").val(subModule.ModuleID);
+                        $("#modalSubModule").modal("show");
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        }
+
+        function cargarSubModulo() {
+            $.ajax({
+                url: "/SubModule/ListSubModule",
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        LlenarTablaS(res.data);
+                        let html = `<option value="-1">Seleccione</option>`;
+                        $.each(res.data, (index, value) => {
+                            html += `<option value="${value.SubModuleID}">${value.SubDescription}</option>`;
+                        });
+                        $("#listSubModulo").html(html);
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        }
+
+        function LlenarTablaS(lista) {
+            let tmain = $("#tmain").DataTable();
+            tmain.clear();
+            tmain.destroy();
+
+            tmain = $("#tmain").DataTable({
+                data: lista,
+                columns: [
+                    { data: "SubModuleID" },
+                    { data: "SubDescription" },
+                    { data: "SubAction" },
+                    { data: "SubStatus" },
+                    { data: "SubPosition" },
+                    {
+                        data: "SubRDate", render: function (data) {
+
+                            if (data) {
+                                let timestampMatch = data.match(/\/Date\((\d+)\)\//);
+                                if (timestampMatch) {
+                                    let timestamp = parseInt(timestampMatch[1], 10);
+                                    let date = new Date(timestamp);
+                                    return date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                                } else {
+                                    let date = new Date(data);
+                                    if (isNaN(date.getTime())) {
+                                        let parts = data.split(/[-T:.Z]/);
+                                        date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0));
+                                    }
+                                    return !isNaN(date.getTime()) ? date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : 'Fecha inválida';
+                                }
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
+                    { data: "ModuleID" },
+                    {
+                        data: "SubModuleID", render: function (value) {
+                            return `<button type='button' class='btn btn-warning' onclick='ShowModalSubEdit(${value})'>
+                                 <i class="bi bi-pencil-fill"></i>
+                                </button>`;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function LimpiarFormularioSubModule() {
+            $("#_id_submodule_").val(0);
+            $("#txtSubDescription").val("");
+            $("#txtAction").val("");
+            $("#chkStatusS").prop("checked", false);
+            $("#txtSubPosition").val("");
+            $("#txtSubRDate").val("");
+            $("#listModulo").val("-1");
+        }
+    </script>
+}

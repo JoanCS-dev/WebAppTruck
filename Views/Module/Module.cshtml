@@ -1,0 +1,334 @@
+@{
+    ViewData["Title"] = "Module";
+}
+
+@await Html.PartialAsync("~/Views/Dashboard/Dashboard.cshtml")
+
+@section css {
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+}
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="col-md-12">
+        <br />
+        <h1 class="text-xl-center">Módulos</h1>
+        <div>
+            <button type="button" class="btn btn-outline-info" id="btnModule">Agregar Módulo</button>
+        </div>
+        <button type="button" class="btn btn-success btn-sm my-3" onclick="exportCSV('tmainM', 'Módulo.csv')"
+            data-toggle="tooltip" data-placement="top" title="Exportar a CSV">
+            <i class="bi bi-file-earmark-spreadsheet-fill"></i> CSV
+        </button>
+        <button type="button" class="btn btn-danger btn-sm my-3" onclick="exportPDF('tmainM', 'Tabla Módulo')"
+            data-toggle="tooltip" data-placement="top" title="Exportar a PDF">
+            <i class="bi bi-file-earmark-pdf-fill"></i>PDF
+        </button>
+        <button type="button" class="btn btn-dark btn-sm my-3" onclick="printTable()" data-toggle="tooltip"
+            data-placement="top" title="Imprimir">
+            <i class="bi bi-printer-fill"></i>Print
+        </button>
+        <button type="button" class="btn btn-success btn-sm btn-excel my-3"
+            onclick="exportExcel('tmainM', 'Tabla Módulo')" data-toggle="tooltip" data-placement="top"
+            title="Exportar a Excel">
+            <i class="bi bi-file-earmark-excel-fill"></i> Excel
+        </button>
+        <table class="table table-sm table-bordered" id="tmainM">
+            <thead>
+                <tr>
+                    <th>ID Módulo</th>
+                    <th>Descripción</th>
+                    <th>Controlador</th>
+                    <th>Icono</th>
+                    <th>Estatus</th>
+                    <th>Posición</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<div class="modal fade" tabindex="-1" id="modalModule">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Módulo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="txtDescription">Descripción</label>
+                    <input type="hidden" id="_id_module_" value="0" />
+                    <input type="text" id="txtDescription" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="txtController">Controlador</label>
+                    <input type="text" id="txtController" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="txtIcon">Icono</label>
+                    <input type="text" id="txtIcon" class="form-control" />
+                </div>
+                <div class="form-group form-check form-switch">
+                    <label>Estatus</label>
+                    <input type="checkbox" id="chkStatus" class="form-check-input" />
+                    <label class="form-check-label" for="chkStatus">Activo/Inactivo)</label>
+                </div>
+                <div class="form-group">
+                    <label for="txtPosition">Posición</label>
+                    <input type="number" id="txtPosition" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="txtRDate">Fecha</label>
+                    <input type="datetime-local" id="txtRDate" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSaveModule">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JS {
+    <script>
+
+        cargarModulos();
+
+        $("#btnModule").click(function () {
+            LimpiarFormularioModule();
+            $("#modalModule").modal("show");
+        });
+
+        $("#btnSaveModule").click(function () {
+            const dateValue = $("#txtRDate").val();
+            const data_module = {
+                ModuleID: $("#_id_module_").val() || 0,
+                MoDescription: $("#txtDescription").val(),
+                MoController: $("#txtController").val(),
+                MoIcon: $("#txtIcon").val(),
+                MoStatus: $("#chkStatus").is(":checked") ? 1 : 0,
+                MoPosition: $("#txtPosition").val(),
+                MoRDate: dateValue ? new Date(dateValue).toISOString() : null
+            };
+
+            $.ajax({
+                url: "/Module/AddUpdate",
+                data: JSON.stringify(data_module),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        alert(res.message);
+                        cargarModulos();
+                        $("#modalModule").modal("hide");
+                        LimpiarFormularioModule();
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        });
+
+        function cargarModulos() {
+            $.ajax({
+                url: "/Module/ListModule",
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        LlenarTablaM(res.data);
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        }
+
+        function LlenarTablaM(lista) {
+            let tmain = $("#tmainM").DataTable();
+            tmain.clear();
+            tmain.destroy();
+
+            tmain = $("#tmainM").DataTable({
+                data: lista,
+                columns: [
+                    { data: "ModuleID" },
+                    { data: "MoDescription" },
+                    { data: "MoController" },
+                    { data: "MoIcon" },
+                    { data: "MoStatus", render: function (data) {
+                            return data === 1 ? "Activo" : "Inactivo";
+                        }
+                    },
+                    { data: "MoPosition" },
+                    { data: "MoRDate" },
+                    { data: "ModuleID", render: function (data) {
+                            return `<button type='button' class='btn btn-warning edit-button' onclick='ShowModalModuleEdit(${data})'>
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>`;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function ShowModalModuleEdit(_ModuleID) {
+            const data_module_id = {
+                module: {
+                    ModuleID: _ModuleID
+                }
+            };
+            $.ajax({
+                url: "/Module/ListModule",
+                data: JSON.stringify(data_module_id),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8;",
+                beforeSend: () => {
+                },
+                success: (res) => {
+
+                    if (res.ok && res.data.length > 0) {
+
+                        const moduleData = res.data[0];
+
+                        console.log(moduleData);
+
+                        $("#_id_module_").val(moduleData.ModuleID);
+                        $("#txtDescription").val(moduleData.MoDescription);
+                        $("#txtController").val(moduleData.MoController);
+                        $("#txtIcon").val(moduleData.MoIcon);
+                        $("#chkStatus").prop("checked", moduleData.MoStatus === 1);
+                        $("#txtPosition").val(moduleData.MoPosition);
+                        $("#txtRDate").val(moduleData.MoRDate);
+                        $("#modalModule").modal("show");
+                    } else {
+                        console.log("No se encontraron datos para el ModuleID:", ModuleID);
+                        alert("No se encontraron datos para el módulo seleccionado.");
+                    }
+                },
+                error: (err) => {
+                    console.log("AJAX error:", err);
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        }
+
+        function LimpiarFormularioModule() {
+            $("#_id_module_").val(0);
+            $("#txtDescription").val("");
+            $("#txtController").val("");
+            $("#txtIcon").val("");
+            $("#chkStatus").prop("checked", false);
+            $("#txtPosition").val("");
+            $("#txtRDate").val("");
+        }
+
+      function exportPDF(tableID, filename = '') {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const table = document.getElementById(tableID);
+        if (!table) {
+          console.error('No se encontró la tabla con el ID especificado.');
+          return;
+        }
+
+        const headers = [];
+        const data = [];
+
+        const headerCells = table.querySelectorAll('thead td, thead th');
+        headerCells.forEach(headerCell => {
+          headers.push(headerCell.textContent.trim());
+        });
+
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+          const rowData = [];
+          const cells = row.querySelectorAll('td');
+          cells.forEach(cell => {
+            rowData.push(cell.textContent.trim());
+          });
+          data.push(rowData);
+        });
+
+        console.log('Encabezados:', headers);
+        console.log('Datos:', data);
+
+        if (headers.length > 0 && data.length > 0) {
+          doc.autoTable({
+            head: [headers],
+            body: data
+          });
+
+          doc.save(filename + ".pdf");
+        } else {
+          console.error('No se pudieron obtener los datos de la tabla.');
+        }
+      }
+
+      function printTable() {
+        ;
+        printJS({
+          printable: 'tmainM',
+          type: 'html',
+        });
+      }
+
+      function exportExcel(tableID, filename = '') {
+        let table = document.getElementById(tableID);
+        let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+        let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+        function s2ab(s) {
+          let buf = new ArrayBuffer(s.length);
+          let view = new Uint8Array(buf);
+          for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+          return buf;
+        }
+
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename + ".xlsx");
+      }
+
+      function exportCSV(tableId, filename) {
+        const table = document.getElementById(tableId);
+        const rows = table.querySelectorAll('tr');
+        const csvData = [];
+
+        rows.forEach(row => {
+          const rowData = [];
+          row.querySelectorAll('td').forEach(cell => {
+            rowData.push(cell.innerText);
+          });
+          csvData.push(rowData.join(','));
+        });
+
+        const csvContent = 'data:text/csv;charset=utf-8,' + csvData.join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+      }
+      
+    </script>
+  }

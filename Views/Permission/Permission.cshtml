@@ -1,0 +1,275 @@
+@{
+    ViewData["Title"] = "Permission";
+}
+
+@await Html.PartialAsync("~/Views/Dashboard/Dashboard.cshtml")
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="col-md-12">
+        <br />
+        <h1 class="text-xl-center">Permisos</h1>
+        <div>
+            <button type="button" class="btn btn-outline-secondary" id="btnPermission">Agregar Permisos</button>
+        </div>
+        <button type="button" class="btn btn-success btn-sm my-3" onclick="exportCSV('tmainPermission', 'Permisos.csv')"
+            data-toggle="tooltip" data-placement="top" title="Exportar a CSV">
+            <i class="bi bi-file-earmark-spreadsheet-fill"></i> CSV
+        </button>
+        <button type="button" class="btn btn-danger btn-sm my-3"
+            onclick="exportPDF('tmainPermission', 'Tabla Permisos')" data-toggle="tooltip" data-placement="top"
+            title="Exportar a PDF">
+            <i class="bi bi-file-earmark-pdf-fill"></i>PDF
+        </button>
+        <button type="button" class="btn btn-dark btn-sm my-3" onclick="printTablePer()" data-toggle="tooltip"
+            data-placement="top" title="Imprimir">
+            <i class="bi bi-printer-fill"></i>Print
+        </button>
+        <button type="button" class="btn btn-success btn-sm btn-excel my-3"
+            onclick="exportExcel('tmainPermission', 'Tabla Permisos')" data-toggle="tooltip" data-placement="top"
+            title="Exportar a Excel">
+            <i class="bi bi-file-earmark-excel-fill"></i> Excel
+        </button>
+        <table class="table table-sm table-bordered" id="tmainPermission">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Estatus</th>
+                    <th>Fecha</th>
+                    <th>Submódulo</th>
+                    <th>Perfil</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<div class="modal fade" tabindex="-1" id="modalPermission">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Permisos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group form-check form-switch">
+                    <label>Estatus</label>
+                    <input type="hidden" id="_id_permission_" value="0" />
+                    <input type="checkbox" id="chkStatusPer" class="form-check-input" />
+                    <label class="form-check-label" for="chkStatus">Activo/Inactivo)</label>
+                </div>
+                <div class="form-group">
+                    <label for="txtRDate">Fecha</label>
+                    <input type="datetime-local" id="TXTSubRDate" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>SubMódulo</label>
+                    <select class="form-control" id="listSubModulo">
+                        <option value="-1">Seleccione</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Perfil</label>
+                    <select class="form-control" id="listPerfil">
+                        <option value="-1">Seleccione</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnSavePermission">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section JS {
+    <script>
+        
+        cargarPermission();
+
+        $("#btnPermission").click(function () {
+            LimpiarFormularioPermission();
+            $("#modalPermission").modal("show");
+        });
+
+        $("#btnSavePermission").click(function () {
+            const dateValue = $("#TXTSubRDate").val();
+            const data_permission = {
+                PermissionID: $("#_id_permission_").val(),
+                PerStatus: $("#chkStatusPer").is(":checked") ? 1 : 0,
+                SubRDate: dateValue ? new Date(dateValue).toISOString() : null,
+                SubModuleID: $("#listSubModulo").val(),
+                ProfileID: $("#listPerfil")
+            };
+
+            $.ajax({
+                url: "/Permission/AddUpdate",
+                data: JSON.stringify(data_permission),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        alert(res.message);
+                        cargarPermission();
+                        $("#modalPermission").modal("hide");
+                        LimpiarFormulariouPermission();
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        });
+
+        function cargarPermission() {
+            $.ajax({
+                url: "/Permission/ListPermission",
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        LlenarTablaPer(res.data);
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        }
+
+        function LlenarTablaPer(lista) {
+            let tmain = $("#tmainPermission").DataTable();
+            tmain.clear();
+            tmain.destroy();
+
+            tmain = $("#tmainPermission").DataTable({
+                data: lista,
+                columns: [
+                    { data: "PermissionID" },
+                    { data: "PerStatus" },
+                    {
+                        data: "SubRDate", render: function (data) {
+
+                            if (data) {
+                                let timestampMatch = data.match(/\/Date\((\d+)\)\//);
+                                if (timestampMatch) {
+                                    let timestamp = parseInt(timestampMatch[1], 10);
+                                    let date = new Date(timestamp);
+                                    return date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                                } else {
+                                    let date = new Date(data);
+                                    if (isNaN(date.getTime())) {
+                                        let parts = data.split(/[-T:.Z]/);
+                                        date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0));
+                                    }
+                                    return !isNaN(date.getTime()) ? date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : 'Fecha inválida';
+                                }
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
+                    { data: "SubModuleID" },
+                    { data: "ProfileID" },
+                    {
+                        data: "PermissionID", render: function (value) {
+                            return `<button type='button' class='btn btn-warning' onclick='ShowModalPerEdit(${value})'>
+                                 <i class="bi bi-pencil-fill"></i>
+                                 </button>`;
+                        }
+                    }
+                ]
+            });
+        }
+
+        function ShowModalPerEdit(_PermissionID) {
+            const data_permission_id = { PermissionID: _PermissionID };
+            $.ajax({
+                url: "/Permission/ListPermission",
+                data: JSON.stringify(data_permission_id),
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        const permission = res.data[0];
+                        $("#_id_permission_").val(permission.PermissionID);
+                        $("#chkStatusPer").prop("checked", permission.PerStatus === 1);
+
+                        let subRDate = permission.SubRDate;
+                        let timestampMatch = subRDate.match(/\/Date\((\d+)\)\//);
+                        if (timestampMatch) {
+                            let timestamp = parseInt(timestampMatch[1], 10);
+                            let date = new Date(timestamp);
+                            let isoDate = date.toISOString().slice(0, 16);
+                            $("#TXTSubRDate").val(isoDate);
+                        } else {
+                            let date = new Date(subRDate);
+                            if (!isNaN(date.getTime())) {
+                                let isoDate = date.toISOString().slice(0, 16);
+                                $("#TXTSubRDate").val(isoDate);
+                            } else {
+                                $("#TXTSubRDate").val('');
+                            }
+                        }
+
+                        $("#listSubModulo").val(permission.SubModuleID);
+                        $("#listPerfil").val(permission.ProfileID);
+                        $("#modalPermission").modal("show");
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        }
+
+        function LimpiarFormularioPermission() {
+            $("#_id_permission_").val(0);
+            $("#chkStatusPer").prop("checked", false);
+            $("#TXTSubRDate").val("");
+            $("#listSubModulo").val("-1");
+            $("#listPerfil").val("-1");
+        }
+
+        function printTablePer() {
+            ;
+            printJS({
+                printable: 'tmainPermission',
+                type: 'html',
+            });
+        }
+
+        function exportCSV(tableId, filename) {
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tr');
+            const csvData = [];
+
+            rows.forEach(row => {
+                const rowData = [];
+                row.querySelectorAll('td').forEach(cell => {
+                    rowData.push(cell.innerText);
+                });
+                csvData.push(rowData.join(','));
+            });
+
+            const csvContent = 'data:text/csv;charset=utf-8,' + csvData.join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+        }
+    </script>
+}

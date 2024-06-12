@@ -131,11 +131,17 @@
 
     function mostrarAlerta(mensaje, tipo) {
       var alertContainer = document.getElementById('alertContainer');
-      var alertDiv = document.createElement('div');
-      alertDiv.className = 'alert alert-' + tipo + ' alert-dismissible fade show';
-      alertDiv.role = 'alert';
-      alertDiv.innerHTML = mensaje + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-      alertContainer.appendChild(alertDiv);
+      var existingAlert = alertContainer.querySelector('.alert.alert-' + tipo);
+
+      if (existingAlert) {
+        existingAlert.innerHTML = mensaje + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+      } else {
+        var alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-' + tipo + ' alert-dismissible fade show';
+        alertDiv.role = 'alert';
+        alertDiv.innerHTML = mensaje + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        alertContainer.appendChild(alertDiv);
+      }
     }
 
     function ocultarAlerta() {
