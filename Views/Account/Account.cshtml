@@ -3,133 +3,160 @@
 }
 @section css {
   <style>
-    .error{
+    .error {
       color: red;
     }
   </style>
 }
 
 @await Html.PartialAsync("~/Views/Dashboard/Dashboard.cshtml")
+<div id="Toast_alert" class="toast-container position-fixed top-0 end-0 p-3">
 
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Cuentas de Usarios</h1>
+</div>
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Cuentas de Usarios</h1>
 
-        <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-toolbar mb-2 mb-md-0">
 
-          <div class="btn-group me-2 ">
+      <div class="btn-group me-2 ">
 
-            <div class="dropdown">
-              <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="exportDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">Exportar</button>
-              <ul class="dropdown-menu" aria-labelledby="exportDropdown">
-                <li><a class="dropdown-item" href="#" id="exportExcel">Exportar a Excel</a></li>
-                <li><a class="dropdown-item" href="#" id="exportCSV">Exportar a CSV</a></li>
-                <li><a class="dropdown-item" href="#" id="exportCopy">Copiar al Portapapeles</a></li>
-                <li><a class="dropdown-item" href="#" id="exportPDF">Exportar a PDF</a></li>
-                <li><a class="dropdown-item" href="#" id="exportPrint">Imprimir</a></li>
-              </ul>
-            </div>
-
-
-          </div>
-          <button type="button"
-            class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
-            <svg class="bi">
-              <use xlink:href="#calendar3" />
-            </svg>
-            This week
-          </button>
+        <div class="dropdown">
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="exportDropdown"
+            data-bs-toggle="dropdown" aria-expanded="false">Exportar</button>
+          <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+            <li><a class="dropdown-item" href="#" id="exportExcel">Exportar a Excel</a></li>
+            <li><a class="dropdown-item" href="#" id="exportCSV">Exportar a CSV</a></li>
+            <li><a class="dropdown-item" href="#" id="exportCopy">Copiar al Portapapeles</a></li>
+            <li><a class="dropdown-item" href="#" id="exportPDF">Exportar a PDF</a></li>
+            <li><a class="dropdown-item" href="#" id="exportPrint">Imprimir</a></li>
+          </ul>
         </div>
 
+
       </div>
+      <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+        <svg class="bi">
+          <use xlink:href="#calendar3" />
+        </svg>
+        This week
+      </button>
+    </div>
 
-
-      <div class="table-responsive small">
-        <div class="m-3">
-          <button type="button" class="btn btn-success btn-sm" id="AddAccount"><svg xmlns="http://www.w3.org/2000/svg"
-              width="20" height="20" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
-              <path
-                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-              <path
-                d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
-            </svg> Account</button>
-        </div>
-        <table class="table table-striped table-hover display nowrap" id="tmain">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Usuario</th>
-              <th>Nombre</th>
-              <th>Segundo Nombre</th>
-              <th>Apellido</th>
-              <th>Correo</th>
-              <th>Numero</th>
-              <th>Descripcion</th>
-              <th>Estatus</th>
-              <th>Fecha</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
-      </div>
-    </main>
   </div>
+
+
+  <div class="table-responsive small">
+    <div class="m-3">
+      <button type="button" class="btn btn-success btn-sm" id="AddAccount"><svg xmlns="http://www.w3.org/2000/svg"
+          width="20" height="20" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+          <path
+            d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+          <path
+            d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+        </svg> Account</button>
+    </div>
+    <table class="table table-striped table-hover display nowrap" id="tmain">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Usuario</th>
+          <th>Nombre</th>
+          <th>Segundo Nombre</th>
+          <th>Apellido</th>
+          <th>Correo</th>
+          <th>Numero</th>
+          <th>Descripcion</th>
+          <th>Estatus</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+</main>
+</div>
 </div>
 
-<div class="modal" tabindex="-1" id="modalFinal">
-  <div class="modal-dialog modal-sm">
+<div class="modal" tabindex="-1" id="modalFinal" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog ">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Account</h5>
+        <h5 class="modal-title">Datos Personales</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="Form">
-          <div class="form-group" id="information">
-            <input type="hidden" id="id_people_" />
-            <input type="hidden" id="id_account" />
-            <label>Nombre</label>
-            <input type="text" name="nombre" id="nombre" class="form-control" />
-            <label>Inicial</label>
-            <input type="text" name="inicial" id="inicial" class="form-control" />
-            <label>Apellido</label>
-            <input type="text" name="apellido" id="apellido" class="form-control" />
-            <label>Perfiles</label>
-            <select class="form-control" id="ListProfile" name="perfiles">
+        <form class="row g-3 needs-validation" novalidate id="Form">
+          <div class="col-md-4">
+            <input type="hidden" id="id_account">
+            <label for="validationCustom01" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" value="" required>
+            
+          </div>
+          <div class="col-md-4">
+            <label for="validationCustom02" class="form-label">Inicial</label>
+            <input type="text" class="form-control" name="inicial" id="inicial" value="" required>
+            
+          </div>
+          <div class="col-md-4">
+            <label for="validationCustom02" class="form-label">Apellidos</label>
+            <input type="text" class="form-control" name="apellido" id="apellido" value="" required>
+           
+          </div>
+          <div class="col-md-4">
+            <label for="validationCustomUsername" class="form-label">Usuario</label>
+            <div class="input-group has-validation">
+              <span class="input-group-text" id="inputGroupPrepend">@@</span>
+              <input type="text" class="form-control" name="user" id="user" aria-describedby="inputGroupPrepend" required>
+             
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="validationCustom04" class="form-label">Perfil</label>
+            <select class="form-select" id="ListProfile" required>
               <option value="-1">Seleccione</option>
             </select>
+            <div class="invalid-feedback">
+              Selecciona un perfil
+            </div>
           </div>
-          <div class="form-group">
-            <label>Usuario</label>
-            <input type="text" id="user" name="user" class="form-control" />
-            <label>Correo</label>
-            <input type="text" class="form-control" name="email" id="email" />
-            <div id="inpass">
+          <div class="col-md-4">
+            <label for="validationCustom02" class="form-label">Telefono</label>
+            <input type="text" class="form-control" name="number" id="number" value="" required>
+            
+          </div>
+          <div class="col-md-5">
+            <label for="validationCustom02" class="form-label">Correo</label>
+            <input type="email" class="form-control" name="email" id="email" value="" required>
+            
+            
+          </div>
+          <div class="col-md-5">
+            <label for="validationCustom02" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="pass" id="pass" value="" required>
+            
+            
+          </div>
+          <div class="modal-footer">
+            <div id="group_btn">
 
             </div>
-            <label>Telefono</label>
-            <input type="text" class="form-control" name="number" id="number" />
+            <button class="btn btn-primary" type="submit" id="SaveAccount">Continue</button>
+
           </div>
         </form>
 
       </div>
 
-      <div class="modal-footer">
-        <div id="group_btn">
 
-        </div>
-
-        <button type="button" class="btn btn-primary" id="SaveAccount">Continue</button>
-
-      </div>
     </div>
   </div>
 </div>
+
 
 
 @section JS {
@@ -144,36 +171,33 @@
         $("#Form").validate({
           rules: {
             nombre: {
-              required: true,
+              
               minlength: 3
             },
             inicial: {
-              required: true,
               noNumeric: true
-
             },
             apellido: {
-              required: true,
+             
               minlength: 3
             },
             user: {
-              required: true,
+              
               minlength: 3
             },
             email: {
-              required: true,
+              
               email: true
             },
-            
-            
             number: {
               number: true,
               minlength: 10,
               maxlength: 12
             },
-            perfiles: {
+            pass:{
               required: true,
-              min: 0
+              minlength: 8,
+              maxlength: 16
             }
 
           },
@@ -199,13 +223,17 @@
               minlength: "El nombre de usuario debe tener al menos 3 caracteres."
             },
             email: {
-              required: "Por favor, ingrese su correo electrónico.",
               email: "Por favor, ingrese un correo electrónico válido."
             },
-            number : {
+            number: {
               number: "Por favor, ingrese un número válido.",
               minlength: "El número debe tener al menos 10 dígitos.",
               maxlength: "El número debe tener máximo 12 dígitos."
+            },
+            pass:{
+              required: "Por favor, ingrese una contraseña.",
+              minlength: "La contraseña debe tener al menos 8 caracteres.",
+              maxlength: "La contraseña debe tener máximo 16 caracteres."
             }
           }
         });
@@ -220,71 +248,72 @@
         console.log("account loaded");
 
         $("#modalFinal").modal("show");
+
       });
+      (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
 
-      $("#SaveAccount").click(() => {
-
-        const data_account = {
-          accountDTO: {
-            accountID: $("#id_account").val() || 0,
-            profileID: $("#ListProfile").val(),
-            acUser: $("#user").val(),
-            acEmailAddress: $("#email").val(),
-            acPhoneNumber: $("#number").val(),
-            acPassword: $("#pass").val(),
-            acStatus: "Pendiente",
-            acRDate: "",
-            peopleID: $("#id_people_").val() || 0,
-            peFirstName: $("#nombre").val(),
-            peMiddleInitial: $("#inicial").val(),
-            peLastName: $("#apellido").val(),
-            peStatus: "Pendiente",
-            peRDate: ""
-
-          }
-        };
-
-        $.ajax({
-          url: "/Account/AddUpdate",
-          data: JSON.stringify(data_account),
-          type: "POST",
-          dataType: "JSON",
-          contentType: "application/json; charset=utf-8;",
-          beforeSend: () => {
-          },
-          success: (res) => {
-            if (res.ok) {
-
-              $("#modalFinal").modal("hide");
-
-              const toast = `
-                               <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                  <div class="toast-header">
-                                  <strong class="me-auto">Exito</strong>
-                                  <small>ALERTA!!</small>
-                                      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                  </div>
-                                  <div class="toast-body">
-                                      ${res.message}
-                                  </div>
-                              </div>
-                                          `;
-
-              $("#Toast_alert").html(toast);
-              $(".toast").toast("show");
-              cargarAccount();
-              limpiarFormulario();
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            event.preventDefault();
+            if (!form.checkValidity()) {
+              event.stopPropagation();
+              console.log("Error, campos no llenados");
             } else {
-              alert(res.message);
+              // Datos del formulario
+              const data_account = {
+                accountVM: {
+                  accountID: $("#id_account").val() || 0,
+                  profileID: $("#ListProfile").val(),
+                  AcUser: $("#user").val(),
+                  acEmailAddress: $("#email").val(),
+                  acPhoneNumber: $("#number").val(),
+                  acPassword: $("#pass").val(),
+                  acStatus: "Pendiente",
+                  acRDate: "",
+                  peopleID: $("#id_people_").val() || 0,
+                  peFirstName: $("#nombre").val(),
+                  peMiddleInitial: $("#inicial").val(),
+                  peLastName: $("#apellido").val(),
+                  peStatus: "Pendiente",
+                  peRDate: "",
+                  peStreet: "",
+                  peOutsideCode: "",
+                  peInsideCode: "",
+                  settlementID: 0
+                }
+              };
+
+              console.log(data_account);
+
+              // Enviar datos mediante AJAX
+              $.ajax({
+                url: "/Account/AddUpdate",
+                data: data_account,
+                type: "POST",
+                beforeSend: () => { },
+                success: (res) => {
+                  if (res.ok) {
+                    $("#modalFinal").modal("hide");
+                    console.log(res.data);
+                    mostrarToast("Exito!!", res.message, "Exito");
+                    cargarAccount();
+                  } else {
+                    mostrarToast("Error", res.message, "Error");
+                    alert(res.message);
+                  }
+                },
+                error: () => {
+                  alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+              });
             }
-          },
-          error: () => {
-            alert("Ocurrió un error interno, por favor inténtalo más tarde");
-          }
+            form.classList.add('was-validated');
+          }, false);
         });
+      })();
 
-
-      });
 
     });
 
@@ -358,19 +387,19 @@
             data: "accountID",
             render: (value, type, row) => {
               return `<button type='button' class='btn btn-warning m-1' onclick="ShowModalEdit(${value});">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                              </svg>
-                          </button>`;
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </button>`;
             }
           },
           {
             data: "acStatus",
             render: (value, type, row) => {
               if (value == "Pendiente") {
-                return `<button type='button' class='btn btn-success m-1' onclick="Activate(${row.AccountID});">Activate</button>
-                                      <input type='hidden' id='id_people_' value='0' />`;
+                return `<button type='button' class='btn btn-success m-1' onclick="Activate(${row.accountID});">Activate</button>
+                                        <input type='hidden' id='id_people_' value='0' />`;
               } else {
                 return ``;
               }
@@ -388,111 +417,81 @@
 
     }
 
-    $('#exportExcel').click(function () {
+   $('#exportExcel').click(function () {
       tabla.button('.buttons-excel').trigger();
-      const toast = `
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-              <strong class="me-auto">Exito</strong>
-              <small>EXCEL</small>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-             Tu tabla se ha exportado en formato EXCEL exitosamente 
-          </div>
-      </div>`;
-      $("#Toast_alert").html(toast);
-      $(".toast").toast("show");
+      mostrarToast("Exito", "Tu tabla se ha exportado en formato Excel con exito", "Descarga");
     });
 
 
     $('#exportCSV').click(function () {
       tabla.button('.buttons-csv').trigger();
-      const toast = `
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-              <strong class="me-auto">Exito</strong>
-              <small>CSV</small>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-             Tu tabla se ha exportado en formato CSV exitosamente 
-          </div>
-      </div>`;
-      $("#Toast_alert").html(toast);
-      $(".toast").toast("show");
+      mostrarToast("Exito", "Tu tabla se ha exportado en formato CSV con exito", "Descarga");
     });
 
 
     $('#exportCopy').click(function () {
-      const toast = `
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-              <strong class="me-auto">Exito</strong>
-              <small>Copiar</small>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-             Tu tabla se ha copiado exitosamente en el portapapeles
-          </div>
-      </div>`;
-      $("#Toast_alert").html(toast);
-      $(".toast").toast("show");
+      mostrarToast("Exito", "Tu tabla se ha copiado en tu portapapeles con exito", "Descarga");
       tabla.button('.buttons-copy').trigger();
-
     });
 
 
     $('#exportPDF').click(function () {
       tabla.button('.buttons-pdf').trigger();
-      const toast = `
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-              <strong class="me-auto">Exito</strong>
-              <small>PDF</small>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-             Tu tabla se ha exportado en formato PDF exitosamente
-          </div>
-      </div>`;
-      $("#Toast_alert").html(toast);
-      $(".toast").toast("show");
+      mostrarToast("Exito", "Tu tabla se ha exportado en formato PDF con exito", "Descarga");
     });
 
 
     $('#exportPrint').click(function () {
       tabla.button('.buttons-print').trigger();
-      const toast = `
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-              <strong class="me-auto">Exito</strong>
-              <small>Imprimir</small>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-              Tu impresion de la tabla se ha generado con exito!
-          </div>
-      </div>`;
-      $("#Toast_alert").html(toast);
-      $(".toast").toast("show");
+      mostrarToast("Exito", "Tu tabla esta lista para imprimir con exito", "Imprimir");
     });
 
     function mostrarToast(titulo, mensaje, tipo) {
       const toast = `
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div class="toast-header">
-              <strong class="me-auto">${titulo}</strong>
-              <small>${tipo}</small>
-              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">
-              ${mensaje}
-          </div>
-      </div>`;
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">${titulo}</strong>
+                <small>${tipo}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ${mensaje}
+            </div>
+        </div>`;
       $("#Toast_alert").html(toast);
       $(".toast").toast("show");
     }
+
+    function Activate(id) {
+      console.log(id);
+      const activar = {
+        AccountID: id
+      };
+      console.log(activar)
+      $.ajax({
+       url: "/Account/Activate",
+       data: activar,
+       type: "POST",
+        beforeSend: () => {
+        },
+        success: (res) => {
+          if (res.ok) {
+            mostrarToast("Exito", res.message, "success");
+            cargarAccount();
+          } else {
+            mostrarToast("Error", res.message, "Failed");
+          }
+        },
+        error: () => {
+          alert("Ocurrió un error interno, por favor inténtalo más tarde");
+        }
+      });
+
+    }
+
+
+
+
   </script>
 
 

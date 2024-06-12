@@ -134,6 +134,35 @@ namespace WebAppTruck.Models.Services
             return res;
         }
 
+
+        public ResponseVM Activate(AccountVM accountVM)
+        {
+            ResponseVM res = new ResponseVM();
+
+            try
+            {
+                var command = new SqlCommand("SPAccountNew", Open()) { CommandType = CommandType.StoredProcedure };
+                command.Parameters.AddRange(_parameters(accountVM, accountVM.AccountID > 0 ? "ACTIVATE" : " "));
+
+                using (var dr = command.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        res.DBCatchResponseInOneLine(dr);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                res.Error(e);
+            }
+            finally
+            {
+                Close();
+            }
+            return res;
+        }
+
         private SqlParameter[] _parameters(AccountVM accountVM, string Action)
         {
             return new SqlParameter[]
@@ -155,6 +184,10 @@ namespace WebAppTruck.Models.Services
                 new SqlParameter("@Descripcion", accountVM.ProDescription),
                 new SqlParameter("@Prostatus", accountVM.ProStatus),
                 new SqlParameter("@ProFecha", accountVM.ProRDate),
+                new SqlParameter("@PeStreet", accountVM.PeStreet),
+                new SqlParameter("@PeOutsideCode", accountVM.PeOutsideCode),
+                new SqlParameter("@PeInsideCode", accountVM.PeInsideCode),
+                new SqlParameter("@SettlementID", accountVM.SettlementID),
                 new SqlParameter("@Action", Action)
             };
         }

@@ -20,5 +20,9 @@ namespace WebAppTruck.Models.ViewModels
         public string ProDescription { get; set; } = "";
         public string ProStatus { get; set; } = "";
         public string ProRDate { get; set; } = "";
+        public string PeStreet { get; set; } = "";
+        public string PeOutsideCode { get; set; } = "";
+        public string PeInsideCode { get; set; } = "";
+        public int SettlementID { get; set; } = 0;
     }
 }
