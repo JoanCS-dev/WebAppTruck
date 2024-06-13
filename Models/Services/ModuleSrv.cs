@@ -82,7 +82,7 @@ namespace WebAppTruck.Models.Services
             return res;
         }
 
-        private SqlParameter[] _parameters(ModuleVM moduleVM, string Action)
+        private SqlParameter[] _parameters(ModuleVM moduleVM, string action)
         {
             return new SqlParameter[]
             {
@@ -93,7 +93,7 @@ namespace WebAppTruck.Models.Services
                 new SqlParameter("@MoStatus", moduleVM.MoStatus),
                 new SqlParameter("@MoPosition", moduleVM.MoPosition),
                 new SqlParameter("@MoRDate", moduleVM.MoRDate),
-                new SqlParameter("@Case", Action)
+                new SqlParameter("@Case", action)
             };
         }
     }

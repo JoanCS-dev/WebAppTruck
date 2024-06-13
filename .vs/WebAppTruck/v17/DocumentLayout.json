@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{531F63B9-B2F0-4178-AA82-6F53097FC368}|WebAppTruck.csproj|c:\\users\\cesar\\onedrive\\escritorio\\webapptruck\\views\\account\\auth.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{531F63B9-B2F0-4178-AA82-6F53097FC368}|WebAppTruck.csproj|solutionrelative:views\\account\\auth.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{531F63B9-B2F0-4178-AA82-6F53097FC368}|WebAppTruck.csproj|c:\\users\\cesar\\onedrive\\escritorio\\webapptruck\\views\\auth\\auth.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{531F63B9-B2F0-4178-AA82-6F53097FC368}|WebAppTruck.csproj|solutionrelative:views\\auth\\auth.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,13 +42,13 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Auth.cshtml",
-              "DocumentMoniker": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\Views\\Account\\Auth.cshtml",
-              "RelativeDocumentMoniker": "Views\\Account\\Auth.cshtml",
-              "ToolTip": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\Views\\Account\\Auth.cshtml*",
-              "RelativeToolTip": "Views\\Account\\Auth.cshtml*",
-              "ViewState": "AQIAAE4AAAAAAAAAAAAAAGIAAABhAAAA",
+              "DocumentMoniker": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\Views\\Auth\\Auth.cshtml",
+              "RelativeDocumentMoniker": "Views\\Auth\\Auth.cshtml",
+              "ToolTip": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\Views\\Auth\\Auth.cshtml",
+              "RelativeToolTip": "Views\\Auth\\Auth.cshtml",
+              "ViewState": "AQIAAKgAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-06T12:51:17.423Z",
+              "WhenOpened": "2024-06-13T17:18:49.358Z",
               "EditorCaption": ""
             }
           ]
