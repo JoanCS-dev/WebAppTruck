@@ -163,6 +163,7 @@
 
   <script>
     $(function () {
+      limpiarFormulario();
       $(document).ready(function () {
         $.validator.addMethod("noNumeric", function (value, element) {
           return this.optional(element) || !/\d/.test(value);
@@ -245,6 +246,7 @@
 
       $("#AddAccount").click(() => {
         cargarProfile();
+        limpiarFormulario();
         console.log("account loaded");
 
         $("#modalFinal").modal("show");
@@ -261,7 +263,6 @@
               event.stopPropagation();
               console.log("Error, campos no llenados");
             } else {
-              // Datos del formulario
               const data_account = {
                 accountVM: {
                   accountID: $("#id_account").val() || 0,
@@ -287,7 +288,6 @@
 
               console.log(data_account);
 
-              // Enviar datos mediante AJAX
               $.ajax({
                 url: "/Account/AddUpdate",
                 data: data_account,
@@ -299,6 +299,7 @@
                     console.log(res.data);
                     mostrarToast("Exito!!", res.message, "Exito");
                     cargarAccount();
+                    limpiarFormulario();
                   } else {
                     mostrarToast("Error", res.message, "Error");
                     alert(res.message);
@@ -488,9 +489,93 @@
       });
 
     }
+    
+    function limpiarFormulario() {
+      $("#id_account").val("");
+      $("#id_people_").val("");
+      $("#nombre").val("");
+      $("#inicial").val("");
+      $("#apellido").val("");
+      $("#email").val("");
+      $("#user").val("");
+      $("#number").val("");
+      $("#pass").val("");
+
+    }
+    function ShowModalEdit(accountID) {
+      const data_account_id = {
+        accountVM: {
+          AccountID: accountID
+        }
+      };
+      $.ajax({
+        url: "/Account/List",
+        data: data_account_id,
+        type: "POST",
+        beforeSend: () => {
+        },
+        success: (res) => {
+          if (res.ok) {
+
+            console.log(res.data.ProfileID);
+            const account = res.data[0];
+
+            document.getElementById()
+            console.log(account);
+            $("#id_account").val(account.accountID);
+            $("#id_people_").val(account.peopleID);
+            $("#nombre").val(account.peFirstName);
+            $("#inicial").val(account.peMiddleInitial);
+            $("#apellido").val(account.peLastName);
+            $("#email").val(account.acEmailAddress);
+            $("#user").val(account.acUser);
+            $("#number").val(account.acPhoneNumber);
+            $("#ListProfile").val(account.profileID);
+
+            $.ajax({
+              url: "/Profile/List",
+              type: "POST",
+           
+              beforeSend: () => {
+                // Puedes añadir alguna lógica antes de enviar la petición
+              },
+              success: (res) => {
+                if (res.ok) {
+                  let html = `<option value="${account.profileID}">${account.proDescription}</option>`;
+                  $.each(res.data, (index, value) => {
+                    html += `<option value="${value.profileID}">${value.proDescription}</option>`;
+                  });
+                  $("#ListProfile").html(html);
 
 
 
+                } else {
+                  mostrarToast("error", res.message, res.status);
+                  
+                }
+              },
+              error: () => {
+                alert("Ocurrió un error interno, por favor inténtalo más tarde");
+              }
+            });
+
+
+            const boton = `
+                       <button type="button" onclick="CambiarContraseña(${account.accountID});" class="btn btn-warning">Cambiar contraseña</button>
+           `;
+            $("#group_btn").html(boton);
+            $("#modalFinal").modal("show");
+
+
+          } else {
+           mostrarToast("Error", res.message, "error");
+          }
+        },
+        error: () => {
+          alert("Ocurrió un error interno, por favor inténtalo más tarde");
+        }
+      });
+    }
 
   </script>
 
