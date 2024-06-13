@@ -4,31 +4,54 @@
 
 @await Html.PartialAsync("~/Views/Dashboard/Dashboard.cshtml")
 
+<div id="Toast_alert" class="toast-container position-fixed top-0 end-0 p-3">
+</div>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div class="col-md-12">
-        <br />
-        <h1 class="text-xl-center">SubMódulos</h1>
-        <div>
-            <button type="button" class="btn btn-outline-success" id="btnSubModule">Agregar Sub Módulo</button>
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">SubMódulos</h1>
+
+        <div class="btn-toolbar mb-2 mb-md-0">
+
+            <div class="btn-group me-2 ">
+
+                <div class="dropdown">
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="exportDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">Exportar</button>
+                    <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                        <li><a class="dropdown-item" href="#" id="exportExcel">Exportar a Excel</a></li>
+                        <li><a class="dropdown-item" href="#" id="exportCSV">Exportar a CSV</a></li>
+                        <li><a class="dropdown-item" href="#" id="exportCopy">Copiar al Portapapeles</a></li>
+                        <li><a class="dropdown-item" href="#" id="exportPDF">Exportar a PDF</a></li>
+                        <li><a class="dropdown-item" href="#" id="exportPrint">Imprimir</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <button type="button"
+                class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+                <svg class="bi">
+                    <use xlink:href="#calendar3" />
+                </svg>
+                This week
+            </button>
         </div>
-        <button type="button" class="btn btn-success btn-sm my-3" onclick="exportCSV('tmain', 'SubMódulo.csv')"
-            data-toggle="tooltip" data-placement="top" title="Exportar a CSV">
-            <i class="bi bi-file-earmark-spreadsheet-fill"></i> CSV
-        </button>
-        <button type="button" class="btn btn-danger btn-sm my-3" onclick="exportPDF('tmain', 'Tabla Submodulo')"
-            data-toggle="tooltip" data-placement="top" title="Exportar a PDF">
-            <i class="bi bi-file-earmark-pdf-fill"></i>PDF
-        </button>
-        <button type="button" class="btn btn-dark btn-sm my-3" onclick="printTableSub()" data-toggle="tooltip"
-            data-placement="top" title="Imprimir">
-            <i class="bi bi-printer-fill"></i>Print
-        </button>
-        <button type="button" class="btn btn-success btn-sm btn-excel my-3"
-            onclick="exportExcel('tmain', 'Tabla Submodulo')" data-toggle="tooltip" data-placement="top"
-            title="Exportar a Excel">
-            <i class="bi bi-file-earmark-excel-fill"></i> Excel
-        </button>
-        <table class="table table-sm table-bordered" id="tmain">
+    </div>
+    
+    <div class="table-responsive small">
+        <div class="m-3">
+            <button type="button" class="btn btn-info btn-sm" id="btnSubModule">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                    class="bi bi-box-seam" viewBox="0 0 16 16">
+                    <path
+                        d="M7.293 0.293a1 1 0 0 1 1.414 0l6 6a1 1 0 0 1-1.414 1.414L8 2.414 2.707 7.707a1 1 0 0 1-1.414-1.414l6-6z" />
+                    <path d="M0 9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V9zm13 0H3v7h10V9z" />
+                </svg>
+                Submódulo
+            </button>
+        </div>
+    </div>
+        <table class="table table-striped table-hover display nowrap" id="tmain">
             <thead>
                 <tr>
                     <td>ID</td>
@@ -44,13 +67,16 @@
             <tbody>
             </tbody>
         </table>
+    </div>
 </main>
 </div>
+</div>
+
 <div class="modal fade" tabindex="-1" id="modalSubModule">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Sub Módulo</h5>
+                <h5 class="modal-title">SubMódulo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -95,6 +121,8 @@
     <script>
         cargarSubModulo();
 
+        cargarModulos();
+
         $("#btnSubModule").click(function () {
             LimpiarFormularioSubModule();
             $("#modalSubModule").modal("show");
@@ -103,21 +131,19 @@
         $("#btnSaveSubModule").click(function () {
             const dateValue = $("#txtSubRDate").val();
             const data_submodule = {
-                SubModuleID: $("#_id_submodule_").val(),
-                SubDescription: $("#txtSubDescription").val(),
-                SubAction: $("#txtAction").val(),
-                SubStatus: $("#chkStatusS").is(":checked") ? 1 : 0,
-                SubPosition: $("#txtSubPosition").val(),
-                SubRDate: dateValue ? new Date(dateValue).toISOString() : null,
-                ModuleID: $("#listModulo").val(),
+                subModuleID: $("#_id_submodule_").val(),
+                subDescription: $("#txtSubDescription").val(),
+                subAction: $("#txtAction").val(),
+                subStatus: $("#chkStatusS").is(":checked") ? 1 : 0,
+                subPosition: $("#txtSubPosition").val(),
+                subRDate: $('#txtSubRDate').val(),
+                moduleID: $("#listModulo").val()
             };
 
             $.ajax({
                 url: "/Submodule/AddUpdate",
                 data: JSON.stringify(data_submodule),
                 type: "POST",
-                dataType: "JSON",
-                contentType: "application/json; charset=utf-8",
                 success: function (res) {
                     if (res.ok) {
                         alert(res.message);
@@ -135,38 +161,21 @@
         });
 
         function ShowModalSubEdit(_SubModuleID) {
-            const data_submodule_id = { SubModuleID: _SubModuleID };
+            const data_submodule_id = { subModuleID: _SubModuleID };
             $.ajax({
                 url: "/SubModule/ListSubModule",
                 data: JSON.stringify(data_submodule_id),
                 type: "POST",
-                dataType: "JSON",
-                contentType: "application/json; charset=utf-8",
                 success: function (res) {
                     if (res.ok) {
                         const subModule = res.data[0];
-                        $("#_id_submodule_").val(subModule.SubModuleID);
-                        $("#txtSubDescription").val(subModule.SubDescription);
-                        $("#txtAction").val(subModule.SubAction);
-                        $("#chkStatusS").prop("checked", subModule.SubStatus === 1);
-                        $("#txtSubPosition").val(subModule.SubPosition);
-                        let subRDate = subModule.SubRDate;
-                        let timestampMatch = subRDate.match(/\/Date\((\d+)\)\//);
-                        if (timestampMatch) {
-                            let timestamp = parseInt(timestampMatch[1], 10);
-                            let date = new Date(timestamp);
-                            let isoDate = date.toISOString().slice(0, 16);
-                            $("#txtSubRDate").val(isoDate);
-                        } else {
-                            let date = new Date(subRDate);
-                            if (!isNaN(date.getTime())) {
-                                let isoDate = date.toISOString().slice(0, 16);
-                                $("#txtSubRDate").val(isoDate);
-                            } else {
-                                $("#txtSubRDate").val('');
-                            }
-                        }
-                        $("#listModulo").val(subModule.ModuleID);
+                        $("#_id_submodule_").val(subModule.subModuleID);
+                        $("#txtSubDescription").val(subModule.subDescription);
+                        $("#txtAction").val(subModule.subAction);
+                        $("#chkStatusS").prop("checked", subModule.subStatus === 1);
+                        $("#txtSubPosition").val(subModule.subPosition);
+                        $('#txtSubRDate').val(subModule.subRDate);
+                        $("#listModulo").val(subModule.moduleID);
                         $("#modalSubModule").modal("show");
                     } else {
                         alert(res.message);
@@ -183,15 +192,39 @@
                 url: "/SubModule/ListSubModule",
                 type: "POST",
                 dataType: "JSON",
-                contentType: "application/json; charset=utf-8",
+                contentType: "application/json; charset=utf-8;",
                 success: function (res) {
                     if (res.ok) {
                         LlenarTablaS(res.data);
                         let html = `<option value="-1">Seleccione</option>`;
                         $.each(res.data, (index, value) => {
-                            html += `<option value="${value.SubModuleID}">${value.SubDescription}</option>`;
+                            html += `<option value="${value.subModuleID}">${value.subDescription}</option>`;
                         });
                         $("#listSubModulo").html(html);
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+            });
+        }
+
+        function cargarModulos() {
+            $.ajax({
+                url: "/Module/ListModule",
+                type: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.ok) {
+                        console.log(res.data);
+                        let html = `<option value="-1">Seleccione</option>`;
+                        $.each(res.data, (index, value) => {
+                            html += `<option value="${value.moduleID}">${value.moDescription}</option>`;
+                        });
+                        $("#listModulo").html(html);
                     } else {
                         alert(res.message);
                     }
@@ -210,42 +243,27 @@
             tmain = $("#tmain").DataTable({
                 data: lista,
                 columns: [
-                    { data: "SubModuleID" },
-                    { data: "SubDescription" },
-                    { data: "SubAction" },
-                    { data: "SubStatus" },
-                    { data: "SubPosition" },
+                    { data: "subModuleID" },
+                    { data: "subDescription" },
+                    { data: "subAction" },
+                    { data: "subStatus" },
+                    { data: "subPosition" },
+                    { data: "subRDate" },
+                    { data: "moduleID" },
                     {
-                        data: "SubRDate", render: function (data) {
-
-                            if (data) {
-                                let timestampMatch = data.match(/\/Date\((\d+)\)\//);
-                                if (timestampMatch) {
-                                    let timestamp = parseInt(timestampMatch[1], 10);
-                                    let date = new Date(timestamp);
-                                    return date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-                                } else {
-                                    let date = new Date(data);
-                                    if (isNaN(date.getTime())) {
-                                        let parts = data.split(/[-T:.Z]/);
-                                        date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0));
-                                    }
-                                    return !isNaN(date.getTime()) ? date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : 'Fecha inválida';
-                                }
-                            } else {
-                                return '';
-                            }
-                        }
-                    },
-                    { data: "ModuleID" },
-                    {
-                        data: "SubModuleID", render: function (value) {
+                        data: "subModuleID", render: function (value) {
                             return `<button type='button' class='btn btn-warning' onclick='ShowModalSubEdit(${value})'>
-                                 <i class="bi bi-pencil-fill"></i>
-                                </button>`;
+                                         <i class="bi bi-pencil-fill"></i>
+                                        </button>`;
                         }
                     }
-                ]
+                ],
+                buttons: [
+                    'excel', 'csv', 'copy', 'pdf', 'print'
+                ],
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+                }
             });
         }
 
@@ -258,5 +276,51 @@
             $("#txtSubRDate").val("");
             $("#listModulo").val("-1");
         }
+
+        $('#exportExcel').click(function () {
+            tabla.button('.buttons-excel').trigger();
+            mostrarToast("Exito", "Tu tabla se ha exportado en formato Excel con exito", "Descarga");
+        });
+
+
+        $('#exportCSV').click(function () {
+            tabla.button('.buttons-csv').trigger();
+            mostrarToast("Exito", "Tu tabla se ha exportado en formato CSV con exito", "Descarga");
+        });
+
+
+        $('#exportCopy').click(function () {
+            mostrarToast("Exito", "Tu tabla se ha copiado en tu portapapeles con exito", "Descarga");
+            tabla.button('.buttons-copy').trigger();
+        });
+
+
+        $('#exportPDF').click(function () {
+            tabla.button('.buttons-pdf').trigger();
+            mostrarToast("Exito", "Tu tabla se ha exportado en formato PDF con exito", "Descarga");
+        });
+
+
+        $('#exportPrint').click(function () {
+            tabla.button('.buttons-print').trigger();
+            mostrarToast("Exito", "Tu tabla esta lista para imprimir con exito", "Imprimir");
+        });
+
+        function mostrarToast(titulo, mensaje, tipo) {
+            const toast = `
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">${titulo}</strong>
+                        <small>${tipo}</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${mensaje}
+                    </div>
+                </div>`;
+            $("#Toast_alert").html(toast);
+            $(".toast").toast("show");
+        }
+
     </script>
 }
