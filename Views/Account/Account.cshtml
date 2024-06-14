@@ -167,7 +167,7 @@
                         <input type="hidden" id="id_people_" />
                         <input type="hidden" id="id_account" />
                         <label>Contraseña</label>
-                        <input type="password" class="form-control" name="pass" id="pass" />
+                        <input type="password" class="form-control" name="passChange" id="passChange" />
                         <label>Validar Contraseña</label>
                         <input type="password" class="form-control" id="passVerify" name="passVerify" />
                     </div>
@@ -198,37 +198,7 @@
         $.validator.addMethod("noNumeric", function (value, element) {
           return this.optional(element) || !/\d/.test(value);
         }, "Por favor, no ingrese caracteres numéricos.");
- $("#FormCambio").validate({
-     rules: {
-         pass: {
-             required: true,
-             minlength: 8,
-             maxlength: 16
-
-         },
-         passVerify: {
-             required: true,
-             minlength: 8,
-             maxlength: 16,
-             equalTo: pass
-         }
-     },
-     messages: {
-         pass: {
-             required: "Escribe una contraseña",
-             minlength: "La contraseña debe tener al menos 8 caracteres.",
-             maxlength: "La contraseña debe tener maximo 16 caracteres.",
-       
-         }, 
-         passVerify: {
-             required: "Escribe una contraseña",
-             minlength: "La contraseña debe tener al menos 8 caracteres.",
-             maxlength: "La contraseña debe tener maximo 16 caracteres.",
-             equalTo : "La contraseña no es igual a la de arriba, vuelve a escribirla"
-         }
-     }
-
- });
+ 
         $("#Form").validate({
           rules: {
             nombre: {
@@ -304,26 +274,17 @@
 
       cargarAccount();
  $("#ChangePassword").click(() => {
-     const data_account = {
-         accountDTO: {
-             AccountID: $("#id_account").val(),
-             ProfileID: $("#ListProfile").val(),
-             AcUser: $("#user").val(),
-             AcEmailAddress: $("#email").val(),
-             AcPhoneNumber: $("#number").val(),
-             AcPassword: $("#pass").val(),
-             AcStatus: "Pendiente",
-             AcRDate: "",
-             PeopleID: $("#id_people_").val(),
-             PeFirstName: $("#nombre").val(),
-             PeMiddleInitial: $("#inicial").val(),
-             PeLastName: $("#apellido").val(),
+     const data_changePassword = {
+         accountVM: {
+             accountID: $("#id_account").val(),
+             acPassword: $("#passChange").val()
+             
          }
      };
-     console.log(data_account);
+     console.log(data_changePassword);
      $.ajax({
          url: "/Account/AddUpdate",
-         data: data_account,
+         data: data_changePassword,
          type: "POST",
          
          beforeSend: () => {
@@ -707,7 +668,7 @@
  }
  function limpiarFormPass() {
      $("#passVerify").val("");
-     $("#pass").val("");
+     $("#passChange").val("");
  }
   </script>
 
