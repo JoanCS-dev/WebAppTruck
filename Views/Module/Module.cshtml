@@ -136,6 +136,7 @@
         $("#btnSaveModule").click(function () {
             const dateValue = $("#txtRDate").val();
             const data_module = {
+                moduleVM: {
                 moduleID: $("#_id_module_").val() || 0,
                 moDescription: $("#txtDescription").val(),
                 moController: $("#txtController").val(),
@@ -143,6 +144,7 @@
                 moStatus: $("#chkStatus").is(":checked") ? 1 : 0,
                 moPosition: $("#txtPosition").val(),
                 moRDate: dateValue ? new Date(dateValue).toISOString() : null
+                }
             };
 
             $.ajax({
@@ -170,8 +172,6 @@
             $.ajax({
                 url: "/Module/ListModule",
                 type: "POST",
-                dataType: "JSON",
-                contentType: "application/json; charset=utf-8",
                 success: function (res) {
                     if (res.ok) {
                         console.log(res.data);
@@ -187,11 +187,14 @@
         }
 
         function LlenarTablaM(lista) {
-            let tmain = $("#tmainM").DataTable();
-            tmain.clear();
-            tmain.destroy();
 
-            tmain = $("#tmainM").DataTable({
+            if ($.fn.DataTable.isDataTable("#tmainM")) {
+                $("#tmainM").DataTable().destroy();
+            }
+
+            $("#tmainM").empty();
+
+            tabla = $("#tmainM").DataTable({
                 data: lista,
                 columns: [
                     { data: "moduleID" },
@@ -204,12 +207,36 @@
                         }
                     },
                     { data: "moPosition" },
-                    { data: "moRDate" },
                     {
-                        data: "moduleID", render: function (data) {
-                            return `<button type='button' class='btn btn-warning edit-button' onclick='ShowModalModuleEdit(${data})'>
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>`;
+                        data: "moRDate", render: function (data) {
+                            if (data) {
+                                let timestampMatch = data.match(/\/Date\((\d+)\)\//);
+                                if (timestampMatch) {
+                                    let timestamp = parseInt(timestampMatch[1], 10);
+                                    let date = new Date(timestamp);
+                                    return date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                                } else {
+                                    let date = new Date(data);
+                                    if (isNaN(date.getTime())) {
+                                        let parts = data.split(/[-T:.Z]/);
+                                        date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0));
+                                    }
+                                    return !isNaN(date.getTime()) ? date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : 'Fecha inválida';
+                                }
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
+                    {
+                        data: "moduleID",
+                        render: (value, type, row) => {
+                            return `<button type='button' class='btn btn-warning m-1' onclick="ShowModalModuleEdit(${value});">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </button>`;
                         }
                     }
                 ],
@@ -246,9 +273,26 @@
                         $("#txtDescription").val(moduleData.moDescription);
                         $("#txtController").val(moduleData.moController);
                         $("#txtIcon").val(moduleData.moIcon);
-                        $("#chkStatus").prop("checked", moduleData.moStatus === 1);
+                        $("#chkStatus").prop("checked", moduleData.moStatus);
                         $("#txtPosition").val(moduleData.moPosition);
-                        $("#txtRDate").val(moduleData.moRDate);
+
+                        let moRDate = moduleData.moRDate;
+
+                        let timestampMatch = moRDate.match(/\/Date\((\d+)\)\//);
+                        if (timestampMatch) {
+                            let timestamp = parseInt(timestampMatch[1], 10);
+                            let date = new Date(timestamp);
+                            let isoDate = date.toISOString().slice(0, 16);
+                            $("#txtRDate").val(isoDate);
+                        } else {
+                            let date = new Date(moRDate);
+                            if (!isNaN(date.getTime())) {
+                                let isoDate = date.toISOString().slice(0, 16);
+                                $("#txtRDate").val(isoDate);
+                            } else {
+                                $("#txtRDate").val('');
+                            }
+                        }
                         $("#modalModule").modal("show");
                     } else {
                         console.log("No se encontraron datos para el ModuleID:", moduleID);
@@ -267,7 +311,6 @@
             $("#txtDescription").val("");
             $("#txtController").val("");
             $("#txtIcon").val("");
-            $("#chkStatus").prop("checked", false);
             $("#txtPosition").val("");
             $("#txtRDate").val("");
         }

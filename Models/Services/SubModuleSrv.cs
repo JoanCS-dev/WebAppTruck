@@ -32,13 +32,13 @@ namespace WebAppTruck.Models.Services
                     {
                         res.Data.Add(new SubModuleVM
                         {
-                            SubModuleID = GetInt(dr, "SubModuleID"),
-                            SubDescription = GetString(dr, "SubDescription"),
-                            SubAction = GetString(dr, "SubAction"),
-                            SubStatus = GetString(dr, "SubStatus"),
-                            SubPosition = GetInt(dr, "SubPosition"),
-                            SubRDate = GetString (dr,"SubRDate"),
-                            ModuleID = GetInt(dr, "ModuleID"),
+                            SubModuleID = dr.GetInt64(dr.GetOrdinal("SubModuleID")),
+                            SubDescription = dr.GetString(dr.GetOrdinal("SubDescription")),
+                            SubAction = dr.GetString(dr.GetOrdinal("SubAction")),
+                            SubStatus = dr.GetString(dr.GetOrdinal("SubStatus")),
+                            SubPosition = dr.GetInt32(dr.GetOrdinal("SubPosition")),
+                            SubRDate = dr.IsDBNull(dr.GetOrdinal("SubRDate")) ? (DateTime?)null : dr.GetDateTime(dr.GetOrdinal("SubRDate")),
+                            ModuleID = dr.GetInt64(dr.GetOrdinal("ModuleID")),
                         });
                     }
                 }
@@ -61,6 +61,10 @@ namespace WebAppTruck.Models.Services
             try
             {
                 var command = new SqlCommand("SPSubmodule", Open()) { CommandType = CommandType.StoredProcedure };
+                if (!submoduleVM.SubRDate.HasValue)
+                {
+                    submoduleVM.SubRDate = (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue;
+                }
                 command.Parameters.AddRange(_parameters(submoduleVM, submoduleVM.SubModuleID == 0 ? "INSERT" : "UPDATE"));
 
                 using (var dr = command.ExecuteReader())
@@ -91,7 +95,7 @@ namespace WebAppTruck.Models.Services
                 new SqlParameter("@SubAction", submoduleVM.SubAction),
                 new SqlParameter("@SubStatus", submoduleVM.SubStatus),
                 new SqlParameter("@SubPosition", submoduleVM.SubPosition),
-                new SqlParameter("@SubRDate", submoduleVM.SubRDate),
+                new SqlParameter("@SubRDate", submoduleVM.SubRDate.HasValue ? (object)submoduleVM.SubRDate.Value : DBNull.Value),
                 new SqlParameter("@ModuleID", submoduleVM.ModuleID),
                 new SqlParameter("@Case", action)
             };

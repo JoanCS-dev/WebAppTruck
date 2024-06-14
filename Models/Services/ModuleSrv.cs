@@ -32,13 +32,13 @@ namespace WebAppTruck.Models.Services
                     {
                         res.Data.Add(new ModuleVM
                         {
-                            ModuleID = GetInt(dr, "ModuleID"),
-                            MoDescription = GetString(dr, "MoDescription"),
-                            MoController =GetString(dr, "MoController"),
-                            MoIcon = GetString(dr, "MoIcon"),
-                            MoStatus = GetString(dr, "MoStatus"),
-                            MoPosition = GetInt(dr, "MoPosition"),
-                            MoRDate = GetString(dr, "MoRDate"),
+                            ModuleID = dr.GetInt64(dr.GetOrdinal("ModuleID")),
+                            MoDescription = dr.GetString(dr.GetOrdinal("MoDescription")),
+                            MoController = dr.GetString(dr.GetOrdinal("MoController")),
+                            MoIcon = dr.GetString(dr.GetOrdinal("MoIcon")),
+                            MoStatus = dr.GetString(dr.GetOrdinal("MoStatus")),
+                            MoPosition = dr.GetInt32(dr.GetOrdinal("MoPosition")),
+                            MoRDate = dr.IsDBNull(dr.GetOrdinal("MoRDate")) ? (DateTime?)null : dr.GetDateTime(dr.GetOrdinal("MoRDate")),
                         });
                     }
                 }
@@ -61,6 +61,10 @@ namespace WebAppTruck.Models.Services
             try
             {
                 var command = new SqlCommand("SPModule", Open()) { CommandType = CommandType.StoredProcedure };
+                if (!moduleVM.MoRDate.HasValue)
+                {
+                    moduleVM.MoRDate = (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue;
+                }
                 command.Parameters.AddRange(_parameters(moduleVM, moduleVM.ModuleID == 0 ? "INSERT" : "UPDATE"));
 
                 using (var dr = command.ExecuteReader())
@@ -92,7 +96,7 @@ namespace WebAppTruck.Models.Services
                 new SqlParameter("@MoIcon", moduleVM.MoIcon),
                 new SqlParameter("@MoStatus", moduleVM.MoStatus),
                 new SqlParameter("@MoPosition", moduleVM.MoPosition),
-                new SqlParameter("@MoRDate", moduleVM.MoRDate),
+                new SqlParameter("@MoRDate", moduleVM.MoRDate.HasValue ? (object)moduleVM.MoRDate.Value : DBNull.Value),
                 new SqlParameter("@Case", action)
             };
         }

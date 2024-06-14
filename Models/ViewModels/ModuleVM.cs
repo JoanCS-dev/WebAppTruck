@@ -8,6 +8,6 @@ namespace WebAppTruck.Models.ViewModels
         public string MoIcon { get; set; } = "";
         public string MoStatus { get; set; } = "";
         public int MoPosition { get; set; } = 0;
-        public string MoRDate { get; set; } = "";
+        public DateTime? MoRDate { get; set; }
     }
 }
