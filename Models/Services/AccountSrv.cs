@@ -162,8 +162,36 @@ namespace WebAppTruck.Models.Services
             }
             return res;
         }
+    public ResponseVM ChangePass(AccountVM accountVM)
+    {
+      ResponseVM res = new ResponseVM();
 
-        private SqlParameter[] _parameters(AccountVM accountVM, string Action)
+      try
+      {
+        var command = new SqlCommand("SPAccountNew", Open()) { CommandType = CommandType.StoredProcedure };
+        command.Parameters.AddRange(_parameters(accountVM, accountVM.AccountID > 0 ? "CHANGE_PASS": ""));
+
+        using (var dr = command.ExecuteReader())
+        {
+          if (dr.Read())
+          {
+            res.DBCatchResponseInOneLine(dr);
+          }
+        }
+      }
+      catch (Exception e)
+      {
+        res.Error(e);
+      }
+      finally
+      {
+        Close();
+      }
+
+      return res;
+    }
+
+    private SqlParameter[] _parameters(AccountVM accountVM, string Action)
         {
             return new SqlParameter[]
             {

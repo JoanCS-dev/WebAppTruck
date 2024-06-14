@@ -8,7 +8,7 @@ namespace WebAppTruck.Controllers
   public class AccountController : Controller
   {
     private readonly AccountSrv _accountSrv;
-   
+
     private readonly IConfiguration _configuration;
     private readonly string _salt;
     public AccountController(IConfiguration configuration)
@@ -33,12 +33,12 @@ namespace WebAppTruck.Controllers
     [HttpPost]
     public JsonResult AddUpdate(AccountVM accountVM)
     {
-     if (!string.IsNullOrEmpty(accountVM.AcPassword))
-            {
-                accountVM.AcPassword = Encrypt.GetSHA256(accountVM.AcPassword, _salt);
-            }
+      if (!string.IsNullOrEmpty(accountVM.AcPassword))
+      {
+        accountVM.AcPassword = Encrypt.GetSHA256(accountVM.AcPassword, _salt);
+      }
 
-            return Json(_accountSrv.AddUpdate(accountVM));
+      return Json(_accountSrv.AddUpdate(accountVM));
     }
 
     [HttpPost]
@@ -51,8 +51,24 @@ namespace WebAppTruck.Controllers
       };
       return Json(_accountSrv.Activate(accountVM));
     }
-
+    [HttpPost]
     
+    public JsonResult ChangePass(int AccountID, string AcPassword)
+    {
+      if (!string.IsNullOrEmpty(AcPassword))
+      {
+        AcPassword = Encrypt.GetSHA256(AcPassword, _salt);
+      }
+      var accountVM = new AccountVM
+      {
+        AccountID =  AccountID,
+        AcPassword = AcPassword
+      };
+
+      return Json(_accountSrv.ChangePass(accountVM));
+    }
+
+
   }
 
 }
