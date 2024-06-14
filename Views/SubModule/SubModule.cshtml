@@ -136,7 +136,7 @@
                 subAction: $("#txtAction").val(),
                 subStatus: $("#chkStatusS").is(":checked") ? 1 : 0,
                 subPosition: $("#txtSubPosition").val(),
-                subRDate: $('#txtSubRDate').val(),
+                subRDate: dateValue ? new Date(dateValue).toISOString() : null,
                 moduleID: $("#listModulo").val()
             };
 
@@ -172,9 +172,24 @@
                         $("#_id_submodule_").val(subModule.subModuleID);
                         $("#txtSubDescription").val(subModule.subDescription);
                         $("#txtAction").val(subModule.subAction);
-                        $("#chkStatusS").prop("checked", subModule.subStatus === 1);
+                        $("#chkStatusS").prop("checked", subModule.subStatus);
                         $("#txtSubPosition").val(subModule.subPosition);
-                        $('#txtSubRDate').val(subModule.subRDate);
+                        let subRDate = subModule.subRDate;
+                        let timestampMatch = subRDate.match(/\/Date\((\d+)\)\//);
+                        if (timestampMatch) {
+                            let timestamp = parseInt(timestampMatch[1], 10);
+                            let date = new Date(timestamp);
+                            let isoDate = date.toISOString().slice(0, 16);
+                            $("#txtSubRDate").val(isoDate);
+                        } else {
+                            let date = new Date(subRDate);
+                            if (!isNaN(date.getTime())) {
+                                let isoDate = date.toISOString().slice(0, 16);
+                                $("#txtSubRDate").val(isoDate);
+                            } else {
+                                $("#txtSubRDate").val('');
+                            }
+                        }
                         $("#listModulo").val(subModule.moduleID);
                         $("#modalSubModule").modal("show");
                     } else {
@@ -236,11 +251,13 @@
         }
 
         function LlenarTablaS(lista) {
-            let tmain = $("#tmain").DataTable();
-            tmain.clear();
-            tmain.destroy();
+            if ($.fn.DataTable.isDataTable("#tmain")) {
+                $("#tmain").DataTable().destroy();
+            }
 
-            tmain = $("#tmain").DataTable({
+            $("#tmain").empty();
+
+            tabla = $("#tmain").DataTable({
                 data: lista,
                 columns: [
                     { data: "subModuleID" },
@@ -248,13 +265,38 @@
                     { data: "subAction" },
                     { data: "subStatus" },
                     { data: "subPosition" },
-                    { data: "subRDate" },
+                    {
+                        data: "subRDate", render: function (data) {
+
+                            if (data) {
+                                let timestampMatch = data.match(/\/Date\((\d+)\)\//);
+                                if (timestampMatch) {
+                                    let timestamp = parseInt(timestampMatch[1], 10);
+                                    let date = new Date(timestamp);
+                                    return date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                                } else {
+                                    let date = new Date(data);
+                                    if (isNaN(date.getTime())) {
+                                        let parts = data.split(/[-T:.Z]/);
+                                        date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0));
+                                    }
+                                    return !isNaN(date.getTime()) ? date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : 'Fecha inválida';
+                                }
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
                     { data: "moduleID" },
                     {
-                        data: "subModuleID", render: function (value) {
-                            return `<button type='button' class='btn btn-warning' onclick='ShowModalSubEdit(${value})'>
-                                         <i class="bi bi-pencil-fill"></i>
-                                        </button>`;
+                        data: "subModuleID",
+                        render: (value, type, row) => {
+                            return `<button type='button' class='btn btn-warning m-1' onclick="ShowModalSubEdit(${value});">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </button>`;
                         }
                     }
                 ],
@@ -271,7 +313,6 @@
             $("#_id_submodule_").val(0);
             $("#txtSubDescription").val("");
             $("#txtAction").val("");
-            $("#chkStatusS").prop("checked", false);
             $("#txtSubPosition").val("");
             $("#txtSubRDate").val("");
             $("#listModulo").val("-1");

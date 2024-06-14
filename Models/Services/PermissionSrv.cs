@@ -32,11 +32,11 @@ namespace WebAppTruck.Models.Services
                     {
                         res.Data.Add(new PermissionVM
                         {
-                            PermissionID = GetInt(dr, "PermissionID"),
-                            PerStatus = GetString(dr, "PerStatus"),
-                            SubRDate = GetString(dr, "SubRDate"),
-                            SubModuleID= GetInt(dr, "SubModuleID"),
-                            ProfileID = GetInt(dr, "ProfileID")
+                            PermissionID = dr.GetInt64(dr.GetOrdinal("PermissionID")),
+                            PerStatus = dr.GetString(dr.GetOrdinal("PerStatus")),
+                            SubRDate = dr.IsDBNull(dr.GetOrdinal("SubRDate")) ? (DateTime?)null : dr.GetDateTime(dr.GetOrdinal("SubRDate")),
+                            SubModuleID = dr.GetInt64(dr.GetOrdinal("SubModuleID")),
+                            ProfileID = dr.GetInt64(dr.GetOrdinal("ProfileID"))
                         });
                     }
                 }
@@ -59,6 +59,10 @@ namespace WebAppTruck.Models.Services
             try
             {
                 var command = new SqlCommand("SPPermission", Open()) { CommandType = CommandType.StoredProcedure };
+                if (!permissionVM.SubRDate.HasValue)
+                {
+                    permissionVM.SubRDate = (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue;
+                }
                 command.Parameters.AddRange(_parameters(permissionVM, permissionVM.PermissionID == 0 ? "INSERT" : "UPDATE"));
 
                 using (var dr = command.ExecuteReader())
@@ -86,7 +90,7 @@ namespace WebAppTruck.Models.Services
             {
                 new SqlParameter("@PermissionID", permissionVM.PermissionID),
                 new SqlParameter("@PerStatus", permissionVM.PerStatus),
-                new SqlParameter("@SubRDate", permissionVM.SubRDate),
+                new SqlParameter("@SubRDate", permissionVM.SubRDate.HasValue ? (object)permissionVM.SubRDate.Value : DBNull.Value),
                 new SqlParameter("@SubModuleID", permissionVM.SubModuleID),
                 new SqlParameter("@ProfileID", permissionVM.ProfileID),
                 new SqlParameter("@Case", action)
