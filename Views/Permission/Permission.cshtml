@@ -212,7 +212,7 @@
                         $.each(res.data, (index, value) => {
                             html += `<option value="${value.profileID}">${value.proDescription}</option>`;
                         });
-                        $("#ListProfile").html(html);
+                        $("#listProfile").html(html);
                     } else {
                         mostrarToast("ALERTA!!", res.message, "alert");
                     }
@@ -236,7 +236,7 @@
                     { data: "permissionID" },
                     { data: "perStatus" },
                     {
-                        data: "SubRDate", render: function (data) {
+                        data: "subRDate", render: function (data) {
 
                             if (data) {
                                 let timestampMatch = data.match(/\/Date\((\d+)\)\//);
@@ -280,19 +280,19 @@
             });
         }
 
-        function ShowModalPerEdit(_PermissionID) {
-            const data_permission_id = { permissionID: _PermissionID };
+        function ShowModalPerEdit(_permissionID) {
+            const data_permission_id = { permissionID: _permissionID };
             $.ajax({
                 url: "/Permission/ListPermission",
-                data: JSON.stringify(data_permission_id),
+                data: data_permission_id,
                 type: "POST",
                 success: function (res) {
                     if (res.ok) {
                         const permission = res.data[0];
-                        $("#_id_permission_").val(permissionpermissionID);
+                        $("#_id_permission_").val(permission.permissionID);
                         $("#chkStatusPer").prop("checked", permission.perStatus);
-                       let subRDate = permission.subRDate;
-                       let timestampMatch = subRDate.match(/\/Date\((\d+)\)\//);
+                        let subRDate = permission.subRDate;
+                        let timestampMatch = subRDate.match(/\/Date\((\d+)\)\//);
                         if (timestampMatch) {
                             let timestamp = parseInt(timestampMatch[1], 10);
                             let date = new Date(timestamp);
@@ -308,7 +308,7 @@
                             }
                         }
                         $("#listSubModulo").val(permission.subModuleID);
-                        $("#listPerfil").val(permission.profileID);
+                        $("#listProfile").val(permission.profileID);
                         $("#modalPermission").modal("show");
                     } else {
                         alert(res.message);
