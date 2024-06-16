@@ -190,7 +190,7 @@
                 $("#tmainM").DataTable().destroy();
             }
 
-            $("#tmainM").empty();
+             $("#tmainM tbody").remove();
 
             tabla = $("#tmainM").DataTable({
                 data: lista,

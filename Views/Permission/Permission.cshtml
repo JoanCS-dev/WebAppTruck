@@ -228,7 +228,7 @@
                 $("#tmainPermission").DataTable().destroy();
             }
 
-            $("#tmainPermission").empty();
+             $("#tmainPermission tbody").remove();
 
             tabla = $("#tmainPermission").DataTable({
                 data: lista,
