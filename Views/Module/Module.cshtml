@@ -136,20 +136,18 @@
         $("#btnSaveModule").click(function () {
             const dateValue = $("#txtRDate").val();
             const data_module = {
-                moduleVM: {
-                moduleID: $("#_id_module_").val() || 0,
-                moDescription: $("#txtDescription").val(),
-                moController: $("#txtController").val(),
-                moIcon: $("#txtIcon").val(),
-                moStatus: $("#chkStatus").is(":checked") ? 1 : 0,
-                moPosition: $("#txtPosition").val(),
-                moRDate: dateValue ? new Date(dateValue).toISOString() : null
-                }
+                ModuleID: $("#_id_module_").val() || 0,
+                MoDescription: $("#txtDescription").val(),
+                MoController: $("#txtController").val(),
+                MoIcon: $("#txtIcon").val(),
+                MoStatus: $("#chkStatus").is(":checked") ? 1 : 0,
+                MoPosition: $("#txtPosition").val(),
+                MoRDate: dateValue ? new Date(dateValue).toISOString() : null
             };
 
             $.ajax({
                 url: "/Module/AddUpdate",
-                data: JSON.stringify(data_module),
+                data: data_module,
                 type: "POST",
                 beforeSend: () => { },
                 success: function (res) {
