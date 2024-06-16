@@ -247,26 +247,16 @@
             });
         }
 
-        function ShowModalModuleEdit(_ModuleID) {
-            const data_module_id = {
-                module: {
-                    moduleID: _ModuleID
-                }
-            };
+        function ShowModalModuleEdit(_moduleID) {
+            const data_module_id = { moduleID: _moduleID };
             $.ajax({
                 url: "/Module/ListModule",
-                data: JSON.stringify(data_module_id),
+                data: data_module_id,
                 type: "POST",
-                beforeSend: () => {
-                },
-                success: (res) => {
-
-                    if (res.ok && res.data.length > 0) {
+                success: function (res) {
+                    if (res.ok) {
 
                         const moduleData = res.data[0];
-
-                        console.log(moduleData);
-
                         $("#_id_module_").val(moduleData.moduleID);
                         $("#txtDescription").val(moduleData.moDescription);
                         $("#txtController").val(moduleData.moController);

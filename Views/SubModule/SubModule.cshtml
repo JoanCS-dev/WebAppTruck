@@ -165,7 +165,7 @@
             const data_submodule_id = { subModuleID: _submoduleID };
             $.ajax({
                 url: "/SubModule/ListSubModule",
-                data: JSON.stringify(data_submodule_id),
+                data: data_submodule_id,
                 type: "POST",
                 success: function (res) {
                     if (res.ok) {
