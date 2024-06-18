@@ -17,6 +17,8 @@ namespace WebAppTruck.Controllers
 
         public IActionResult Permission()
         {
+            var email = HttpContext.Session.GetString("UserEmail");
+            ViewBag.UserEmail = email;
             return View();
         }
 

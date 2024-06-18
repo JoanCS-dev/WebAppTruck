@@ -15,7 +15,8 @@ namespace WebAppTruck.Controllers
         }
     public IActionResult Module()
     {
-
+      var email = HttpContext.Session.GetString("UserEmail");
+      ViewBag.UserEmail = email;
       return View();
     }
     [HttpPost]

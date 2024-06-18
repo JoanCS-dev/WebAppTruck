@@ -82,8 +82,6 @@ namespace WebAppTruck.Models.Services
                             if (message == "Acceso permitido")
                             {
                                 response.Success(message);
-
-                                response.Data = GetUserNameByEmail(email);
                             }
                             else
                             {
@@ -192,40 +190,6 @@ namespace WebAppTruck.Models.Services
             }
 
             return res;
-        }
-
-        public string GetUserNameByEmail(string email)
-        {
-            string userName = "";
-
-            try
-            {
-                var command = new SqlCommand("SPAccount", Open()) { CommandType = CommandType.StoredProcedure };
-                command.Parameters.Add(new SqlParameter("@Email", email));
-
-                using (var dr = command.ExecuteReader())
-                {
-                    if (dr.Read())
-                    {
-                        userName = dr["AcUser"].ToString();
-                        Console.WriteLine($"UserName retrieved: {userName}");
-                    }
-                    else
-                    {
-                        Console.WriteLine("No user found with the provided email.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exception: {ex.Message}");
-            }
-            finally
-            {
-                Close();
-            }
-
-            return userName ;
         }
 
         private SqlParameter[] _parameters(AccountVM accountVM, string Action)

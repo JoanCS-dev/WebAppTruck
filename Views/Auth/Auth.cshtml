@@ -172,11 +172,11 @@
     function Login(event) {
       event.preventDefault();
 
-      var email = document.getElementById("txtEmail").value;
-      var password = document.getElementById("txtPassword").value;
+      var email = document.getElementById("txtEmail").value.trim();
+      var password = document.getElementById("txtPassword").value.trim();
       var recordarme = document.getElementById("rememberMe").checked;
 
-      if (email.trim() === '' || password.trim() === '') {
+      if (email === '' || password === '') {
         mostrarAlerta('Por favor ingresa tu correo electrónico y contraseña.', 'warning');
         return;
       }
