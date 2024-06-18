@@ -3,6 +3,6 @@ namespace WebAppTruck.Models.ViewModels{
         public int ProfileID { get; set; } = 0;
         public string ProDescription { get; set; } = "";
         public string ProStatus { get; set; } = "";
-        public string ProRDate { get; set; } = "";
+        public DateTime? ProRDate { get; set; } 
     }
 }

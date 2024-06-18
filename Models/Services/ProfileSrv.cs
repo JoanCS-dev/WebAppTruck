@@ -1,5 +1,6 @@
-using WebAppTruck.Models.ViewModels;
+using System.Data;
 using Microsoft.Data.SqlClient;
+using WebAppTruck.Models.ViewModels;
 
 namespace WebAppTruck.Models.Services{
     public class ProfileSrv : DBAccess{
@@ -20,7 +21,7 @@ namespace WebAppTruck.Models.Services{
                            ProfileID = GetInt(dr,"ProfileID"),
                            ProDescription = GetString(dr,"ProDescription"),
                            ProStatus = GetString(dr,"ProStatus"),
-                           ProRDate = GetString(dr,"ProRDate")
+                           ProRDate = dr.IsDBNull(dr.GetOrdinal("ProRDate")) ? (DateTime?)null : dr.GetDateTime(dr.GetOrdinal("ProRDate")),
                         });
                     }
                 }
@@ -34,15 +35,46 @@ namespace WebAppTruck.Models.Services{
             return res;
         }
 
+        public ResponseVM AddUpdate(ProfileVM profileVM)
+        {
+            ResponseVM res = new ResponseVM();
+
+            try
+            {
+                var command = new SqlCommand("SPProfiles", Open()) { CommandType = CommandType.StoredProcedure };
+                if (!profileVM.ProRDate.HasValue)
+                {
+                    profileVM.ProRDate = (DateTime)System.Data.SqlTypes.SqlDateTime.MinValue;
+                }
+                command.Parameters.AddRange(_parameters(profileVM, profileVM.ProfileID == 0 ? "ADD" : "UPDATE"));
+
+                using (var dr = command.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        res.DBCatchResponseInOneLine(dr);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                res.Error(e);
+            }
+            finally
+            {
+                Close();
+            }
+            return res;
+        }
+
         private SqlParameter[] _parameters(ProfileVM profileVM, String Action) {
             return new SqlParameter[] {
                 new SqlParameter("@Id", profileVM.ProfileID),
                 new SqlParameter("@Descripcion", profileVM.ProDescription),
                 new SqlParameter("@Estatus", profileVM.ProStatus),
-                new SqlParameter("@Fecha", profileVM.ProRDate),
+                new SqlParameter("@Fecha", profileVM.ProRDate.HasValue ? (object)profileVM.ProRDate.Value : DBNull.Value),
                 new SqlParameter("@Action", Action)
             };
         }
-
     }
 }
