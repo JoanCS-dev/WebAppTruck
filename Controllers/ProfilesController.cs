@@ -23,7 +23,7 @@ namespace WebAppTruck.Controllers
         }
 
         [HttpPost]
-        public JsonResult ListProfiles(ProfileVM profileVM)
+        public JsonResult List(ProfileVM profileVM)
         {
             return Json(_profileSrv.List(profileVM));
         }

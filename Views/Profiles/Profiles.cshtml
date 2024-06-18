@@ -140,7 +140,7 @@
 
         function cargarProfile() {
             $.ajax({
-                url: "/Profiles/ListProfiles",
+                url: "/Profiles/List",
                 type: "POST",
                 dataType: "JSON",
                 contentType: "application/json; charset=utf-8;",
@@ -219,7 +219,7 @@
             };
 
             $.ajax({
-                url: "/Profiles/ListProfiles",
+                url: "/Profiles/List",
                 data: data_profile_id,
                 type: "POST",
                 success: function (res) {
