@@ -61,13 +61,14 @@ namespace WebAppTruck.Models.Services
 
         public ResponseVM<string> Login(string email, string password)
         {
-            ResponseVM<string> res = new ResponseVM<string>();
+            var response = new ResponseVM<string>();
+
             try
             {
                 using (var connection = Open())
                 using (var command = new SqlCommand("SPAccount", connection))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
 
                     command.Parameters.Add(new SqlParameter("@Email", email));
                     command.Parameters.Add(new SqlParameter("@Password", password));
@@ -76,34 +77,36 @@ namespace WebAppTruck.Models.Services
                     {
                         if (dr.Read())
                         {
-                            string mensaje = dr.GetString(0);
-                            res.Data = mensaje;
+                            string message = dr.GetString(0);
 
-                            if (mensaje == "Acceso permitido")
+                            if (message == "Acceso permitido")
                             {
-                                res.Success(mensaje);
+                                response.Success(message);
+
+                                response.Data = GetUserNameByEmail(email);
                             }
                             else
                             {
-                                res.Error(mensaje);
+                                response.Error(message);
                             }
                         }
                         else
                         {
-                            res.NotFind();
+                            response.NotFind();
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                res.Error(ex);
+                response.Error(ex);
             }
             finally
             {
                 Close();
             }
-            return res;
+
+            return response;
         }
 
         public ResponseVM AddUpdate(AccountVM accountVM)
@@ -162,36 +165,70 @@ namespace WebAppTruck.Models.Services
             }
             return res;
         }
-    public ResponseVM ChangePass(AccountVM accountVM)
-    {
-      ResponseVM res = new ResponseVM();
-
-      try
-      {
-        var command = new SqlCommand("SPAccountNew", Open()) { CommandType = CommandType.StoredProcedure };
-        command.Parameters.AddRange(_parameters(accountVM, accountVM.AccountID > 0 ? "CHANGE_PASS": ""));
-
-        using (var dr = command.ExecuteReader())
+        public ResponseVM ChangePass(AccountVM accountVM)
         {
-          if (dr.Read())
-          {
-            res.DBCatchResponseInOneLine(dr);
-          }
+            ResponseVM res = new ResponseVM();
+
+            try
+            {
+                var command = new SqlCommand("SPAccountNew", Open()) { CommandType = CommandType.StoredProcedure };
+                command.Parameters.AddRange(_parameters(accountVM, accountVM.AccountID > 0 ? "CHANGE_PASS" : ""));
+
+                using (var dr = command.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        res.DBCatchResponseInOneLine(dr);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                res.Error(e);
+            }
+            finally
+            {
+                Close();
+            }
+
+            return res;
         }
-      }
-      catch (Exception e)
-      {
-        res.Error(e);
-      }
-      finally
-      {
-        Close();
-      }
 
-      return res;
-    }
+        public string GetUserNameByEmail(string email)
+        {
+            string userName = "";
 
-    private SqlParameter[] _parameters(AccountVM accountVM, string Action)
+            try
+            {
+                var command = new SqlCommand("SPAccount", Open()) { CommandType = CommandType.StoredProcedure };
+                command.Parameters.Add(new SqlParameter("@Email", email));
+
+                using (var dr = command.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        userName = dr["AcUser"].ToString();
+                        Console.WriteLine($"UserName retrieved: {userName}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No user found with the provided email.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+            }
+            finally
+            {
+                Close();
+            }
+
+            return userName ;
+        }
+
+        private SqlParameter[] _parameters(AccountVM accountVM, string Action)
         {
             return new SqlParameter[]
             {

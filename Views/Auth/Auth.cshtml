@@ -1,5 +1,5 @@
 @{
-    Layout = null;
+  Layout = null;
 }
 <!DOCTYPE html>
 <html lang="es" data-bs-theme="auto">
@@ -8,7 +8,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iniciar Sesión | 3D Truck</title>
-  <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <style>
     html,
     body {
@@ -62,84 +62,105 @@
       display: block;
       width: 100%;
     }
+
+    .caps-lock-alert {
+      right: 10px;
+      bottom: 38px;
+      width: calc(100% - 20px);
+      z-index: 1050;
+    }
   </style>
 </head>
 
 <body class="d-flex align-items-center py-4 bg-dark text-white">
 
   <main class="form-signin w-100 m-auto">
-    <form id="loginForm" method="post">
+    <form id="loginForm" method="post" action="/Auth/Login">
       <h1 class="h3 mb-3">
         <span class="fw-bold text-primary">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="30" height="30" fill="#777">
-            <path d="M640 0V400c0 61.9-50.1 112-112 112c-61 0-110.5-48.7-112-109.3L48.4 502.9c-17.1 4.6-34.6-5.4-39.3-22.5s5.4-34.6 22.5-39.3L352 353.8V64c0-35.3 28.7-64 64-64H640zM576 400a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM23.1 207.7c-4.6-17.1 5.6-34.6 22.6-39.2l46.4-12.4 20.7 77.3c2.3 8.5 11.1 13.6 19.6 11.3l30.9-8.3c8.5-2.3 13.6-11.1 11.3-19.6l-20.7-77.3 46.4-12.4c17.1-4.6 34.6 5.6 39.2 22.6l41.4 154.5c4.6 17.1-5.6 34.6-22.6 39.2L103.7 384.9c-17.1 4.6-34.6-5.6-39.2-22.6L23.1 207.7z"/>
+            <path
+              d="M640 0V400c0 61.9-50.1 112-112 112c-61 0-110.5-48.7-112-109.3L48.4 502.9c-17.1 4.6-34.6-5.4-39.3-22.5s5.4-34.6 22.5-39.3L352 353.8V64c0-35.3 28.7-64 64-64H640zM576 400a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM23.1 207.7c-4.6-17.1 5.6-34.6 22.6-39.2l46.4-12.4 20.7 77.3c2.3 8.5 11.1 13.6 19.6 11.3l30.9-8.3c8.5-2.3 13.6-11.1 11.3-19.6l-20.7-77.3 46.4-12.4c17.1-4.6 34.6 5.6 39.2 22.6l41.4 154.5c4.6 17.1-5.6 34.6-22.6 39.2L103.7 384.9c-17.1 4.6-34.6-5.6-39.2-22.6L23.1 207.7z" />
           </svg>
           Fill Truck
         </span> |
         <span class="fw-bold">Ingresar</span>
       </h1>
-
       <div id="alertContainer"></div>
-
       <div class="form-floating">
         <input type="email" class="form-control" id="txtEmail" name="email" placeholder="name@example.com">
         <label for="txtEmail">Correo electrónico</label>
       </div>
-      <div class="form-floating">
-        <input type="password" class="form-control" id="txtPassword" name="password" placeholder="Password">
-        <label for="txtPassword">Contraseña</label>
+
+      <div class="position-relative">
+        <div class="form-floating">
+          <input type="password" class="form-control" id="txtPassword" name="password" placeholder="Password">
+          <label for="txtPassword">Contraseña</label>
+        </div>
+        <div id="capsLockAlert" class="alert alert-warning alert-dismissible fade show caps-lock-alert" role="alert"
+          style="display: none;">
+          <strong>Bloq Mayús está activado</strong>
+        </div>
       </div>
 
       <div class="form-check text-start my-3">
-        <input class="form-check-input" type="checkbox" value="remember-me" id="rememberMe">
+        <input class="form-check-input" type="checkbox" id="rememberMe">
         <label class="form-check-label" for="rememberMe">
           Recordarme
         </label>
       </div>
-      <button class="btn btn-primary w-100 py-2" type="button" onclick="Login()">Iniciar Sesión</button>
+      <button class="btn btn-primary w-100 py-2" type="submit">Iniciar Sesión</button>
       <small class="footer-text mt-2">&copy; Power by CST Software | 2024 - @DateTime.Now.ToString("yyyy")</small>
     </form>
   </main>
-  <script src="~/lib/jquery/js/jquery.min.js"></script>
-  <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
     function establecerCookie(nombre, valor, dias) {
-      var expires = "";
-      if (dias) {
-        var fecha = new Date();
-        fecha.setTime(fecha.getTime() + (dias * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + fecha.toUTCString();
-      }
-      document.cookie = nombre + "=" + (valor || "") + expires + "; path=/";
+      var fecha = new Date();
+      fecha.setTime(fecha.getTime() + (dias * 24 * 60 * 60 * 1000));
+      var expires = "; expires=" + fecha.toUTCString();
+      document.cookie = nombre + "=" + valor + expires + "; path=/";
     }
 
     function obtenerCookie(nombre) {
       var nombreEQ = nombre + "=";
-      var ca = document.cookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nombreEQ) == 0) return c.substring(nombreEQ.length, c.length);
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        while (cookie.charAt(0) === ' ') {
+          cookie = cookie.substring(1, cookie.length);
+        }
+        if (cookie.indexOf(nombreEQ) === 0) {
+          return cookie.substring(nombreEQ.length, cookie.length);
+        }
       }
       return null;
     }
 
     function borrarCookie(nombre) {
-      document.cookie = nombre + '=; Max-Age=-99999999;';
+      establecerCookie(nombre, "", -1);
     }
 
     function mostrarAlerta(mensaje, tipo) {
       var alertContainer = document.getElementById('alertContainer');
+      if (!alertContainer) {
+        console.error('El contenedor de alertas no se encontró en el DOM.');
+        return;
+      }
+
       var existingAlert = alertContainer.querySelector('.alert.alert-' + tipo);
 
       if (existingAlert) {
-        existingAlert.innerHTML = mensaje + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        existingAlert.innerHTML = mensaje
       } else {
         var alertDiv = document.createElement('div');
         alertDiv.className = 'alert alert-' + tipo + ' alert-dismissible fade show';
         alertDiv.role = 'alert';
-        alertDiv.innerHTML = mensaje + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        alertDiv.innerHTML = mensaje
         alertContainer.appendChild(alertDiv);
       }
     }
@@ -149,7 +170,9 @@
       alertContainer.innerHTML = '';
     }
 
-    function Login() {
+    function Login(event) {
+      event.preventDefault();
+
       var email = document.getElementById("txtEmail").value;
       var password = document.getElementById("txtPassword").value;
       var recordarme = document.getElementById("rememberMe").checked;
@@ -166,7 +189,7 @@
           email: email,
           password: password
         },
-        success: function(response) {
+        success: function (response) {
           if (response.success) {
             if (recordarme) {
               establecerCookie("recordarme", email, 30);
@@ -178,22 +201,49 @@
             mostrarAlerta(response.message, 'danger');
           }
         },
-        error: function() {
+        error: function () {
           mostrarAlerta('Ocurrió un error al procesar tu solicitud. Por favor intenta de nuevo más tarde.', 'danger');
         }
       });
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-      var emailRecordado = obtenerCookie("recordarme");
-      if (emailRecordado) {
-        document.getElementById("txtEmail").value = emailRecordado;
-        document.getElementById("rememberMe").checked = true;
+    document.addEventListener("DOMContentLoaded", function () {
+      var capsLockAlert = document.getElementById('capsLockAlert');
+      var passwordField = document.getElementById('txtPassword');
+      var rememberMeCheckbox = document.getElementById('rememberMe');
+      var emailField = document.getElementById('txtEmail');
+
+      passwordField.addEventListener('keyup', function (event) {
+        var capsOn = event.getModifierState && event.getModifierState('CapsLock');
+        capsLockAlert.style.display = capsOn ? 'block' : 'none';
+      });
+
+      passwordField.addEventListener('keydown', function (event) {
+        var capsOn = event.getModifierState && event.getModifierState('CapsLock');
+        capsLockAlert.style.display = capsOn ? 'block' : 'none';
+      });
+
+      emailField.addEventListener('input', function () {
+        ocultarAlerta();
+      });
+
+      passwordField.addEventListener('input', function () {
+        ocultarAlerta();
+      });
+
+      var recordarmeEmail = obtenerCookie("recordarme");
+      if (recordarmeEmail) {
+        document.getElementById("txtEmail").value = recordarmeEmail;
+        rememberMeCheckbox.checked = true;
       }
 
-      document.getElementById("txtEmail").addEventListener("input", ocultarAlerta);
-      document.getElementById("txtPassword").addEventListener("input", ocultarAlerta);
+      var loginForm = document.getElementById('loginForm');
+      loginForm.addEventListener('submit', function (event) {
+        Login(event);
+      });
     });
   </script>
 </body>
+
 </html>
+

@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "Dashboard";
+    var userName = ViewData["UserName"] as string;
 }
-
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
       <symbol id="check2" viewBox="0 0 16 16">
         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -159,14 +159,22 @@
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="@Url.Action("Dashboard", "Dashboard")">
-                <svg class="bi"><use xlink:href="#house-fill"/></svg>
-                Dashboard
-              </a>
-            </li>
+        <div class="container mt-5">
+          <div class="jumbotron bg-dark text-white">
+            <h3>Bienvenido, @userName</h3>
+          </div>
+        </div>
+              <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+                <ul class="nav flex-column">
+                  <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page"
+                      href="@Url.Action("Dashboard", "Dashboard")">
+                      <svg class="bi">
+                        <use xlink:href="#house-fill" />
+                      </svg>
+                      Dashboard
+                    </a>
+                  </li>
             <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#file-earmark"/></svg>
@@ -179,7 +187,6 @@
                 Products
               </a>
             </li>
-            
             <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2" href="@Url.Action("Account", "Account")">
                 <svg class="bi"><use xlink:href="#people"/></svg>

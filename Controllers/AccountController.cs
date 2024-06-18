@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAppTruck.Models.Services;
 using WebAppTruck.Models.ViewModels;
-using System.Security.Cryptography;
-using System.Text;
 namespace WebAppTruck.Controllers
 {
   public class AccountController : Controller

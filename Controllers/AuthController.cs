@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using WebAppTruck.Models.Services;
 using WebAppTruck.Models.ViewModels;
 
@@ -35,12 +34,25 @@ namespace WebAppTruck.Controllers
 
             if (response.Ok)
             {
+                var userName = _accountSrv.GetUserNameByEmail(email);
+                HttpContext.Session.SetString("UserName", userName);
                 return Json(new { success = true, redirectUrl = Url.Action("Dashboard", "Dashboard") });
             }
             else
             {
                 return Json(new { success = false, message = response.Message });
             }
+        }
+
+        public IActionResult Dashboard()
+        {
+            var userName = HttpContext.Session.GetString("UserName");
+            if (string.IsNullOrEmpty(userName))
+            {
+                return RedirectToAction("Auth");
+            }
+            ViewData["UserName"] = userName;
+            return View();
         }
     }
 }
