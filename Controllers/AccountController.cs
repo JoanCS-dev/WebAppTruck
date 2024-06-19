@@ -88,5 +88,12 @@ namespace WebAppTruck.Controllers
 
       return Json(_accountSrv.ChangePass(accountVM));
     }
+    [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Auth", "Account");
+        }
   }
 }
