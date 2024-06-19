@@ -2,44 +2,11 @@
     ViewData["Title"] = "Permission";
 }
 
-<div id="Toast_alert" class="toast-container position-fixed top-0 end-0 p-3">
-</div>
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-    <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Permisos</h1>
-
-        <div class="btn-toolbar mb-2 mb-md-0">
-
-            <div class="btn-group me-2 ">
-
-                <div class="dropdown">
-                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="exportDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false">Exportar</button>
-                    <ul class="dropdown-menu" aria-labelledby="exportDropdown">
-                        <li><a class="dropdown-item" href="#" id="exportExcel">Exportar a Excel</a></li>
-                        <li><a class="dropdown-item" href="#" id="exportCSV">Exportar a CSV</a></li>
-                        <li><a class="dropdown-item" href="#" id="exportCopy">Copiar al Portapapeles</a></li>
-                        <li><a class="dropdown-item" href="#" id="exportPDF">Exportar a PDF</a></li>
-                        <li><a class="dropdown-item" href="#" id="exportPrint">Imprimir</a></li>
-                    </ul>
-                </div>
-
-            </div>
-            <button type="button"
-                class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
-                <svg class="bi">
-                    <use xlink:href="#calendar3" />
-                </svg>
-                This week
-            </button>
-        </div>
-
-    </div>
-
-    <div class="table-responsive small">
-        <div class="m-3">
-            <button type="button" class="btn btn-warning btn-sm" id="btnPermission">
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive scrollbar">
+            <div class="m-3">
+                <button type="button" class="btn btn-warning btn-sm" id="btnPermission">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                     class="bi bi-shield-check" viewBox="0 0 16 16">
                     <path
@@ -49,10 +16,8 @@
                 </svg>
                 Permisos
             </button>
-        </div>
-    </div>
-
-        <table class="table table-striped table-hover display nowrap" id="tmainPermission">
+            </div>
+            <table class="table table-striped table-hover display nowrap" id="tmainPermission">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -66,9 +31,8 @@
             <tbody>
             </tbody>
         </table>
+        </div>
     </div>
-</main>
-</div>
 </div>
 
 <div class="modal fade" tabindex="-1" id="modalPermission">
