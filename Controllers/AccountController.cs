@@ -37,7 +37,7 @@ namespace WebAppTruck.Controllers
       if (response.Ok)
       {
         HttpContext.Session.SetString("UserEmail", email);
-        return Json(new { success = true, redirectUrl = Url.Action("Home", "Index") });
+        return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
       }
       else
       {
