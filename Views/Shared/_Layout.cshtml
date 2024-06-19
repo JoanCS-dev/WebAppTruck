@@ -1,4 +1,22 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var hora = DateTime.Now.Hour;
+    string saludo;
+
+    if (hora >= 5 && hora < 12)
+    {
+        saludo = "Buenos días";
+    }
+    else if (hora >= 12 && hora < 19)
+    {
+        saludo = "Buenas tardes";
+    }
+    else
+    {
+        saludo = "Buenas noches";
+    }
+}
+
+<!DOCTYPE html>
 <html data-bs-theme="light" lang="en-MX" dir="ltr">
 <head>
 
@@ -1056,6 +1074,9 @@
               </li>
             </ul>
             <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+              <div>
+                  @saludo, @ViewBag.UserEmail
+              </div>
               <li class="nav-item ps-2 pe-0">
                 <div class="dropdown theme-control-dropdown"><a class="nav-link d-flex align-items-center dropdown-toggle fa-icon-wait fs-9 pe-1 py-0" href="#" role="button" id="themeSwitchDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fas fa-sun fs-7" data-fa-transform="shrink-2" data-theme-dropdown-toggle-icon="light"></span><span class="fas fa-moon fs-7" data-fa-transform="shrink-3" data-theme-dropdown-toggle-icon="dark"></span><span class="fas fa-adjust fs-7" data-fa-transform="shrink-2" data-theme-dropdown-toggle-icon="auto"></span></a>
                   <div class="dropdown-menu dropdown-menu-end dropdown-caret border py-0 mt-3" aria-labelledby="themeSwitchDropdown">
