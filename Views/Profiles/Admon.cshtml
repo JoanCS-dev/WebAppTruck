@@ -167,7 +167,7 @@
                     }
                 ],
                 buttons: [
-                    'excel', 'csv', 'copy', 'pdf', 'print'
+                    'excel'
                 ],
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
@@ -233,30 +233,6 @@
         $('#exportExcel').click(function () {
             tabla.button('.buttons-excel').trigger();
             mostrarToast("Exito", "Tu tabla se ha exportado en formato Excel con exito", "Descarga");
-        });
-
-
-        $('#exportCSV').click(function () {
-            tabla.button('.buttons-csv').trigger();
-            mostrarToast("Exito", "Tu tabla se ha exportado en formato CSV con exito", "Descarga");
-        });
-
-
-        $('#exportCopy').click(function () {
-            mostrarToast("Exito", "Tu tabla se ha copiado en tu portapapeles con exito", "Descarga");
-            tabla.button('.buttons-copy').trigger();
-        });
-
-
-        $('#exportPDF').click(function () {
-            tabla.button('.buttons-pdf').trigger();
-            mostrarToast("Exito", "Tu tabla se ha exportado en formato PDF con exito", "Descarga");
-        });
-
-
-        $('#exportPrint').click(function () {
-            tabla.button('.buttons-print').trigger();
-            mostrarToast("Exito", "Tu tabla esta lista para imprimir con exito", "Imprimir");
         });
 
         function mostrarToast(titulo, mensaje, tipo) {
