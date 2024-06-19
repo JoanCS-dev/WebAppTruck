@@ -2,34 +2,58 @@
     ViewData["Title"] = "Permission";
 }
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+
+<style>
+    .btn-dark-green {
+        background-color: #217346;
+        border-color: #217346;
+        color: white;
+        margin-left: 950px;
+    }
+
+    .btn-dark-green:hover {
+        background-color: #1e623d;
+        border-color: #1e623d;
+        color: white;
+    }
+</style>
+
 <div class="card">
     <div class="card-body">
         <div class="table-responsive scrollbar">
             <div class="m-3">
                 <button type="button" class="btn btn-warning btn-sm" id="btnPermission">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                    class="bi bi-shield-check" viewBox="0 0 16 16">
-                    <path
-                        d="M4.293 9.293a1 1 0 0 0 1.414 0L7 8.414l3.293 3.293a1 1 0 0 0 1.414-1.414l-4-4a1 1 0 0 0-1.414 0l-2 2a1 1 0 0 0 0 1.414z" />
-                    <path
-                        d="M3.5 0A1.5 1.5 0 0 0 2 1.5v4.246a3.5 3.5 0 0 0-.5 6.977V15.5a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-1.777a3.5 3.5 0 0 0-.5-6.977V1.5A1.5 1.5 0 0 0 13.5 0h-11zm8.122 5.808l-3.35 3.292a.5.5 0 0 1-.708 0l-1.35-1.343a.5.5 0 0 1 .707-.708l.943.94 2.646-2.594a.5.5 0 0 1 .707.707z" />
-                </svg>
-                Permisos
-            </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-shield-check" viewBox="0 0 16 16">
+                        <path
+                            d="M4.293 9.293a1 1 0 0 0 1.414 0L7 8.414l3.293 3.293a1 1 0 0 0 1.414-1.414l-4-4a1 1 0 0 0-1.414 0l-2 2a1 1 0 0 0 0 1.414z" />
+                        <path
+                            d="M3.5 0A1.5 1.5 0 0 0 2 1.5v4.246a3.5 3.5 0 0 0-.5 6.977V15.5a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-1.777a3.5 3.5 0 0 0-.5-6.977V1.5A1.5 1.5 0 0 0 13.5 0h-11zm8.122 5.808l-3.35 3.292a.5.5 0 0 1-.708 0l-1.35-1.343a.5.5 0 0 1 .707-.708l.943.94 2.646-2.594a.5.5 0 0 1 .707.707z" />
+                    </svg>
+                    Permisos
+                </button>
+                <button type="button" class="btn btn-dark-green btn-sm btn-excel my-3 "
+                    onclick="exportExcel('tmainPermission', 'Tabla Permisos')" data-toggle="tooltip"
+                    data-placement="top" title="Exportar a Excel">
+                    <i class="bi bi-file-earmark-excel-fill"></i> Excel
+                </button>
             </div>
             <table class="table table-striped table-hover display nowrap" id="tmainPermission">
-            <thead>
-                <tr>
-                    <th>Estatus</th>
-                    <th>Fecha</th>
-                    <th>Submódulo</th>
-                    <th>Perfil</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+                <thead>
+                    <tr>
+                        <th>Estatus</th>
+                        <th>Fecha</th>
+                        <th>Submódulo</th>
+                        <th>Perfil</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -72,9 +96,15 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 @section JS {
     <script>
-        
+
         cargarPermission();
 
         cargarSubModulo();
@@ -136,7 +166,7 @@
             });
         }
 
-          function cargarSubModulo() {
+        function cargarSubModulo() {
             $.ajax({
                 url: "/SubModule/ListSubModule",
                 type: "POST",
@@ -189,7 +219,7 @@
                 $("#tmainPermission").DataTable().destroy();
             }
 
-             $("#tmainPermission tbody").remove();
+            $("#tmainPermission tbody").remove();
 
             tabla = $("#tmainPermission").DataTable({
                 data: lista,
@@ -223,16 +253,13 @@
                         data: "permissionID",
                         render: (value, type, row) => {
                             return `<button type='button' class='btn btn-warning m-1' onclick="ShowModalPerEdit(${value});">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                </svg>
-                            </button>`;
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    </svg>
+                                </button>`;
                         }
                     }
-                ],
-                buttons: [
-                    'excel'
                 ],
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
@@ -288,25 +315,21 @@
             $("#listPerfil").val("-1");
         }
 
-        $('#exportExcel').click(function () {
-            tabla.button('.buttons-excel').trigger();
-            mostrarToast("Exito", "Tu tabla se ha exportado en formato Excel con exito", "Descarga");
-        });
+        function exportExcel(tableID, filename = '') {
+            let table = document.getElementById(tableID);
+            let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
 
-        function mostrarToast(titulo, mensaje, tipo) {
-            const toast = `
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <strong class="me-auto">${titulo}</strong>
-                        <small>${tipo}</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        ${mensaje}
-                    </div>
-                </div>`;
-            $("#Toast_alert").html(toast);
-            $(".toast").toast("show");
+            let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+            function s2ab(s) {
+                let buf = new ArrayBuffer(s.length);
+                let view = new Uint8Array(buf);
+                for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename + ".xlsx");
         }
+
     </script>
 }

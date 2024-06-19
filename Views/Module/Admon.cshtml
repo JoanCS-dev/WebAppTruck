@@ -1,15 +1,16 @@
 @{
     ViewData["Title"] = "Module";
 }
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
 
 <style>
      .btn-dark-green {
       background-color: #217346;
       border-color: #217346;
       color: white;
+      margin-left: 950px;
     }
     .btn-dark-green:hover {
       background-color: #1e623d;
@@ -30,12 +31,12 @@
                     </svg>
                     Módulo
                 </button>
-            </div>
-            <button type="button" class="btn btn-dark-green btn-sm btn-excel my-3"
+            <button type="button" class="btn btn-dark-green btn-sm btn-excel my-3 "
                 onclick="exportExcel('tmainM', 'Tabla Módulo')" data-toggle="tooltip" data-placement="top"
                 title="Exportar a Excel">
                 <i class="bi bi-file-earmark-excel-fill"></i> Excel
             </button>
+            </div>
             <table class="table table-striped table-hover display nowrap" id="tmainM">
                 <thead>
                     <tr>
