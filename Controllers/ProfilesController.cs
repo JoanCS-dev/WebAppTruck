@@ -15,7 +15,7 @@ namespace WebAppTruck.Controllers
             _profileSrv = new ProfileSrv(_configuration["ConnectionStrings:Cnx"] ?? "");
         }
 
-        public IActionResult Profiles()
+        public IActionResult Admon()
         {
             var email = HttpContext.Session.GetString("UserEmail");
             ViewBag.UserEmail = email;
