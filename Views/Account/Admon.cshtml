@@ -18,11 +18,11 @@
       <table class="table table-sm table-responsive table-striped table-hover display dataTable nowrap" id="tmain">
         <thead>
           <tr>
-            <th>#</th>
+            
             <th>Usuario</th>
             <th>Nombre</th>
-            <th>Segundo Nombre</th>
-            <th>Apellido</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
             <th>Correo</th>
             <th>Numero</th>
             <th>Descripcion</th>
@@ -123,12 +123,12 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
 
           </div>
           <div class="col-md-4">
-            <label for="validationCustom02" class="form-label">Inicial</label>
+            <label for="validationCustom02" class="form-label">Apellido Paterno</label>
             <input type="text" class="form-control" name="inicial" id="inicial" value="" required>
 
           </div>
           <div class="col-md-4">
-            <label for="validationCustom02" class="form-label">Apellidos</label>
+            <label for="validationCustom02" class="form-label">Apellido Materno</label>
             <input type="text" class="form-control" name="apellido" id="apellido" value="" required>
 
           </div>
@@ -474,7 +474,6 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
         responsive: true,
         data: lista,
         columns: [
-          { data: "accountID" },
           { data: "acUser" },
           { data: "peFirstName" },
           { data: "peMiddleInitial" },
