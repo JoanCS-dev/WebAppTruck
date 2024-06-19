@@ -15,7 +15,7 @@ namespace WebAppTruck.Controllers
             _permissionSrv = new PermissionSrv(_configuration["ConnectionStrings:Cnx"] ?? "");
         }
 
-        public IActionResult Permission()
+        public IActionResult Admon()
         {
             var email = HttpContext.Session.GetString("UserEmail");
             ViewBag.UserEmail = email;

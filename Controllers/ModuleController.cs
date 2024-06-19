@@ -13,7 +13,7 @@ namespace WebAppTruck.Controllers
       _configuration = configuration;
       moduleSrv = new ModuleSrv(_configuration["ConnectionStrings:Cnx"] ?? "");
     }
-    public IActionResult Module()
+    public IActionResult Admon()
     {
       var email = HttpContext.Session.GetString("UserEmail");
       ViewBag.UserEmail = email;

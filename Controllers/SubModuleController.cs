@@ -14,7 +14,7 @@ namespace WebAppTruck.Controllers
             _configuration = configuration;
             submoduleSrv = new SubModuleSrv(_configuration["ConnectionStrings:Cnx"] ?? "");
         }
-    public IActionResult SubModule()
+    public IActionResult Admon()
     {
       var email = HttpContext.Session.GetString("UserEmail");
       ViewBag.UserEmail = email;
