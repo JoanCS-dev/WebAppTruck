@@ -167,7 +167,7 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
             <label for="validationCustomUsername" class="form-label">Usuario</label>
             <div class="input-group has-validation">
               <span class="input-group-text" id="inputGroupPrepend">@@</span>
-              <input type="text" class="form-control" name="user" id="user" aria-describedby="inputGroupPrepend"
+              <input type="text" class="form-control" name="user" id="UserNameAc" aria-describedby="inputGroupPrepend"
                 required>
 
             </div>
@@ -188,7 +188,7 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
           </div>
           <div class="col-md-6">
             <label for="validationCustom02" class="form-label">Correo</label>
-            <input type="email" class="form-control" name="email" id="email" value="" required>
+            <input type="email" class="form-control" name="email" id="EmailAddress" value="" required>
 
 
           </div>
@@ -373,6 +373,7 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
         });
 
       });
+ 
       $("#AddAccount").click(() => {
         cargarProfile();
         limpiarFormulario();
@@ -397,8 +398,8 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
                 accountVM: {
                   accountID: $("#id_account").val() || 0,
                   profileID: $("#ListProfile").val(),
-                  AcUser: $("#user").val(),
-                  acEmailAddress: $("#email").val(),
+                  AcUser: $("#UserNameAc").val(),
+                  AcEmailAddress: $("#EmailAddress").val(),
                   acPhoneNumber: $("#number").val(),
                   acPassword: $("#pass").val(),
                   acStatus: "Pendiente",
@@ -453,8 +454,7 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
       $.ajax({
         url: "/Profiles/List",
         type: "POST",
-        dataType: "JSON",
-        contentType: "application/json; charset=utf-8;",
+        
         beforeSend: () => { },
         success: (res) => {
           if (res.ok) {
@@ -478,8 +478,6 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
       $.ajax({
         url: "/Account/List",
         type: "POST",
-        dataType: "JSON",
-        contentType: "application/json; charset=utf-8;",
         beforeSend: () => { },
         success: (res) => {
           if (res.ok) {
@@ -639,6 +637,7 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
         field.classList.remove('is-valid', 'is-invalid');
       });
     }
+    
     function ShowModalEdit(accountID) {
       const data_account_id = {
         accountVM: {
@@ -661,8 +660,8 @@ d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 
             $("#nombre").val(account.peFirstName);
             $("#inicial").val(account.peMiddleInitial);
             $("#apellido").val(account.peLastName);
-            $("#email").val(account.acEmailAddress);
-            $("#user").val(account.acUser);
+            $("#EmailAddress").val(account.acEmailAddress);
+            $("#UserNameAc").val(account.acUser);
             $("#number").val(account.acPhoneNumber);
 
 
