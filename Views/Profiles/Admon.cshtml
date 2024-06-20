@@ -20,7 +20,8 @@
         color: white;
     }
 </style>
-
+<div id="Alert">
+</div>
 <div class="card">
     <div class="card-body">
         <div class="table-responsive scrollbar">
@@ -118,12 +119,12 @@
                 type: "POST",
                 success: function (res) {
                     if (res.ok) {
-                        alert(res.message);
+                       mostrarToast("Exito", res.messege, "success");
                         cargarProfile();
                         $("#modalProfiles").modal("hide");
                         LimpiarFormularioProfiles();
                     } else {
-                        alert(res.message);
+                       mostrarToast("Error", res.messege, "error");
                     }
                 },
                 error: function () {
@@ -142,7 +143,7 @@
                     if (res.ok) {
                         LlenarTablaP(res.data);
                     } else {
-                        alert(res.message);
+                        mostrarToast("Error", res.messege, "error");
                     }
                 },
                 error: function () {
@@ -188,13 +189,13 @@
                     {
                         data: "profileID",
                         render: (value, type, row) => {
-                               return `<td class="text-end">
-        <div class="dropdown font-sans-serif position-static"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
-            <div class="dropdown-menu dropdown-menu-end border py-0">
-              <div class="py-2"><a class="dropdown-item" onclick="ShowModalProfileEdit(${value});" href="#">Edit</a><a class="dropdown-item text-danger" href="#!">Delete</a></div>
-            </div>
-          </div>
-        </td>`;
+                            return `<td class="text-end">
+            <div class="dropdown font-sans-serif position-static"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                <div class="dropdown-menu dropdown-menu-end border py-0">
+                  <div class="py-2"><a class="dropdown-item" onclick="ShowModalProfileEdit(${value});" href="#">Edit</a><a class="dropdown-item text-danger" href="#!">Delete</a></div>
+                </div>
+              </div>
+            </td>`;
                         }
                     }
                 ],
@@ -258,7 +259,7 @@
             $("#txtDescriptionP").val("");
             $("#txtRDateP").val("");
         }
-        
+
         function exportExcel(tableID, filename = '') {
             let table = document.getElementById(tableID);
             let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
@@ -273,6 +274,35 @@
             }
 
             saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename + ".xlsx");
+            mostrarToast("Exito", "La tabla se ha descargado exitosamente en formato EXCEL", "success");
+        }
+        function mostrarToast(titulo, mensaje, tipo) {
+
+            let icon = '';
+            if (tipo === 'success') {
+                icon = '<span class="fas fa-check-circle text-white fs-6"></span>';
+            } else if (tipo === 'error') {
+                icon = '<span class="fas fa-times-circle text-white fs-6"></span>';
+            } else if (tipo === 'warning') {
+                icon = '<span class="fas fa-exclamation-circle text-white fs-6"></span>';
+            } else if (tipo === 'info') {
+                icon = '<span class="fas fa-info-circle text-white fs-6"></span>';
+            }
+
+            const alert = `
+            <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
+                <div class="bg-${tipo} me-3 icon-item">${icon}</div>
+                <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>`;
+
+            $("#Alert").html(alert);
+
+            $(".alert").toast("show");
+
+            setTimeout(() => {
+                $(".alert").alert('close');
+            }, 4000);
         }
 
     </script>

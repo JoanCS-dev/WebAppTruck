@@ -19,6 +19,9 @@
     }
 </style>
 
+<div id="Alert">
+
+</div>
 <div class="card">
     <div class="card-body">
         <div class="table-responsive scrollbar">
@@ -133,12 +136,12 @@
                 beforeSend: () => { },
                 success: function (res) {
                     if (res.ok) {
-                        alert(res.message);
+                        mostrarToast("Exito", res.messege, "success");
                         cargarModulos();
                         $("#modalModule").modal("hide");
                         LimpiarFormularioModule();
                     } else {
-                        alert(res.message);
+                         mostrarToast("Error", res.messege, "error");
                     }
                 },
                 error: function () {
@@ -156,7 +159,7 @@
                         console.log(res.data);
                         LlenarTablaM(res.data);
                     } else {
-                        alert(res.message);
+                         mostrarToast("Error", res.messege, "error");
                     }
                 },
                 error: function () {
@@ -291,7 +294,37 @@
             }
 
             saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename + ".xlsx");
+            mostrarToast("Exito", "La tabla se ha descargado exitosamente en formato EXCEL", "success");
         }
+
+        function mostrarToast(titulo, mensaje, tipo) {
+   
+    let icon = '';
+    if (tipo === 'success') {
+        icon = '<span class="fas fa-check-circle text-white fs-6"></span>';
+    } else if (tipo === 'error') {
+        icon = '<span class="fas fa-times-circle text-white fs-6"></span>';
+    } else if (tipo === 'warning') {
+        icon = '<span class="fas fa-exclamation-circle text-white fs-6"></span>';
+    } else if (tipo === 'info') {
+        icon = '<span class="fas fa-info-circle text-white fs-6"></span>';
+    }
+
+    const alert = `
+        <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
+            <div class="bg-${tipo} me-3 icon-item">${icon}</div>
+            <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+
+    $("#Alert").html(alert);
+
+    $(".alert").toast("show");
+
+    setTimeout(() => {
+        $(".alert").alert('close');
+    }, 4000); 
+}
 
     </script>
 }

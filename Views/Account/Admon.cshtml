@@ -2,7 +2,8 @@
   ViewData["Title"] = "Account Management";
 }
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
 
 @section css {
   <style>
@@ -10,7 +11,7 @@
       color: red;
     }
 
-     .btn-dark-green {
+    .btn-dark-green {
       background-color: #217346;
       border-color: #217346;
       color: white;
@@ -25,8 +26,8 @@
   </style>
 }
 
-<div id="Alert" >
-  
+<div id="Alert">
+
 </div>
 
 <div class="card">
@@ -43,661 +44,330 @@
           Account
         </button>
         <button type="button" class="btn btn-dark-green btn-sm btn-excel my-3 "
-                onclick="exportExcel('tmain', 'Tabla Account')" data-toggle="tooltip" data-placement="top"
-                title="Exportar a Excel">
-                <i class="bi bi-file-earmark-excel-fill"></i> Excel
-            </button>
-        </div>
-        <table class="table table-sm table-responsive table-striped table-hover display dataTable nowrap" id="tmain">
-          <thead>
-            <tr>
-              <th>Usuario</th>
-              <th>Nombre</th>
-              <th>Apellido Paterno</th>
-              <th>Apellido Materno</th>
-              <th>Correo</th>
-              <th>Numero</th>
-              <th>Descripcion</th>
-              <th>Estatus</th>
-              <th>Fecha</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
+          onclick="exportExcel('tmain', 'Tabla Account')" data-toggle="tooltip" data-placement="top"
+          title="Exportar a Excel">
+          <i class="bi bi-file-earmark-excel-fill"></i> Excel
+        </button>
       </div>
+      <table class="table table-sm table-responsive table-striped table-hover display dataTable nowrap" id="tmain">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Correo</th>
+            <th>Numero</th>
+            <th>Descripcion</th>
+            <th>Estatus</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     </div>
   </div>
-  @* <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Cuentas de Usarios</h1>
+</div>
+@* <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<h1 class="h2">Cuentas de Usarios</h1>
 
-  <div class="btn-toolbar mb-2 mb-md-0">
+<div class="btn-toolbar mb-2 mb-md-0">
 
-  <div class="btn-group me-2 ">
+<div class="btn-group me-2 ">
 
-  <div class="dropdown">
-  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="exportDropdown"
-  data-bs-toggle="dropdown" aria-expanded="false">Exportar</button>
-  <ul class="dropdown-menu" aria-labelledby="exportDropdown">
-  <li><a class="dropdown-item" href="#" id="exportExcel">Exportar a Excel</a></li>
-  <li><a class="dropdown-item" href="#" id="exportCSV">Exportar a CSV</a></li>
-  <li><a class="dropdown-item" href="#" id="exportCopy">Copiar al Portapapeles</a></li>
-  <li><a class="dropdown-item" href="#" id="exportPDF">Exportar a PDF</a></li>
-  <li><a class="dropdown-item" href="#" id="exportPrint">Imprimir</a></li>
-  </ul>
-  </div>
+<div class="dropdown">
+<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="exportDropdown"
+data-bs-toggle="dropdown" aria-expanded="false">Exportar</button>
+<ul class="dropdown-menu" aria-labelledby="exportDropdown">
+<li><a class="dropdown-item" href="#" id="exportExcel">Exportar a Excel</a></li>
+<li><a class="dropdown-item" href="#" id="exportCSV">Exportar a CSV</a></li>
+<li><a class="dropdown-item" href="#" id="exportCopy">Copiar al Portapapeles</a></li>
+<li><a class="dropdown-item" href="#" id="exportPDF">Exportar a PDF</a></li>
+<li><a class="dropdown-item" href="#" id="exportPrint">Imprimir</a></li>
+</ul>
+</div>
 
-  </div>
-  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
-  <svg class="bi">
-  <use xlink:href="#calendar3" />
-  </svg>
-  This week
-  </button>
-  </div>
+</div>
+<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-1">
+<svg class="bi">
+<use xlink:href="#calendar3" />
+</svg>
+This week
+</button>
+</div>
 
-  </div>
-
-
-  <div class="table-responsive small">
-  <div class="m-3">
-  <button type="button" class="btn btn-success btn-sm" id="AddAccount"><svg xmlns="http://www.w3.org/2000/svg"
-  width="20" height="20" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
-  <path
-  d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1
-  0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-  <path
-  d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
-  </svg> Account</button>
-  </div>
-  <table class="table table-striped table-hover display nowrap" id="tmain">
-  <thead>
-  <tr>
-  <th>#</th>
-  <th>Usuario</th>
-  <th>Nombre</th>
-  <th>Segundo Nombre</th>
-  <th>Apellido</th>
-  <th>Correo</th>
-  <th>Numero</th>
-  <th>Descripcion</th>
-  <th>Estatus</th>
-  <th>Fecha</th>
-  <th>Acciones</th>
-  </tr>
-  </thead>
-  <tbody>
-
-  </tbody>
-  </table>
-  </div>
-  </main>
-  </div>
-  </div> *@
-
-  <div class="modal" tabindex="-1" id="modalFinal" data-bs-backdrop="static" data-bs-keyboard="false"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog ">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Datos Personales</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form class="row g-3 needs-validation" novalidate id="Form">
-            <div class="col-md-4">
-              <input type="hidden" id="id_account">
-              <label for="validationCustom01" class="form-label">Nombre</label>
-              <input type="text" class="form-control" name="nombre" id="nombre" value="" required>
-
-            </div>
-            <div class="col-md-4">
-              <label for="validationCustom02" class="form-label">Apellido Paterno</label>
-              <input type="text" class="form-control" name="inicial" id="inicial" value="" required>
-
-            </div>
-            <div class="col-md-4">
-              <label for="validationCustom02" class="form-label">Apellido Materno</label>
-              <input type="text" class="form-control" name="apellido" id="apellido" value="" required>
-
-            </div>
-            <div class="col-md-4">
-              <label for="validationCustomUsername" class="form-label">Usuario</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text" id="inputGroupPrepend">@@</span>
-                <input type="text" class="form-control" name="user" id="user" aria-describedby="inputGroupPrepend"
-                  required>
-
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label for="validationCustom04" class="form-label">Perfil</label>
-              <select class="form-select" id="ListProfile" required>
-                <option value="-1">Seleccione</option>
-              </select>
-              <div class="invalid-feedback">
-                Selecciona un perfil
-              </div>
-            </div>
-            <div class="col-md-4">
-              <label for="validationCustom02" class="form-label">Telefono</label>
-              <input type="text" class="form-control" name="number" id="number" value="" required>
-
-            </div>
-            <div class="col-md-5">
-              <label for="validationCustom02" class="form-label">Correo</label>
-              <input type="email" class="form-control" name="email" id="email" value="" required>
+</div>
 
 
-            </div>
-            <div class="col-md-5" id="divPass">
-              <label for="validationCustom02" class="form-label">Contraseña</label>
-              <input type="password" class="form-control" name="pass" id="pass" value="" required>
-            </div>
-            <div class="modal-footer">
-              <div id="group_btn">
+<div class="table-responsive small">
+<div class="m-3">
+<button type="button" class="btn btn-success btn-sm" id="AddAccount"><svg xmlns="http://www.w3.org/2000/svg"
+width="20" height="20" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+<path
+d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1
+0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+<path
+d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4" />
+</svg> Account</button>
+</div>
+<table class="table table-striped table-hover display nowrap" id="tmain">
+<thead>
+<tr>
+<th>#</th>
+<th>Usuario</th>
+<th>Nombre</th>
+<th>Segundo Nombre</th>
+<th>Apellido</th>
+<th>Correo</th>
+<th>Numero</th>
+<th>Descripcion</th>
+<th>Estatus</th>
+<th>Fecha</th>
+<th>Acciones</th>
+</tr>
+</thead>
+<tbody>
 
-              </div>
-              <button class="btn btn-primary" type="submit" id="SaveAccount">Continue</button>
+</tbody>
+</table>
+</div>
+</main>
+</div>
+</div> *@
 
-            </div>
-          </form>
-
-        </div>
-
-
+<div class="modal" tabindex="-1" id="modalFinal" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Datos Personales</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-    </div>
-  </div>
-  <!--MODAL PARA CAMBIO DE CONTRASEÑA-->
-  <div class="modal" tabindex="-1" id="ModalCambio">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Account</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="FormCambio">
-            <div class="form-group" id="information">
-              <input type="hidden" id="id_account" />
-              <label>Contraseña</label>
-              <input type="password" class="form-control" name="passChange" id="passChange" />
-              <label>Validar Contraseña</label>
-              <input type="password" class="form-control" id="passVerify" name="passVerify" />
-            </div>
-          </form>
-
-        </div>
-
-        <div class="modal-footer">
-          <div id="group_btn">
+      <div class="modal-body">
+        <form class="row g-3 needs-validation" novalidate id="Form">
+          <div class="col-md-4">
+            <input type="hidden" id="id_account">
+            <label for="validationCustom01" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" value="" required>
 
           </div>
+          <div class="col-md-4">
+            <label for="validationCustom02" class="form-label">Apellido Paterno</label>
+            <input type="text" class="form-control" name="inicial" id="inicial" value="" required>
 
-          <button type="button" class="btn btn-primary" id="ChangePassword">Continue</button>
+          </div>
+          <div class="col-md-4">
+            <label for="validationCustom02" class="form-label">Apellido Materno</label>
+            <input type="text" class="form-control" name="apellido" id="apellido" value="" required>
+
+          </div>
+          <div class="col-md-4">
+            <label for="validationCustomUsername" class="form-label">Usuario</label>
+            <div class="input-group has-validation">
+              <span class="input-group-text" id="inputGroupPrepend">@@</span>
+              <input type="text" class="form-control" name="user" id="user" aria-describedby="inputGroupPrepend"
+                required>
+
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="validationCustom04" class="form-label">Perfil</label>
+            <select class="form-select" id="ListProfile" required>
+              <option value="-1">Seleccione</option>
+            </select>
+            <div class="invalid-feedback">
+              Selecciona un perfil
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="validationCustom02" class="form-label">Telefono</label>
+            <input type="text" class="form-control" name="number" id="number" value="" required>
+
+          </div>
+          <div class="col-md-5">
+            <label for="validationCustom02" class="form-label">Correo</label>
+            <input type="email" class="form-control" name="email" id="email" value="" required>
+
+
+          </div>
+          <div class="col-md-5" id="divPass">
+            <label for="validationCustom02" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="pass" id="pass" value="" required>
+          </div>
+          <div class="modal-footer">
+            <div id="group_btn">
+
+            </div>
+            <button class="btn btn-primary" type="submit" id="SaveAccount">Continue</button>
+
+          </div>
+        </form>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+<!--MODAL PARA CAMBIO DE CONTRASEÑA-->
+<div class="modal" tabindex="-1" id="ModalCambio">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="FormCambio">
+          <div class="form-group" id="information">
+            <input type="hidden" id="id_account" />
+            <label>Contraseña</label>
+            <input type="password" class="form-control" name="passChange" id="passChange" />
+            <label>Validar Contraseña</label>
+            <input type="password" class="form-control" id="passVerify" name="passVerify" />
+          </div>
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+        <div id="group_btn">
 
         </div>
+
+        <button type="button" class="btn btn-primary" id="ChangePassword">Continue</button>
+
       </div>
     </div>
   </div>
+</div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 
-  @section JS {
+@section JS {
 
-    <script>
-      $(function () {
-        limpiarFormulario();
-        limpiarFormPass();
-        $(document).ready(function () {
-          $.validator.addMethod("noNumeric", function (value, element) {
-            return this.optional(element) || !/\d/.test(value);
-          }, "Por favor, no ingrese caracteres numéricos.");
+  <script>
+    $(function () {
+      limpiarFormulario();
+      limpiarFormPass();
+      $(document).ready(function () {
+        $.validator.addMethod("noNumeric", function (value, element) {
+          return this.optional(element) || !/\d/.test(value);
+        }, "Por favor, no ingrese caracteres numéricos.");
 
-          $("#Form").validate({
-            rules: {
-              nombre: {
+        $("#Form").validate({
+          rules: {
+            nombre: {
 
-                minlength: 3
-              },
-              inicial: {
-                noNumeric: true
-              },
-              apellido: {
-
-                minlength: 3
-              },
-              user: {
-
-                minlength: 3
-              },
-              email: {
-
-                email: true
-              },
-              number: {
-                number: true,
-                minlength: 10,
-                maxlength: 12
-              },
-              pass: {
-                required: true,
-                minlength: 8,
-                maxlength: 16
-              }
-
+              minlength: 3
             },
-            messages: {
-              nombre: {
-                required: "Por favor, ingrese su nombre.",
-                minlength: "El nombre debe tener al menos 3 caracteres."
-              },
-              inicial: {
-                required: "Por favor, ingrese su inicial.",
-                noNumeric: "Por favor, no ingrese caracteres numéricos."
-              },
-              perfiles: {
-                required: "Por favor, seleccione un perfil.",
-                min: "Por favor, seleccione un perfil válido."
-              },
-              apellido: {
-                required: "Por favor, ingrese su apellido.",
-                minlength: "El apellido debe tener al menos 3 caracteres."
-              },
-              user: {
-                required: "Por favor, ingrese un nombre de usuario.",
-                minlength: "El nombre de usuario debe tener al menos 3 caracteres."
-              },
-              email: {
-                email: "Por favor, ingrese un correo electrónico válido."
-              },
-              number: {
-                number: "Por favor, ingrese un número válido.",
-                minlength: "El número debe tener al menos 10 dígitos.",
-                maxlength: "El número debe tener máximo 12 dígitos."
-              },
-              pass: {
-                required: "Por favor, ingrese una contraseña.",
-                minlength: "La contraseña debe tener al menos 8 caracteres.",
-                maxlength: "La contraseña debe tener máximo 16 caracteres."
-              }
-            }
-          });
-
-        })
-
-
-        cargarAccount();
-        $("#ChangePassword").click(() => {
-          var AccountID = $("#id_account").val();
-          var AcPassword = $("#passChange").val();
-          var PassVerify = $("#passVerify").val();
-          if (PassVerify != AcPassword) {
-            mostrarToast("Atencion", "Las contraseñas no coinciden", "failed");
-            return;
-          }
-          const data_changePassword = {
-
-            AccountID: AccountID,
-            AcPassword: AcPassword
-
-          };
-          console.log(data_changePassword);
-          $.ajax({
-            url: "/Account/ChangePass",
-            data: data_changePassword,
-            type: "POST",
-
-
-            beforeSend: () => {
+            inicial: {
+              noNumeric: true
             },
-            success: (res) => {
-              if (res.ok) {
+            apellido: {
 
-                $("#ModalCambio").modal("hide");
-
-                mostrarToast("Exito", res.message, "success");
-                cargarAccount();
-                limpiarFormulario();
-                limpiarFormPass();
-              } else {
-                mostrarToast("Error", res.message, "error");
-              }
+              minlength: 3
             },
-            error: () => {
-              alert("Ocurrió un error interno, por favor inténtalo más tarde");
+            user: {
+
+              minlength: 3
+            },
+            email: {
+
+              email: true
+            },
+            number: {
+              number: true,
+              minlength: 10,
+              maxlength: 12
+            },
+            pass: {
+              required: true,
+              minlength: 8,
+              maxlength: 16
             }
-          });
 
-        });
-        $("#AddAccount").click(() => {
-          cargarProfile();
-          limpiarFormulario();
-          console.log("account loaded");
-          $("#group_btn").hide();
-          $("#divPass").show();
-          $("#modalFinal").modal("show");
-
-        });
-        (() => {
-          'use strict';
-          const forms = document.querySelectorAll('.needs-validation');
-
-          Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-              event.preventDefault();
-              if (!form.checkValidity()) {
-                event.stopPropagation();
-                console.log("Error, campos no llenados");
-              } else {
-                const data_account = {
-                  accountVM: {
-                    accountID: $("#id_account").val() || 0,
-                    profileID: $("#ListProfile").val(),
-                    AcUser: $("#user").val(),
-                    acEmailAddress: $("#email").val(),
-                    acPhoneNumber: $("#number").val(),
-                    acPassword: $("#pass").val(),
-                    acStatus: "Pendiente",
-                    acRDate: "",
-                    peopleID: $("#id_people_").val() || 0,
-                    peFirstName: $("#nombre").val(),
-                    peMiddleInitial: $("#inicial").val(),
-                    peLastName: $("#apellido").val(),
-                    peStatus: "Pendiente",
-                    peRDate: "",
-                    peStreet: "",
-                    peOutsideCode: "",
-                    peInsideCode: "",
-                    settlementID: 0
-                  }
-                };
-
-                console.log(data_account);
-
-                $.ajax({
-                  url: "/Account/AddUpdate",
-                  data: data_account,
-                  type: "POST",
-                  beforeSend: () => { },
-                  success: (res) => {
-                    if (res.ok) {
-                      $("#modalFinal").modal("hide");
-                      console.log(res.data);
-                      mostrarToast("Exito!!", res.message, "success");
-                      cargarAccount();
-                      limpiarFormulario();
-                      resetValidation(form);
-                    } else {
-                      mostrarToast("Error", res.message, "Error");
-
-                    }
-                  },
-                  error: () => {
-                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
-                  }
-                });
-              }
-              form.classList.add('was-validated');
-            }, false);
-          });
-        })();
-
-
-      });
-
-      function cargarProfile() {
-        $.ajax({
-          url: "/Profiles/List",
-          type: "POST",
-          dataType: "JSON",
-          contentType: "application/json; charset=utf-8;",
-          beforeSend: () => { },
-          success: (res) => {
-            if (res.ok) {
-              console.log(res.data);
-              let html = `<option value="-1">Seleccione</option>`;
-              $.each(res.data, (index, value) => {
-                html += `<option value="${value.profileID}">${value.proDescription}</option>`;
-              });
-              $("#ListProfile").html(html);
-            } else {
-              mostrarToast("ALERTA!!", res.message, "alert");
-            }
           },
-          error: () => {
-            alert("Ocurrió un error interno, por favor inténtalo más tarde");
-          }
-        });
-      }
-
-      function cargarAccount() {
-        $.ajax({
-          url: "/Account/List",
-          type: "POST",
-          dataType: "JSON",
-          contentType: "application/json; charset=utf-8;",
-          beforeSend: () => { },
-          success: (res) => {
-            if (res.ok) {
-              console.log(res.data);
-              LlenarTabla(res.data);
-            } else {
-              mostrarToast("ALERTA!!", res.message, "alert");
-            }
-          },
-          error: () => {
-            alert("Ocurrió un error interno, por favor inténtalo más tarde");
-          }
-        });
-      }
-      var tabla;
-      function LlenarTabla(lista) {
-        if ($.fn.DataTable.isDataTable("#tmain")) {
-          $("#tmain").DataTable().destroy();
-        }
-
-        $("#tmain tbody").remove();
-
-        tabla = $("#tmain").DataTable({
-          responsive: true,
-          data: lista,
-          columns: [
-            { data: "acUser" },
-            { data: "peFirstName" },
-            { data: "peMiddleInitial" },
-            { data: "peLastName" },
-            { data: "acEmailAddress" },
-            { data: "acPhoneNumber" },
-            { data: "proDescription" },
-            { data: "acStatus" },
-            { data: "acRDate" },
-            {
-              data: "accountID",
-              render: (value, type, row) => {
-                return `<td class="text-end">
-        <div class="dropdown font-sans-serif position-static"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
-            <div class="dropdown-menu dropdown-menu-end border py-0">
-              <div class="py-2"><a class="dropdown-item" onclick="ShowModalEdit(${value});" href="">Edit</a><a class="dropdown-item text-danger" href="#!">Delete</a></div>
-            </div>
-          </div>
-        </td>`;
-              }
+          messages: {
+            nombre: {
+              required: "Por favor, ingrese su nombre.",
+              minlength: "El nombre debe tener al menos 3 caracteres."
             },
-            {
-              data: "acStatus",
-              render: (value, type, row) => {
-                if (value == "Pendiente") {
-                  return `<button type='button' class='btn btn-success m-1' onclick="Activate(${row.accountID});">Activate</button>
-                                                  <input type='hidden' id='id_people_' value='0' />`;
-                } else {
-                  return ``;
-                }
-              }
+            inicial: {
+              required: "Por favor, ingrese su inicial.",
+              noNumeric: "Por favor, no ingrese caracteres numéricos."
+            },
+            perfiles: {
+              required: "Por favor, seleccione un perfil.",
+              min: "Por favor, seleccione un perfil válido."
+            },
+            apellido: {
+              required: "Por favor, ingrese su apellido.",
+              minlength: "El apellido debe tener al menos 3 caracteres."
+            },
+            user: {
+              required: "Por favor, ingrese un nombre de usuario.",
+              minlength: "El nombre de usuario debe tener al menos 3 caracteres."
+            },
+            email: {
+              email: "Por favor, ingrese un correo electrónico válido."
+            },
+            number: {
+              number: "Por favor, ingrese un número válido.",
+              minlength: "El número debe tener al menos 10 dígitos.",
+              maxlength: "El número debe tener máximo 12 dígitos."
+            },
+            pass: {
+              required: "Por favor, ingrese una contraseña.",
+              minlength: "La contraseña debe tener al menos 8 caracteres.",
+              maxlength: "La contraseña debe tener máximo 16 caracteres."
             }
-          ],
-          language: {
-            url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
           }
         });
 
-      }
+      })
 
-      function exportExcel(tableID, filename = '') {
-        let table = document.getElementById(tableID);
-        let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
 
-        let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-
-        function s2ab(s) {
-          let buf = new ArrayBuffer(s.length);
-          let view = new Uint8Array(buf);
-          for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-          return buf;
+      cargarAccount();
+      $("#ChangePassword").click(() => {
+        var AccountID = $("#id_account").val();
+        var AcPassword = $("#passChange").val();
+        var PassVerify = $("#passVerify").val();
+        if (PassVerify != AcPassword) {
+          mostrarToast("Atencion", "Las contraseñas no coinciden", "failed");
+          return;
         }
+        const data_changePassword = {
 
-        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename + ".xlsx");
-        mostrarToast("Exito", "La tabla se ha descargado en formato de excel con exito", "success");
-      }
+          AccountID: AccountID,
+          AcPassword: AcPassword
 
-      function mostrarToast(titulo, mensaje, tipo) {
-   
-    let icon = '';
-    if (tipo === 'success') {
-        icon = '<span class="fas fa-check-circle text-white fs-6"></span>';
-    } else if (tipo === 'error') {
-        icon = '<span class="fas fa-times-circle text-white fs-6"></span>';
-    } else if (tipo === 'warning') {
-        icon = '<span class="fas fa-exclamation-circle text-white fs-6"></span>';
-    } else if (tipo === 'info') {
-        icon = '<span class="fas fa-info-circle text-white fs-6"></span>';
-    }
-
-    const alert = `
-        <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
-            <div class="bg-${tipo} me-3 icon-item">${icon}</div>
-            <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
-            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>`;
-
-    $("#Alert").html(alert);
-
-    $(".alert").toast("show");
-
-    setTimeout(() => {
-        $(".alert").alert('close');
-    }, 4000); 
-}
-
-      function Activate(id) {
-        console.log(id);
-        const activar = {
-          AccountID: id
         };
-        console.log(activar)
+        console.log(data_changePassword);
         $.ajax({
-          url: "/Account/Activate",
-          data: activar,
+          url: "/Account/ChangePass",
+          data: data_changePassword,
           type: "POST",
+
+
           beforeSend: () => {
           },
           success: (res) => {
             if (res.ok) {
+
+              $("#ModalCambio").modal("hide");
+
               mostrarToast("Exito", res.message, "success");
               cargarAccount();
-            } else {
-              mostrarToast("Error", res.message, "Failed");
-            }
-          },
-          error: () => {
-            alert("Ocurrió un error interno, por favor inténtalo más tarde");
-          }
-        });
-
-      }
-
-      function limpiarFormulario() {
-        $("#id_account").val("");
-        $("#id_people_").val("");
-        $("#nombre").val("");
-        $("#inicial").val("");
-        $("#apellido").val("");
-        $("#email").val("");
-        $("#user").val("");
-        $("#number").val("");
-        $("#pass").val("");
-
-      }
-      function resetValidation(form) {
-        form.reset();
-        form.classList.remove('was-validated');
-        const fields = form.querySelectorAll('.form-control');
-        fields.forEach(field => {
-          field.classList.remove('is-valid', 'is-invalid');
-        });
-      }
-      function ShowModalEdit(accountID) {
-        const data_account_id = {
-          accountVM: {
-            AccountID: accountID
-          }
-        };
-        $.ajax({
-          url: "/Account/List",
-          data: data_account_id,
-          type: "POST",
-          beforeSend: () => { },
-          success: (res) => {
-            if (res.ok) {
-              const account = res.data[0];
-              $("#divPass").hide();
-              $("#pass").prop('required', false);
-              console.log(account);
-              $("#id_account").val(account.accountID);
-              $("#id_people_").val(account.peopleID);
-              $("#nombre").val(account.peFirstName);
-              $("#inicial").val(account.peMiddleInitial);
-              $("#apellido").val(account.peLastName);
-              $("#email").val(account.acEmailAddress);
-              $("#user").val(account.acUser);
-              $("#number").val(account.acPhoneNumber);
-
-
-              $.ajax({
-                url: "/Profiles/List",
-                type: "POST",
-                beforeSend: () => { },
-                success: (res) => {
-                  if (res.ok) {
-                    let html = `<option value="${account.profileID}">${account.proDescription}</option>`;
-                    $.each(res.data, (index, value) => {
-                      if (value.profileID !== account.profileID) {
-                        html += `<option value="${value.profileID}">${value.proDescription}</option>`;
-                      }
-                    });
-                    $("#ListProfile").html(html);
-                  } else {
-                    mostrarToast("error", res.message, "warning");
-                  }
-                },
-                error: () => {
-                  alert("Ocurrió un error interno, por favor inténtalo más tarde");
-                }
-              });
-
-              // Mostrar botón para cambiar contraseña si es necesario
-              const boton = `
-                    <button type="button" onclick="CambiarContraseña(${account.accountID});" class="btn btn-warning">Cambiar contraseña</button>
-                  `;
-              $("#group_btn").html(boton);
-              $("#modalFinal").modal("show");
+              limpiarFormulario();
+              limpiarFormPass();
             } else {
               mostrarToast("Error", res.message, "error");
             }
@@ -706,47 +376,378 @@
             alert("Ocurrió un error interno, por favor inténtalo más tarde");
           }
         });
+
+      });
+      $("#AddAccount").click(() => {
+        cargarProfile();
+        limpiarFormulario();
+        console.log("account loaded");
+        $("#group_btn").hide();
+        $("#divPass").show();
+        $("#modalFinal").modal("show");
+
+      });
+      (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+
+        Array.from(forms).forEach(form => {
+          form.addEventListener('submit', event => {
+            event.preventDefault();
+            if (!form.checkValidity()) {
+              event.stopPropagation();
+              console.log("Error, campos no llenados");
+            } else {
+              const data_account = {
+                accountVM: {
+                  accountID: $("#id_account").val() || 0,
+                  profileID: $("#ListProfile").val(),
+                  AcUser: $("#user").val(),
+                  acEmailAddress: $("#email").val(),
+                  acPhoneNumber: $("#number").val(),
+                  acPassword: $("#pass").val(),
+                  acStatus: "Pendiente",
+                  acRDate: "",
+                  peopleID: $("#id_people_").val() || 0,
+                  peFirstName: $("#nombre").val(),
+                  peMiddleInitial: $("#inicial").val(),
+                  peLastName: $("#apellido").val(),
+                  peStatus: "Pendiente",
+                  peRDate: "",
+                  peStreet: "",
+                  peOutsideCode: "",
+                  peInsideCode: "",
+                  settlementID: 0
+                }
+              };
+
+              console.log(data_account);
+
+              $.ajax({
+                url: "/Account/AddUpdate",
+                data: data_account,
+                type: "POST",
+                beforeSend: () => { },
+                success: (res) => {
+                  if (res.ok) {
+                    $("#modalFinal").modal("hide");
+                    console.log(res.data);
+                    mostrarToast("Exito!!", res.message, "success");
+                    cargarAccount();
+                    limpiarFormulario();
+                    resetValidation(form);
+                  } else {
+                    mostrarToast("Error", res.message, "Error");
+
+                  }
+                },
+                error: () => {
+                  alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
+              });
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      })();
+
+
+    });
+
+    function cargarProfile() {
+      $.ajax({
+        url: "/Profiles/List",
+        type: "POST",
+        dataType: "JSON",
+        contentType: "application/json; charset=utf-8;",
+        beforeSend: () => { },
+        success: (res) => {
+          if (res.ok) {
+            console.log(res.data);
+            let html = `<option value="-1">Seleccione</option>`;
+            $.each(res.data, (index, value) => {
+              html += `<option value="${value.profileID}">${value.proDescription}</option>`;
+            });
+            $("#ListProfile").html(html);
+          } else {
+            mostrarToast("ALERTA!!", res.message, "alert");
+          }
+        },
+        error: () => {
+          alert("Ocurrió un error interno, por favor inténtalo más tarde");
+        }
+      });
+    }
+
+    function cargarAccount() {
+      $.ajax({
+        url: "/Account/List",
+        type: "POST",
+        dataType: "JSON",
+        contentType: "application/json; charset=utf-8;",
+        beforeSend: () => { },
+        success: (res) => {
+          if (res.ok) {
+            console.log(res.data);
+            LlenarTabla(res.data);
+          } else {
+            mostrarToast("ALERTA!!", res.message, "alert");
+          }
+        },
+        error: () => {
+          alert("Ocurrió un error interno, por favor inténtalo más tarde");
+        }
+      });
+    }
+    var tabla;
+    function LlenarTabla(lista) {
+      if ($.fn.DataTable.isDataTable("#tmain")) {
+        $("#tmain").DataTable().destroy();
       }
 
+      $("#tmain tbody").remove();
 
-      function CambiarContraseña(id) {
-        const data_account_id = {
-          accountVM: {
-            AccountID: id
-          }
-        };
-        $.ajax({
-          url: "/Account/List",
-          data: data_account_id,
-          type: "POST",
-
-          beforeSend: () => {
-          },
-          success: (res) => {
-            if (res.ok) {
-              $("#modalFinal").modal("hide");
-              const account = res.data[0];
-              console.log(res.data);
-              $("#id_account").val(account.accountID);
-
-
-              $("#ModalCambio").modal("show");
-              console.log(account.accountID);
-              limpiarFormPass();
-            } else {
-              mostrarToast("Error", res.messege, "error");
+      tabla = $("#tmain").DataTable({
+        responsive: true,
+        data: lista,
+        columns: [
+          { data: "acUser" },
+          { data: "peFirstName" },
+          { data: "peMiddleInitial" },
+          { data: "peLastName" },
+          { data: "acEmailAddress" },
+          { data: "acPhoneNumber" },
+          { data: "proDescription" },
+          { data: "acStatus" },
+          { data: "acRDate" },
+          {
+            data: "accountID",
+            render: (value, type, row) => {
+              return `<td class="text-end">
+          <div class="dropdown font-sans-serif position-static"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
+              <div class="dropdown-menu dropdown-menu-end border py-0">
+                <div class="py-2"><a class="dropdown-item" onclick="ShowModalEdit(${value});" href="">Edit</a><a class="dropdown-item text-danger" href="#!">Delete</a></div>
+              </div>
+            </div>
+          </td>`;
             }
           },
-          error: () => {
-            alert("Ocurrió un error interno, por favor inténtalo más tarde");
+          {
+            data: "acStatus",
+            render: (value, type, row) => {
+              if (value == "Pendiente") {
+                return `<button type='button' class='btn btn-success m-1' onclick="Activate(${row.accountID});">Activate</button>
+                                                    <input type='hidden' id='id_people_' value='0' />`;
+              } else {
+                return ``;
+              }
+            }
           }
-        });
+        ],
+        language: {
+          url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+        }
+      });
+
+    }
+
+    function exportExcel(tableID, filename = '') {
+      let table = document.getElementById(tableID);
+      let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+      let wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+      function s2ab(s) {
+        let buf = new ArrayBuffer(s.length);
+        let view = new Uint8Array(buf);
+        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
       }
-      function limpiarFormPass() {
-        $("#passVerify").val("");
-        $("#passChange").val("");
+
+      saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), filename + ".xlsx");
+      mostrarToast("Exito", "La tabla se ha descargado en formato de excel con exito", "success");
+    }
+
+    function mostrarToast(titulo, mensaje, tipo) {
+
+      let icon = '';
+      if (tipo === 'success') {
+        icon = '<span class="fas fa-check-circle text-white fs-6"></span>';
+      } else if (tipo === 'error') {
+        icon = '<span class="fas fa-times-circle text-white fs-6"></span>';
+      } else if (tipo === 'warning') {
+        icon = '<span class="fas fa-exclamation-circle text-white fs-6"></span>';
+      } else if (tipo === 'info') {
+        icon = '<span class="fas fa-info-circle text-white fs-6"></span>';
       }
-    </script>
+
+      const alert = `
+          <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
+              <div class="bg-${tipo} me-3 icon-item">${icon}</div>
+              <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
+              <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>`;
+
+      $("#Alert").html(alert);
+
+      $(".alert").toast("show");
+
+      setTimeout(() => {
+        $(".alert").alert('close');
+      }, 4000);
+    }
+
+    function Activate(id) {
+      console.log(id);
+      const activar = {
+        AccountID: id
+      };
+      console.log(activar)
+      $.ajax({
+        url: "/Account/Activate",
+        data: activar,
+        type: "POST",
+        beforeSend: () => {
+        },
+        success: (res) => {
+          if (res.ok) {
+            mostrarToast("Exito", res.message, "success");
+            cargarAccount();
+          } else {
+            mostrarToast("Error", res.message, "Failed");
+          }
+        },
+        error: () => {
+          alert("Ocurrió un error interno, por favor inténtalo más tarde");
+        }
+      });
+
+    }
+
+    function limpiarFormulario() {
+      $("#id_account").val("");
+      $("#id_people_").val("");
+      $("#nombre").val("");
+      $("#inicial").val("");
+      $("#apellido").val("");
+      $("#email").val("");
+      $("#user").val("");
+      $("#number").val("");
+      $("#pass").val("");
+
+    }
+    function resetValidation(form) {
+      form.reset();
+      form.classList.remove('was-validated');
+      const fields = form.querySelectorAll('.form-control');
+      fields.forEach(field => {
+        field.classList.remove('is-valid', 'is-invalid');
+      });
+    }
+    function ShowModalEdit(accountID) {
+      const data_account_id = {
+        accountVM: {
+          AccountID: accountID
+        }
+      };
+      $.ajax({
+        url: "/Account/List",
+        data: data_account_id,
+        type: "POST",
+        beforeSend: () => { },
+        success: (res) => {
+          if (res.ok) {
+            const account = res.data[0];
+            $("#divPass").hide();
+            $("#pass").prop('required', false);
+            console.log(account);
+            $("#id_account").val(account.accountID);
+            $("#id_people_").val(account.peopleID);
+            $("#nombre").val(account.peFirstName);
+            $("#inicial").val(account.peMiddleInitial);
+            $("#apellido").val(account.peLastName);
+            $("#email").val(account.acEmailAddress);
+            $("#user").val(account.acUser);
+            $("#number").val(account.acPhoneNumber);
 
 
-  }
+            $.ajax({
+              url: "/Profiles/List",
+              type: "POST",
+              beforeSend: () => { },
+              success: (res) => {
+                if (res.ok) {
+                  let html = `<option value="${account.profileID}">${account.proDescription}</option>`;
+                  $.each(res.data, (index, value) => {
+                    if (value.profileID !== account.profileID) {
+                      html += `<option value="${value.profileID}">${value.proDescription}</option>`;
+                    }
+                  });
+                  $("#ListProfile").html(html);
+                } else {
+                  mostrarToast("error", res.message, "warning");
+                }
+              },
+              error: () => {
+                alert("Ocurrió un error interno, por favor inténtalo más tarde");
+              }
+            });
+
+            // Mostrar botón para cambiar contraseña si es necesario
+            const boton = `
+                      <button type="button" onclick="CambiarContraseña(${account.accountID});" class="btn btn-warning">Cambiar contraseña</button>
+                    `;
+            $("#group_btn").html(boton);
+            $("#modalFinal").modal("show");
+          } else {
+            mostrarToast("Error", res.message, "error");
+          }
+        },
+        error: () => {
+          alert("Ocurrió un error interno, por favor inténtalo más tarde");
+        }
+      });
+    }
+
+
+    function CambiarContraseña(id) {
+      const data_account_id = {
+        accountVM: {
+          AccountID: id
+        }
+      };
+      $.ajax({
+        url: "/Account/List",
+        data: data_account_id,
+        type: "POST",
+
+        beforeSend: () => {
+        },
+        success: (res) => {
+          if (res.ok) {
+            $("#modalFinal").modal("hide");
+            const account = res.data[0];
+            console.log(res.data);
+            $("#id_account").val(account.accountID);
+
+
+            $("#ModalCambio").modal("show");
+            console.log(account.accountID);
+            limpiarFormPass();
+          } else {
+            mostrarToast("Error", res.messege, "error");
+          }
+        },
+        error: () => {
+          alert("Ocurrió un error interno, por favor inténtalo más tarde");
+        }
+      });
+    }
+    function limpiarFormPass() {
+      $("#passVerify").val("");
+      $("#passChange").val("");
+    }
+  </script>
+
+
+}
