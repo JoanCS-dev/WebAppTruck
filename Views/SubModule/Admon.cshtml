@@ -15,6 +15,10 @@
         border-color: #1e623d;
         color: white;
     }
+    .Required{
+      color: red;
+      font-weight: bold;
+    }
 </style>
 <div id="Alert">
 </div>
@@ -68,25 +72,25 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="txtDescription">Descripción</label>
+                    <label for="txtDescription">Descripción <span class="Required">*</span></label>
                     <input type="hidden" id="_id_submodule_" value="0" />
                     <input type="text" id="txtSubDescription" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="txtController">Acción</label>
+                    <label for="txtController">Acción <span class="Required">*</span></label>
                     <input type="text" id="txtAction" class="form-control" />
                 </div>
                 <div class="form-group form-check form-switch">
-                    <label>Estatus</label>
+                    <label>Estatus <span class="Required">*</span></label>
                     <input type="checkbox" id="chkStatusS" class="form-check-input" />
                     <label class="form-check-label" for="chkStatus">Activo/Inactivo)</label>
                 </div>
                 <div class="form-group">
-                    <label for="txtPosition">Posición</label>
+                    <label for="txtPosition">Posición <span class="Required">*</span></label>
                     <input type="number" id="txtSubPosition" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="txtRDate">Fecha</label>
+                    <label for="txtRDate">Fecha <span class="Required">*</span></label>
                     <input type="datetime-local" id="txtSubRDate" class="form-control" />
                 </div>
                 <div class="form-group">
