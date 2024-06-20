@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAppTruck.Models.Services;
 using WebAppTruck.Models.ViewModels;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppTruck.Controllers
 {

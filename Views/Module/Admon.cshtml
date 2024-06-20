@@ -17,7 +17,10 @@
       border-color: #1e623d;
       color: white;
     }
-    
+    .Required{
+      color: red;
+      font-weight: bold;
+    }
   </style>
 }
 
@@ -58,29 +61,29 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="txtDescription">Descripción</label>
+                    <label for="txtDescription">Descripción <span class="Required">*</span></label>
                     <input type="hidden" id="_id_module_" value="0" />
                     <input type="text" id="txtDescription" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="txtController">Controlador</label>
+                    <label for="txtController">Controlador <span class="Required">*</span></label>
                     <input type="text" id="txtController" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="txtIcon">Icono</label>
+                    <label for="txtIcon">Icono <span class="Required">*</span></label>
                     <input type="text" id="txtIcon" class="form-control" />
                 </div>
                 <div class="form-group form-check form-switch">
-                    <label>Estatus</label>
+                    <label>Estatus <span class="Required">*</span></label>
                     <input type="checkbox" id="chkStatus" class="form-check-input" />
                     <label class="form-check-label" for="chkStatus">Activo/Inactivo</label>
                 </div>
                 <div class="form-group">
-                    <label for="txtPosition">Posición</label>
+                    <label for="txtPosition">Posición <span class="Required">*</span></label>
                     <input type="number" id="txtPosition" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label for="txtRDate">Fecha</label>
+                    <label for="txtRDate">Fecha <span class="Required">*</span></label>
                     <input type="datetime-local" id="txtRDate" class="form-control" />
                 </div>
             </div>
