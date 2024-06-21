@@ -3,25 +3,25 @@
 }
 
 @section css {
-  <style>
+    <style>
+        .btn-dark-green {
+            background-color: #217346;
+            border-color: #217346;
+            color: white;
+            margin-left: 18px;
+        }
 
-    .btn-dark-green {
-      background-color: #217346;
-      border-color: #217346;
-      color: white;
-      margin-left: 18px;
-    }
+        .btn-dark-green:hover {
+            background-color: #1e623d;
+            border-color: #1e623d;
+            color: white;
+        }
 
-    .btn-dark-green:hover {
-      background-color: #1e623d;
-      border-color: #1e623d;
-      color: white;
-    }
-    .Required{
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+        .Required {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 }
 
 <div id="Alert"></div>
@@ -30,7 +30,7 @@
         <div class="table-responsive scrollbar">
             <div class="m-3">
                 <button type="button" class="btn btn-primary btn-sm" id="btnModule">
-                   <i class="fas fa-box"></i>
+                    <i class="fas fa-box"></i>
                     Módulo
                 </button>
             </div>
@@ -97,6 +97,7 @@
 
 @section JS {
     <script>
+        
         $(document).ready(function () {
             cargarModulos();
 
@@ -137,176 +138,177 @@
                     }
                 });
             });
+        });
 
-            function cargarModulos() {
-                $.ajax({
-                    url: "/Module/ListModule",
-                    type: "POST",
-                    success: function (res) {
-                        if (res.ok) {
-                            console.log(res.data);
-                            LlenarTablaM(res.data);
-                        } else {
-                            mostrarToast("Error", res.messege, "error");
-                        }
-                    },
-                    error: function () {
-                        alert("Ocurrió un error interno, por favor inténtalo más tarde");
+        function cargarModulos() {
+            $.ajax({
+                url: "/Module/ListModule",
+                type: "POST",
+                success: function (res) {
+                    if (res.ok) {
+                        console.log(res.data);
+                        LlenarTablaM(res.data);
+                    } else {
+                        mostrarToast("Error", res.messege, "error");
                     }
-                });
-            }
-
-            function LlenarTablaM(lista) {
-                if ($.fn.DataTable.isDataTable("#tmainM")) {
-                    $("#tmainM").DataTable().destroy();
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
                 }
+            });
+        }
 
-                $("#tmainM tbody").remove();
-
-                var tabla = $("#tmainM").DataTable({
-                    data: lista,
-                    columns: [
-                        { data: "moDescription" },
-                        { data: "moController" },
-                        { data: "moIcon" },
-                        { data: "moStatus" },
-                        { data: "moPosition" },
-                        {
-                            data: "moRDate",
-                            render: function (data) {
-                                if (data) {
-                                    let timestampMatch = data.match(/\/Date\((\d+)\)\//);
-                                    if (timestampMatch) {
-                                        let timestamp = parseInt(timestampMatch[1], 10);
-                                        let date = new Date(timestamp);
-                                        return date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-                                    } else {
-                                        let date = new Date(data);
-                                        if (isNaN(date.getTime())) {
-                                            let parts = data.split(/[-T:.Z]/);
-                                            date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0));
-                                        }
-                                        return !isNaN(date.getTime()) ? date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : 'Fecha inválida';
-                                    }
-                                } else {
-                                    return '';
-                                }
-                            }
-                        },
-                        {
-                            data: "moduleID",
-                            render: (value, type, row) => {
-                                return `<td class="text-end">
-                                <div class="dropdown font-sans-serif position-static"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
-                                    <div class="dropdown-menu dropdown-menu-end border py-0">
-                                      <div class="py-2"><a class="dropdown-item" onclick="ShowModalModuleEdit(${value});" href="#">Edit</a><a class="dropdown-item text-danger" href="#!">Delete</a></div>
-                                    </div>
-                                  </div>
-                                </td>`;
-                            }
-                        }
-                    ],
-                    language: {
-                        url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
-                    },
-                    dom: 'Bfrtip',
-                    buttons: [
-                        {
-                            extend: 'excelHtml5',
-                            text: '<i class="fas fa-file-excel"></i> Excel',
-                            className: 'btn btn-dark-green btn-sm',
-                            title: 'Tabla Módulo',
-                            action: function (e, dt, button, config) {
-                                $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button, config);
-                                mostrarToast("Exito", "La tabla ha sido exportada a Excel.", "success");
-                            }
-                        }
-                    ]
-                });
+        function LlenarTablaM(lista) {
+            if ($.fn.DataTable.isDataTable("#tmainM")) {
+                $("#tmainM").DataTable().destroy();
             }
 
-            function ShowModalModuleEdit(_moduleID) {
-                const data_module_id = { moduleID: _moduleID };
-                $.ajax({
-                    url: "/Module/ListModule",
-                    data: data_module_id,
-                    type: "POST",
-                    success: function (res) {
-                        if (res.ok) {
-                            const moduleData = res.data[0];
-                            $("#_id_module_").val(moduleData.moduleID);
-                            $("#txtDescription").val(moduleData.moDescription);
-                            $("#txtController").val(moduleData.moController);
-                            $("#txtIcon").val(moduleData.moIcon);
-                            $("#chkStatus").prop("checked", moduleData.moStatus);
-                            $("#txtPosition").val(moduleData.moPosition);
+            $("#tmainM tbody").remove();
 
-                            let moRDate = moduleData.moRDate;
+            var tabla = $("#tmainM").DataTable({
+                data: lista,
+                columns: [
+                    { data: "moDescription" },
+                    { data: "moController" },
+                    { data: "moIcon" },
+                    { data: "moStatus" },
+                    { data: "moPosition" },
+                    {
+                        data: "moRDate",
+                        render: function (data) {
+                            if (data) {
+                                let timestampMatch = data.match(/\/Date\((\d+)\)\//);
+                                if (timestampMatch) {
+                                    let timestamp = parseInt(timestampMatch[1], 10);
+                                    let date = new Date(timestamp);
+                                    return date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                                } else {
+                                    let date = new Date(data);
+                                    if (isNaN(date.getTime())) {
+                                        let parts = data.split(/[-T:.Z]/);
+                                        date = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0));
+                                    }
+                                    return !isNaN(date.getTime()) ? date.toLocaleString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }) : 'Fecha inválida';
+                                }
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
+                    {
+                        data: "moduleID",
+                        render: (value, type, row) => {
+                            return `<td class="text-end">
+                    <div class="dropdown font-sans-serif position-static"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                        <div class="dropdown-menu dropdown-menu-end border py-0">
+                        <div class="py-2"><a class="dropdown-item" onclick="ShowModalModuleEdit(${value});" href="#">Edit</a><a class="dropdown-item text-danger" href="#!">Delete</a></div>
+                        </div>
+                    </div>
+                    </td>`;
+                        }
+                    }
+                ],
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-dark-green btn-sm',
+                        title: 'Tabla Módulo',
+                        action: function (e, dt, button, config) {
+                            $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button, config);
+                            mostrarToast("Exito", "La tabla ha sido exportada a Excel.", "success");
+                        }
+                    }
+                ]
+            });
+        }
 
-                            let timestampMatch = moRDate.match(/\/Date\((\d+)\)\//);
-                            if (timestampMatch) {
-                                let timestamp = parseInt(timestampMatch[1], 10);
-                                let date = new Date(timestamp);
+        function ShowModalModuleEdit(_moduleID) {
+            const data_module_id = { moduleID: _moduleID };
+            $.ajax({
+                url: "/Module/ListModule",
+                data: data_module_id,
+                type: "POST",
+                success: function (res) {
+                    if (res.ok) {
+                        const moduleData = res.data[0];
+                        $("#_id_module_").val(moduleData.moduleID);
+                        $("#txtDescription").val(moduleData.moDescription);
+                        $("#txtController").val(moduleData.moController);
+                        $("#txtIcon").val(moduleData.moIcon);
+                        $("#chkStatus").prop("checked", moduleData.moStatus);
+                        $("#txtPosition").val(moduleData.moPosition);
+
+                        let moRDate = moduleData.moRDate;
+
+                        let timestampMatch = moRDate.match(/\/Date\((\d+)\)\//);
+                        if (timestampMatch) {
+                            let timestamp = parseInt(timestampMatch[1], 10);
+                            let date = new Date(timestamp);
+                            let isoDate = date.toISOString().slice(0, 16);
+                            $("#txtRDate").val(isoDate);
+                        } else {
+                            let date = new Date(moRDate);
+                            if (!isNaN(date.getTime())) {
                                 let isoDate = date.toISOString().slice(0, 16);
                                 $("#txtRDate").val(isoDate);
                             } else {
-                                let date = new Date(moRDate);
-                                if (!isNaN(date.getTime())) {
-                                    let isoDate = date.toISOString().slice(0, 16);
-                                    $("#txtRDate").val(isoDate);
-                                } else {
-                                    $("#txtRDate").val('');
-                                }
+                                $("#txtRDate").val('');
                             }
-                            $("#modalModule").modal("show");
-                        } else {
-                            console.log("No se encontraron datos para el ModuleID:", moduleID);
-                            alert("No se encontraron datos para el módulo seleccionado.");
                         }
-                    },
-                    error: (err) => {
-                        console.log("AJAX error:", err);
-                        alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                        $("#modalModule").modal("show");
+                    } else {
+                        console.log("No se encontraron datos para el ModuleID:", moduleID);
+                        alert("No se encontraron datos para el módulo seleccionado.");
                     }
-                });
-            }
-
-            function LimpiarFormularioModule() {
-                $("#_id_module_").val(0);
-                $("#txtDescription").val("");
-                $("#txtController").val("");
-                $("#txtIcon").val("");
-                $("#txtPosition").val("");
-                $("#txtRDate").val("");
-            }
-
-            function mostrarToast(titulo, mensaje, tipo) {
-                let icon = '';
-                if (tipo === 'success') {
-                    icon = '<span class="fas fa-check-circle text-white fs-6"></span>';
-                } else if (tipo === 'error') {
-                    icon = '<span class="fas fa-times-circle text-white fs-6"></span>';
-                } else if (tipo === 'warning') {
-                    icon = '<span class="fas fa-exclamation-circle text-white fs-6"></span>';
-                } else if (tipo === 'info') {
-                    icon = '<span class="fas fa-info-circle text-white fs-6"></span>';
+                },
+                error: (err) => {
+                    console.log("AJAX error:", err);
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
                 }
+            });
+        }
 
-                const alert = `
+        function LimpiarFormularioModule() {
+            $("#_id_module_").val(0);
+            $("#txtDescription").val("");
+            $("#txtController").val("");
+            $("#txtIcon").val("");
+            $("#txtPosition").val("");
+            $("#txtRDate").val("");
+        }
+
+        function mostrarToast(titulo, mensaje, tipo) {
+            let icon = '';
+            if (tipo === 'success') {
+                icon = '<span class="fas fa-check-circle text-white fs-6"></span>';
+            } else if (tipo === 'error') {
+                icon = '<span class="fas fa-times-circle text-white fs-6"></span>';
+            } else if (tipo === 'warning') {
+                icon = '<span class="fas fa-exclamation-circle text-white fs-6"></span>';
+            } else if (tipo === 'info') {
+                icon = '<span class="fas fa-info-circle text-white fs-6"></span>';
+            }
+
+            const alert = `
                 <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
                     <div class="bg-${tipo} me-3 icon-item">${icon}</div>
                     <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>`;
 
-                $("#Alert").html(alert);
+            $("#Alert").html(alert);
 
-                $(".alert").toast("show");
+            $(".alert").toast("show");
 
-                setTimeout(() => {
-                    $(".alert").alert('close');
-                }, 4000);
-            }
-        });
+            setTimeout(() => {
+                $(".alert").alert('close');
+            }, 4000);
+        }
+
     </script>
 }
