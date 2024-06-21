@@ -11,5 +11,11 @@ namespace WebAppTruck.Controllers
             ViewBag.UserEmail = email;
             return View();
         }
+        public IActionResult Test()
+        {
+            var email = HttpContext.Session.GetString("UserEmail");
+            ViewBag.UserEmail = email;
+            return View();
+        }
     }
 }
