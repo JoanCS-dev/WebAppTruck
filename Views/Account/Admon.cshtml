@@ -7,10 +7,12 @@
     .error {
       color: red;
     }
-    .Required{
+
+    .Required {
       color: red;
       font-weight: bold;
     }
+
     .btn-dark-green {
       background-color: #217346;
       border-color: #217346;
@@ -42,15 +44,11 @@
       <table class="table table-sm table-responsive table-striped table-hover display dataTable nowrap" id="tmain">
         <thead>
           <tr>
+            <th></th>
             <th>Usuario</th>
-            <th>Nombre</th>
-            <th>Apellido Paterno</th>
-            <th>Apellido Materno</th>
             <th>Correo</th>
-            <th>Numero</th>
             <th>Descripcion</th>
             <th>Estatus</th>
-            <th>Fecha</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -74,21 +72,24 @@
         <form class="row g-3 needs-validation" novalidate id="Form">
           <div class="col-md-6">
             <input type="hidden" id="id_account">
-            <label for="validationCustom01" class="form-label">Nombre  <span class="Required">*</span></label>
-            <input placeholder="Escribe tu nombre" type="text" class="form-control" name="nombre" id="nombre" value="" required>
+            <label for="validationCustom01" class="form-label">Nombre <span class="Required">*</span></label>
+            <input placeholder="Escribe tu nombre" type="text" class="form-control" name="nombre" id="nombre" value=""
+              required>
 
           </div>
           <div class="col-md-6">
             <label for="validationCustom02" class="form-label">Apellido Paterno <span class="Required">*</span></label>
-            <input placeholder="Escribe tu Apellido Paterno" type="text" class="form-control" name="inicial" id="inicial" value="" required>
+            <input placeholder="Escribe tu Apellido Paterno" type="text" class="form-control" name="inicial"
+              id="inicial" value="" required>
 
           </div>
           <div class="col-md-6">
-            <label for="validationCustom02" class="form-label">Apellido Materno  <span class="Required">*</span></label>
-            <input placeholder="Escribe tu Apellido Materno"  type="text" class="form-control" name="apellido" id="apellido" value="" required>
+            <label for="validationCustom02" class="form-label">Apellido Materno <span class="Required">*</span></label>
+            <input placeholder="Escribe tu Apellido Materno" type="text" class="form-control" name="apellido"
+              id="apellido" value="" required>
 
           </div>
-          
+
           <div class="col-md-6">
             <label for="validationCustom04" class="form-label">Perfil</label>
             <select class="form-select" id="ListProfile" required>
@@ -99,19 +100,22 @@
             </div>
           </div>
           <div class="col-md-6">
-            <label for="validationCustom02" class="form-label">Telefono  <span class="Required">*</span></label>
-            <input placeholder="Escribe tu telefono"  type="text" class="form-control" name="number" id="number" value="" required>
+            <label for="validationCustom02" class="form-label">Telefono <span class="Required">*</span></label>
+            <input placeholder="Escribe tu telefono" type="text" class="form-control" name="number" id="number" value=""
+              required>
 
           </div>
           <div class="col-md-6">
-            <label for="validationCustom02" class="form-label">Correo  <span class="Required">*</span></label>
-            <input placeholder="Escribe tu correo electrónico"  type="email" class="form-control" name="email" id="EmailAddress" value="" required>
+            <label for="validationCustom02" class="form-label">Correo <span class="Required">*</span></label>
+            <input placeholder="Escribe tu correo electrónico" type="email" class="form-control" name="email"
+              id="EmailAddress" value="" required>
 
 
           </div>
           <div class="col-md-6" id="divPass">
-            <label for="validationCustom02" class="form-label">Contraseña  <span class="Required">*</span></label>
-            <input placeholder="Escribe tu contraseña"  type="password" class="form-control" name="pass" id="pass" value="" required>
+            <label for="validationCustom02" class="form-label">Contraseña <span class="Required">*</span></label>
+            <input placeholder="Escribe tu contraseña" type="password" class="form-control" name="pass" id="pass"
+              value="" required>
           </div>
           <div class="modal-footer">
             <div id="group_btn">
@@ -288,7 +292,7 @@
         });
 
       });
- 
+
       $("#AddAccount").click(() => {
         cargarProfile();
         limpiarFormulario();
@@ -369,7 +373,7 @@
       $.ajax({
         url: "/Profiles/List",
         type: "POST",
-        
+
         beforeSend: () => { },
         success: (res) => {
           if (res.ok) {
@@ -419,25 +423,27 @@
         responsive: true,
         data: lista,
         columns: [
-          { data: "acUser" },
-          { data: "peFirstName" },
-          { data: "peMiddleInitial" },
-          { data: "peLastName" },
-          { data: "acEmailAddress" },
-          { data: "acPhoneNumber" },
-          { data: "proDescription" },
-          { data: "acStatus" },
-          { data: "acRDate" },
+          {
+            className: 'dt-control',
+            orderable: false,
+            data: null,
+            defaultContent: ''
+          },
+          { data: 'acUser' },
+          { data: 'acEmailAddress' },
+          { data: 'proDescription' },
+          { data: 'acStatus' },
+
           {
             data: "accountID",
             render: (value, type, row) => {
               return `<td class="text-end">
-          <div class="dropdown font-sans-serif position-static"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
-              <div class="dropdown-menu dropdown-menu-end border py-0">
-                <div class="py-2"><a class="dropdown-item" onclick="ShowModalEdit(${value});" href="#">Edit</a><a class="dropdown-item text-danger" href="#!">Delete</a></div>
+            <div class="dropdown font-sans-serif position-static"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                <div class="dropdown-menu dropdown-menu-end border py-0">
+                  <div class="py-2"><a class="dropdown-item" onclick="ShowModalEdit(${value});" href="#">Edit</a><a class="dropdown-item text-danger" href="#!">Delete</a></div>
+                </div>
               </div>
-            </div>
-          </td>`;
+            </td>`;
             }
           },
           {
@@ -445,32 +451,83 @@
             render: (value, type, row) => {
               if (value == "Pendiente") {
                 return `<button type='button' class='btn btn-success m-1' onclick="Activate(${row.accountID});">Activate</button>
-                                                      <input type='hidden' id='id_people_' value='0' />`;
+                                                        <input type='hidden' id='id_people_' value='0' />`;
               } else {
                 return ``;
               }
             }
-          }
+          },
+          { title: 'Nombre', data: 'peFirstName', visible: false },
+          { title: 'Inicial', data: 'peMiddleInitial', visible: false },
+          { title: 'Apellido', data: 'peLastName', visible: false },
+          { title: 'Número de Teléfono', data: 'acPhoneNumber', visible: false },
+          { title: 'Fecha de Registro', data: 'acRDate', visible: false }
         ],
+        order: [[1, 'asc']],
         language: {
           url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
         },
-        dom: 'Bfrtip',
-        buttons: [
-          {
-            extend: 'excelHtml5',
-            text: '<i class="fas fa-file-excel"></i> Excel',
-            className: 'btn btn-dark-green btn-sm',
-            title: 'Tabla Account',
-            action: function (e, dt, button, config) {
-              $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button, config);
-              mostrarToast("Exito", "La tabla ha sido exportada a Excel.", "success");
-            }
+        layout: {
+          top1Start: {
+            buttons: [
+              {
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                className: 'btn btn-dark-green btn-sm',
+                title: 'Tabla Account',
+                exportOptions: {
+                  columns: ':visible, :hidden',
+                  modifier: {
+                    page: 'all'
+                  }
+                },
+                action: function (e, dt, button, config) {
+                  $.fn.dataTable.ext.buttons.excelHtml5.action.call(this, e, dt, button, config);
+                  mostrarToast("Exito", "La tabla ha sido exportada a Excel.", "success");
+                }
+              }
+            ]
           }
-        ]
+        }
+
+      });
+      tabla.on('click', 'td.dt-control', function (e) {
+        let tr = e.target.closest('tr');
+        let row = tabla.row(tr);
+
+        if (row.child.isShown()) {
+          // This row is already open - close it
+          row.child.hide();
+        }
+        else {
+          // Open this row
+          row.child(format(row.data())).show();
+        }
       });
     }
-
+    function format(d) {
+      // `d` is the original data object for the row
+      return (
+        '<dl>' +
+        '<dt>Nombre completo</dt>' +
+        '<dd>' +
+        d.peFirstName + ' ' + d.peMiddleInitial + ' ' + d.peLastName +
+        '</dd>' +
+        '<dt>Numero Telefonico:</dt>' +
+        '<dd>' +
+        d.acPhoneNumber +
+        '</dd>' +
+        '<dt>Fecha</dt>' +
+        '<dd>' +
+        d.acRDate +
+        '</dd>' +
+        '<dt>Estatus</dt>' +
+        '<dd>' +
+        d.acStatus +
+        '</dd>' +
+        '</dl>'
+      );
+    }
     function mostrarToast(titulo, mensaje, tipo) {
 
       let icon = '';
@@ -485,11 +542,11 @@
       }
 
       const alert = `
-          <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
-              <div class="bg-${tipo} me-3 icon-item">${icon}</div>
-              <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
-              <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>`;
+            <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
+                <div class="bg-${tipo} me-3 icon-item">${icon}</div>
+                <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>`;
 
       $("#Alert").html(alert);
 
@@ -547,7 +604,7 @@
         field.classList.remove('is-valid', 'is-invalid');
       });
     }
-    
+
     function ShowModalEdit(accountID) {
       const data_account_id = {
         accountVM: {
@@ -598,8 +655,8 @@
 
             // Mostrar botón para cambiar contraseña si es necesario
             const boton = `
-                      <button type="button" onclick="CambiarContraseña(${account.accountID});" class="btn btn-warning">Cambiar contraseña</button>
-                    `;
+                        <button type="button" onclick="CambiarContraseña(${account.accountID});" class="btn btn-warning">Cambiar contraseña</button>
+                      `;
             $("#group_btn").html(boton);
             $("#modalFinal").modal("show");
           } else {
