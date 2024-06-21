@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-
+using WebAppTruck.Models.Filters;
 namespace WebAppTruck.Controllers
 {
+    [Session]
     public class HomeController : Controller
     {
         public IActionResult Index()

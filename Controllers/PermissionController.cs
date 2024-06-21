@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAppTruck.Models.Services;
 using WebAppTruck.Models.ViewModels;
+using WebAppTruck.Models.Filters;
 
 namespace WebAppTruck.Controllers
 {
+    [Session]
     public class PermissionController : Controller
     {
         private readonly PermissionSrv _permissionSrv;

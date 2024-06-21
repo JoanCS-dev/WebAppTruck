@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAppTruck.Models.Services;
 using WebAppTruck.Models.ViewModels;
+using WebAppTruck.Models.Filters;
 
 namespace WebAppTruck.Controllers
 {
+    [Session]
     public class ProfilesController : Controller
     {
         private readonly ProfileSrv _profileSrv;
