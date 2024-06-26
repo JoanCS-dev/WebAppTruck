@@ -136,14 +136,19 @@ namespace WebAppTruck.Models.Services
         }
 
 
-        public ResponseVM Activate(AccountVM accountVM)
+        public ResponseVM HandleStatus(AccountVM accountVM, string action)
         {
             ResponseVM res = new ResponseVM();
 
             try
             {
                 var command = new SqlCommand("SPAccountNew", Open()) { CommandType = CommandType.StoredProcedure };
-                command.Parameters.AddRange(_parameters(accountVM, accountVM.AccountID > 0 ? "ACTIVATE" : " "));
+
+                // Determinar el caso según la acción (Activate o Deactivate)
+                string caseType = (action == "Activate") ? "ACTIVATE" :
+                                  (action == "Deactivate") ? "DEACTIVATE" : "";
+
+                command.Parameters.AddRange(_parameters(accountVM, caseType));
 
                 using (var dr = command.ExecuteReader())
                 {
@@ -163,6 +168,7 @@ namespace WebAppTruck.Models.Services
             }
             return res;
         }
+
         public ResponseVM ChangePass(AccountVM accountVM)
         {
             ResponseVM res = new ResponseVM();

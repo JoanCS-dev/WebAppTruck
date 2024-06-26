@@ -73,15 +73,20 @@ namespace WebAppTruck.Controllers
         }
 
         [HttpPost]
-        public JsonResult Activate(int AccountID)
+        public JsonResult HandleStatus(int AccountID, string Action)
         {
             var accountVM = new AccountVM
             {
                 AccountID = AccountID,
-                AcStatus = "Activo"
+                AcStatus = (Action == "Activate") ? "Activo" :
+                           (Action == "Deactivate") ? "Pendiente" : ""
             };
-            return Json(_accountSrv.Activate(accountVM));
+
+            var result = _accountSrv.HandleStatus(accountVM, Action);
+
+            return Json(result);
         }
+
 
         [HttpPost]
         public JsonResult ChangePass(int AccountID, string AcPassword)

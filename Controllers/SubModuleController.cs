@@ -27,5 +27,10 @@ namespace WebAppTruck.Controllers
         {
            return Json(submoduleSrv.AddUpdate(submoduleVM));
         }
-  }
+    [HttpPost]
+        public JsonResult ListPermission(SubModuleVM submoduleVM)
+        {
+            return Json(submoduleSrv.ListPermission(submoduleVM));
+        }
+    }
 }

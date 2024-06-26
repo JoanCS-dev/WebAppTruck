@@ -12,7 +12,45 @@ namespace WebAppTruck.Models.Services
         {
             this.cnx = new DBAccess(connectionString);
         }
+        public ResponseVM<List<SubModuleVM>> ListPermission(SubModuleVM subModuleVM)
+        {
+            ResponseVM<List<SubModuleVM>> res = new ResponseVM<List<SubModuleVM>>()
+            {
+                Data = new List<SubModuleVM>()
+            };
+            try{
+                var command = new SqlCommand("SPSubmodule", Open()) { CommandType = CommandType.StoredProcedure };
+                command.Parameters.AddRange(_parameters(subModuleVM, subModuleVM.SubModuleID == 0? "SELECT_PERMISSIONS" : ""));
+                using (var dr = command.ExecuteReader()){
+                    res.HasRow(dr);
+                    while (dr.Read())
+                    {
+                        res.Data.Add(new SubModuleVM {
+                            ModuleID = GetInt(dr, "ModuleID"),
+                            MoDescription = GetString(dr, "MoDescription"),
+                            MoController = GetString(dr, "MoController"),
+                            SubModuleID = GetInt(dr, "SubmoduleID"),
+                            SubDescription = GetString(dr, "SubDescription"),
+                            SubAction = GetString(dr, "SubAction"),
+                            SubStatus = GetString(dr, "SubStatus"),
+                            SubPosition = GetInt(dr, "SubPosition"),
+                            SubRDate = GetDateTime(dr, "SubRDate"),
+                            IsPermissionAply = GetInt(dr, "IsPermissionAply")
 
+
+                        });
+                    }
+                }
+            }catch (Exception ex)
+            {
+                res.Error(ex);
+            }
+            finally
+            {
+                Close();
+            }
+            return res;
+        }
         public ResponseVM<List<SubModuleVM>> List(SubModuleVM subModuleVM)
         {
             ResponseVM<List<SubModuleVM>> res = new ResponseVM<List<SubModuleVM>>()
@@ -97,6 +135,8 @@ namespace WebAppTruck.Models.Services
                 new SqlParameter("@SubPosition", submoduleVM.SubPosition),
                 new SqlParameter("@SubRDate", submoduleVM.SubRDate.HasValue ? (object)submoduleVM.SubRDate.Value : DBNull.Value),
                 new SqlParameter("@ModuleID", submoduleVM.ModuleID),
+                new SqlParameter("@MoDescription", submoduleVM.MoDescription),
+                new SqlParameter("@MoController", submoduleVM.MoController),
                 new SqlParameter("@Case", action)
             };
         }

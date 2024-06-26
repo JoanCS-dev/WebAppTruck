@@ -9,6 +9,9 @@ namespace WebAppTruck.Models.ViewModels
         public int SubPosition { get; set; } = 0;
         public DateTime? SubRDate { get; set; }
         public long ModuleID { get; set; } = 0;
+        public string MoDescription { get;set; } = "";
+        public string MoController { get;set; } = "";
         public long auxID { get; set; }
+        public int IsPermissionAply { get; set; }
     }
 }
