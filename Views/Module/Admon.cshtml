@@ -64,7 +64,7 @@
         }
 
         .module-title {
-            font-size: 15px;
+            font-size: 17px;
             margin-bottom: 10px;
         }
     </style>
@@ -179,7 +179,6 @@
 
         $(document).ready(function () {
             cargarModulos();
-            cargarSubModulo();
 
             $("#btnModule").click(function () {
                 LimpiarFormularioModule();
@@ -258,21 +257,6 @@
             });
         });
 
-        $(document).on("click", ".treeview-folder", function () {
-            $(this).parent().find("ul").first().toggle(200);
-            $(this).find(".treeview-toggle").toggleClass("fa-folder fa-folder-open");
-        });
-
-        $(document).on("contextmenu", ".treeview-item", function (e) {
-            e.preventDefault();
-            menuModulo(e, $(this).data("id"));
-        });
-
-        $(document).on("contextmenu", ".submodulo", function (e) {
-            e.preventDefault();
-            menuSubModulo(e, $(this).data("id"));
-        });
-
         function cargarModulos() {
             $.ajax({
                 url: "/Module/ListModule",
@@ -280,7 +264,7 @@
                 dataType: "JSON",
                 contentType: "application/json; charset=utf-8;",
                 success: function (res) {
-                    console.log("Datos recibidos:", res);
+                    console.log("Datos de módulos recibidos:", res);
                     if (res.ok) {
                         let html = `<option value="-1">Seleccione</option>`;
                         $.each(res.data, (index, value) => {
@@ -289,9 +273,9 @@
                         $("#listModulo").html(html);
                         const modulos = res.data;
                         if (Array.isArray(modulos)) {
-                            construirTreeView(modulos);
+                            cargarSubModulos(modulos);
                         } else {
-                            mostrarToast("Error", "El formato de datos es incorrecto.", "error");
+                            mostrarToast("Error", "El formato de datos de los módulos es incorrecto.", "error");
                         }
                     } else {
                         mostrarToast("Error", res.messege, "error");
@@ -303,15 +287,24 @@
             });
         }
 
-        function cargarSubModulo() {
+        function cargarSubModulos(modulos) {
             $.ajax({
                 url: "/SubModule/ListSubModule",
                 type: "POST",
                 dataType: "JSON",
                 contentType: "application/json; charset=utf-8;",
-                beforeSend: () => { },
                 success: function (res) {
+                    console.log("Datos de submódulos recibidos:", res);
                     if (res.ok) {
+                        const submodulos = res.data;
+                        if (Array.isArray(submodulos)) {
+                            modulos.forEach(modulo => {
+                                modulo.subModules = submodulos.filter(sub => sub.moduleID === modulo.moduleID);
+                            });
+                            construirTreeView(modulos);
+                        } else {
+                            mostrarToast("Error", "El formato de datos de los submódulos es incorrecto.", "error");
+                        }
                     } else {
                         mostrarToast("Error", res.messege, "error");
                     }
@@ -322,19 +315,49 @@
             });
         }
 
+        $(document).on("click", ".treeview-folder > span", function () {
+            var $folder = $(this).closest(".treeview-folder").parent();
+            var $subModulosList = $folder.find("ul").first();
+            $subModulosList.toggle(200);
+            $(this).find(".treeview-toggle").toggleClass("fa-folder fa-folder-open");
+        });
+
+        $(document).on("contextmenu", ".treeview-item", function (e) {
+            e.preventDefault();
+            if ($(this).hasClass("submodulo")) {
+                menuSubModulo(e, $(this).data("id"));
+            } else {
+                menuModulo(e, $(this).data("id"));
+            }
+        });
+
+        $(document).on("contextmenu", ".treeview-item.submodulo", function (e) {
+            e.preventDefault();
+            menuSubModulo(e, $(this).data("id"));
+        });
+
         function construirTreeView(modulos) {
             const treeView = $("#treeview");
             treeView.empty();
+
             if (Array.isArray(modulos)) {
                 modulos.forEach(modulo => {
-                    const moduloElement = $("<li>").addClass("treeview-item treeview-folder").attr("data-id", modulo.moduleID);
-                    moduloElement.append($("<span>").addClass("modulo-nombre").html('<i class="fas fa-folder treeview-toggle"></i>' + modulo.moDescription));
+                    const moduloElement = $("<li>").addClass("treeview-item").attr("data-id", modulo.moduleID);
+                    const folderElement = $("<div>").addClass("treeview-folder");
+                    const toggleIcon = $("<i>").addClass("fas fa-folder treeview-toggle");
+                    folderElement.append(toggleIcon);
+                    folderElement.append($("<span>").addClass("modulo-nombre").text(modulo.moDescription));
+                    moduloElement.append(folderElement);
 
-                    if (Array.isArray(modulo.subModules)) {
-                        const subModulosList = $("<ul>").hide();
+                    if (Array.isArray(modulo.subModules) && modulo.subModules.length > 0) {
+                        const subModulosList = $("<ul>").addClass("submodulos-list").hide();
                         modulo.subModules.forEach(subModulo => {
-                            const subModuloElement = $("<li>").addClass("treeview-item treeview-file submodulo").attr("data-id", subModulo.subModuleID);
-                            subModuloElement.append($("<span>").addClass("submodulo-nombre").text(subModulo.subDescription));
+                            const subModuloElement = $("<li>").addClass("treeview-item submodulo").attr("data-id", subModulo.subModuleID);
+                            const subFolderElement = $("<div>").addClass("treeview-folder");
+                            const subToggleIcon = $("<i>").addClass("fas fa-folder treeview-toggle");
+                            subFolderElement.append(subToggleIcon);
+                            subFolderElement.append($("<span>").addClass("submodulo-nombre").text(subModulo.subDescription));
+                            subModuloElement.append(subFolderElement);
                             subModulosList.append(subModuloElement);
                         });
                         moduloElement.append(subModulosList);
@@ -348,6 +371,7 @@
         }
 
         function menuModulo(e, moduleId) {
+            e.preventDefault();
             const menu = $("<div>").addClass("context-menu")
                 .append($("<div>").addClass("context-menu-item")
                     .html('<i class="fas fa-edit"></i> Editar Módulo')
