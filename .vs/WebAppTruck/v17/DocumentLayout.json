@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{531F63B9-B2F0-4178-AA82-6F53097FC368}|WebAppTruck.csproj|c:\\users\\cesar\\onedrive\\escritorio\\webapptruck\\views\\auth\\auth.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{531F63B9-B2F0-4178-AA82-6F53097FC368}|WebAppTruck.csproj|solutionrelative:views\\auth\\auth.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{531F63B9-B2F0-4178-AA82-6F53097FC368}|WebAppTruck.csproj|c:\\users\\cesar\\onedrive\\escritorio\\webapptruck\\views\\module\\admon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{531F63B9-B2F0-4178-AA82-6F53097FC368}|WebAppTruck.csproj|solutionrelative:views\\module\\admon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -13,7 +13,7 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 15,
+          "DockedWidth": 2,
           "SelectedChildIndex": -1,
           "Children": [
             {
@@ -27,7 +27,7 @@
           ]
         },
         {
-          "DockedWidth": 62,
+          "DockedWidth": 10,
           "SelectedChildIndex": 2,
           "Children": [
             {
@@ -41,14 +41,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Auth.cshtml",
-              "DocumentMoniker": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\Views\\Auth\\Auth.cshtml",
-              "RelativeDocumentMoniker": "Views\\Auth\\Auth.cshtml",
-              "ToolTip": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\Views\\Auth\\Auth.cshtml",
-              "RelativeToolTip": "Views\\Auth\\Auth.cshtml",
-              "ViewState": "AQIAAKgAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Title": "Admon.cshtml",
+              "DocumentMoniker": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\Views\\Module\\Admon.cshtml",
+              "RelativeDocumentMoniker": "Views\\Module\\Admon.cshtml",
+              "ToolTip": "C:\\Users\\cesar\\OneDrive\\Escritorio\\WebAppTruck\\Views\\Module\\Admon.cshtml",
+              "RelativeToolTip": "Views\\Module\\Admon.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-13T17:18:49.358Z",
+              "WhenOpened": "2024-06-28T21:29:09.022Z",
               "EditorCaption": ""
             }
           ]

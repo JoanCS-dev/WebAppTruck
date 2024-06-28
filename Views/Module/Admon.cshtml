@@ -337,15 +337,13 @@
             $(this).find(".treeview-toggle").toggleClass("fa-folder fa-folder-open");
         });
 
-        $("#treeview").on("contextmenu", ".module-item", function (e) {
-            e.preventDefault();
-            var moduleId = $(this).data("id");
+        $("#treeview").on("contextmenu", ".module-item .treeview-folder", function (e) {
+            var moduleId = $(this).closest(".module-item").data("id");
             menuModulo(e, moduleId);
         });
 
-        $("#treeview").on("contextmenu", ".submodule-item", function (e) {
-            e.preventDefault();
-            var subModuleId = $(this).data("id");
+        $("#treeview").on("contextmenu", ".submodule-item .treeview-folder", function (e) {
+            var subModuleId = $(this).closest(".submodule-item").data("id");
             menuSubModulo(e, subModuleId);
         });
 
@@ -384,46 +382,45 @@
         }
 
         function menuModulo(e, moduleId) {
-            e.preventDefault();
-            $('.context-menu').remove();
-            const menu = $("<div>").addClass("context-menu")
-            .append($("<div>").addClass("context-menu-item")
-            .html('<i class="fas fa-edit"></i> Editar Módulo')
-            .on("click", function () { ShowModalModuleEdit(moduleId); }))
-            .append($("<div>").addClass("context-menu-item")
-            .html('<i class="fas fa-plus"></i> Agregar Submódulo')
-            .on("click", function () { agregarSubModulo(moduleId); }));
-            $("body").append(menu);
+        e.preventDefault();
+        $('.context-menu').remove();
+        const menu = $("<div>").addClass("context-menu")
+        .append($("<div>").addClass("context-menu-item")
+        .html('<i class="fas fa-edit"></i> Editar Módulo')
+        .on("click", function () { ShowModalModuleEdit(moduleId); }))
+        .append($("<div>").addClass("context-menu-item")
+        .html('<i class="fas fa-plus"></i> Agregar Submódulo')
+        .on("click", function () { agregarSubModulo(moduleId); }));
+        $("body").append(menu);
 
-            menu.css({ top: e.pageY, left: e.pageX }).show();
+        menu.css({ top: e.pageY, left: e.pageX }).show();
 
-            $(document).on("click.menuModulo", function (event) {
-                if (!$(event.target).closest(".context-menu").length) {
-                    menu.remove();
-                    $(document).off("click.menuModulo");
+        $(document).on("click.menuModulo", function (event) {
+            if (!$(event.target).closest(".context-menu").length) {
+                menu.remove();
+                $(document).off("click.menuModulo");
                 }
             });
         }
 
         function menuSubModulo(e, subModuleId) {
-            e.preventDefault();
-            $('.context-menu').remove();
-            const menu = $("<div>").addClass("context-menu")
-            .append($("<div>").addClass("context-menu-item")
-            .html('<i class="fas fa-edit"></i> Editar Submódulo')
-            .on("click", function () { ShowModalSubModuleEdit(subModuleId); }));
-            $("body").append(menu);
+        e.preventDefault();
+        $('.context-menu').remove();
+        const menu = $("<div>").addClass("context-menu")
+        .append($("<div>").addClass("context-menu-item")
+        .html('<i class="fas fa-edit"></i> Editar Submódulo')
+        .on("click", function () { ShowModalSubEdit(subModuleId); }));
+        $("body").append(menu);
 
-            menu.css({ top: e.pageY, left: e.pageX }).show();
+        menu.css({ top: e.pageY, left: e.pageX }).show();
 
-            $(document).on("click.menuSubModulo", function (event) {
-                if (!$(event.target).closest(".context-menu").length) {
-                    menu.remove();
-                    $(document).off("click.menuSubModulo");
+        $(document).on("click.menuSubModulo", function (event) {
+            if (!$(event.target).closest(".context-menu").length) {
+                menu.remove();
+                $(document).off("click.menuSubModulo");
                 }
             });
-}
-
+        }
 
         function ShowModalModuleEdit(_moduleID) {
             const data_module_id = { moduleID: _moduleID };
@@ -532,9 +529,10 @@
             $("#_id_submodule_").val(0);
             $("#txtSubDescription").val("");
             $("#txtAction").val("");
+            $("#chkStatusS").prop("checked", false);
             $("#txtSubPosition").val("");
             $("#txtSubRDate").val("");
-            $("#listModulo").val("-1");
+            $("#listModulo").val("-1").prop("disabled", false);
         }
 
         function mostrarToast(titulo, mensaje, tipo) {
