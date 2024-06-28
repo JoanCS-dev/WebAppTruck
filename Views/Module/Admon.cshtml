@@ -256,7 +256,7 @@
                 success: function (res) {
                     if (res.ok) {
                         mostrarToast("Exito", res.messege, "success");
-                        cargarSubModulo();
+                        cargarSubModulos();
                         $("#modalSubModule").modal("hide");
                         LimpiarFormularioSubModule();
                     } else {

@@ -157,6 +157,7 @@
             $.ajax({
                 url: "/Profiles/List",
                 type: "POST",
+                
                 success: function (res) {
                     if (res.ok) {
                         LlenarTablaP(res.data);
@@ -169,10 +170,11 @@
                 }
             });
         }
-        function cargarPermisos(){
+        function cargarPermisos(profileID) {
             $.ajax({
                 url: "/SubModule/ListPermission",
                 type: "POST",
+                data: { auxID: profileID }, // Enviar solo auxID
                 success: function (res) {
                     if (res.ok) {
                         LlenarTablaPermisos(res.data);
@@ -186,35 +188,75 @@
                 }
             });
         }
+    
 
-        function LlenarTablaPermisos(listas){
-            if($.fn.DataTable.isDataTable("#tmainPermisos")){
+        function LlenarTablaPermisos(listas) {
+            if ($.fn.DataTable.isDataTable("#tmainPermisos")) {
                 $("#tmainPermisos").DataTable().destroy();
             }
             $("#tmainPermisos tbody").empty();
+
             tabla = $("#tmainPermisos").DataTable({
                 data: listas,
                 columns: [
                     { data: "moDescription", title: "Modulo" },
                     { data: "subDescription", title: "Submodulo" },
                     { data: "moController", title: "URL" },
-                    { data: "isPermissionAply",
-                        render: (value, type, row) => {
-                            if (value == 0) {
-                                return `<div class="form-check"><input class="form-check-input" id="flexCheckDefault" type="checkbox" value="" /></div>`;
-                            } else if (value == 1) {
-                                return `<div class="form-check"><input class="form-check-input" id="flexCheckChecked" type="checkbox" value="" checked="" /></div>`;
-                            }
-                        }
+                    {
+                        data: "perStatus",
+                        render: function (value, type, row) {
+                            return `<div class="form-check">
+                                    <input class="form-check-input" type="checkbox" data-permissionid="${row.permissionID}" ${value === 'Active' ? 'checked' : ''} data-submoduleid="${row.subModuleID}" />
+                                </div>`;
+                        },
+                       
                     }
                 ],
-               
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
                 }
+            });
+            
+        }
 
+
+        function asignarPermisos(profileID) {
+            var permissionIDs = [];
+            var submoduleIDs = [];
+            console.log(profileID);   
+            // Obtener los IDs de permisos seleccionados
+            $("#tmainPermisos input[type='checkbox']:checked").each(function () {
+                var permissionID = $(this).attr('data-permissionid');
+                permissionIDs.push(permissionID);
+                var submoduleID = $(this).attr('data-submoduleid');
+                submoduleIDs.push(submoduleID);
+            });
+            console.log(permissionIDs);
+            console.log(submoduleIDs);
+            // Realizar la llamada AJAX para asignar permisos
+            $.ajax({
+                url: '/Permission/AssignPermission', // Endpoint para asignar permisos
+                type: "POST",
+                data: {
+                    profileID: profileID,
+                    submodulesIDs: submoduleIDs,
+                    permissionIDs: permissionIDs
+                },
+                success: function (res) {
+                    if (res.ok) {
+                        mostrarToast("Éxito", "Permisos asignados correctamente", "success");
+                        $('#modalPermisos').modal('hide');
+                    } else {
+                        mostrarToast("Error", res.message, "error");
+                    }
+                },
+                error: function () {
+                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
+                }
             });
         }
+
+
 
         function LlenarTablaP(lista) {
             if ($.fn.DataTable.isDataTable("#tmainProfiles")) {
@@ -327,9 +369,21 @@
             });
         }
 
-        function ShowModalPermission(id){
-            $("#modalPermisos").modal("show");
+        function ShowModalPermission(profileID) {
+            cargarPermisos(profileID);
+
+            // Mostrar el modal
+            $('#modalPermisos').modal('show');
+            console.log(profileID);
+            
+            // Asignar función al botón "Guardar Cambios"
+            $('#modalPermisos .btn-primary').off().on('click', function () {
+                asignarPermisos(profileID);
+                $('#modalPermisos').modal('hide');
+                
+            });
         }
+
         function LimpiarFormularioProfiles() {
             $("#_id_profiles_").val(0);
             $("#txtDescriptionP").val("");

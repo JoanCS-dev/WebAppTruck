@@ -55,12 +55,7 @@
                         <option value="-1">Seleccione</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Perfil <span class="Required">*</span></label>
-                    <select class="form-control" id="listProfile">
-                        <option value="-1">Seleccione</option>
-                    </select>
-                </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -77,7 +72,6 @@
 
         cargarSubModulo();
 
-        cargarProfile();
 
         $("#btnPermission").click(function () {
             LimpiarFormularioPermission();
@@ -91,7 +85,7 @@
                 perStatus: $("#chkStatusPer").is(":checked") ? 1 : 0,
                 subRDate: dateValue ? new Date(dateValue).toISOString() : null,
                 subModuleID: $("#listSubModulo").val(),
-                profileID: $("#listPerfil")
+                profileID: 0
             };
 
             $.ajax({
@@ -138,8 +132,7 @@
             $.ajax({
                 url: "/SubModule/ListSubModule",
                 type: "POST",
-                dataType: "JSON",
-                contentType: "application/json; charset=utf-8;",
+               
                 success: function (res) {
                     if (res.ok) {
                         let html = `<option value="-1">Seleccione</option>`;
@@ -147,6 +140,7 @@
                             html += `<option value="${value.subModuleID}">${value.subDescription}</option>`;
                         });
                         $("#listSubModulo").html(html);
+                        console.log(res.data);
                     } else {
                         mostrarToast("Atención", res.messege, "warning");
                     }
@@ -157,30 +151,7 @@
             });
         }
 
-        function cargarProfile() {
-            $.ajax({
-                url: "/Profiles/List",
-                type: "POST",
-                
-                beforeSend: () => { },
-                success: (res) => {
-                    if (res.ok) {
-                        console.log(res.data);
-                        let html = `<option value="-1">Seleccione</option>`;
-                        $.each(res.data, (index, value) => {
-                            html += `<option value="${value.profileID}">${value.proDescription}</option>`;
-                        });
-                        $("#listProfile").html(html);
-                         LlenarTablaPer(res.data);
-                    } else {
-                        mostrarToast("Atención", res.messege, "warning");
-                    }
-                },
-                error: () => {
-                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
-                }
-            });
-        }
+ 
 
         function LlenarTablaPer(lista) {
             if ($.fn.DataTable.isDataTable("#tmainPermission")) {

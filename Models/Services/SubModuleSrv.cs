@@ -12,20 +12,26 @@ namespace WebAppTruck.Models.Services
         {
             this.cnx = new DBAccess(connectionString);
         }
-        public ResponseVM<List<SubModuleVM>> ListPermission(SubModuleVM subModuleVM)
+        public ResponseVM<List<SubModuleVM>> ListPermission(long auxID)
         {
             ResponseVM<List<SubModuleVM>> res = new ResponseVM<List<SubModuleVM>>()
             {
                 Data = new List<SubModuleVM>()
             };
-            try{
+
+            try
+            {
                 var command = new SqlCommand("SPSubmodule", Open()) { CommandType = CommandType.StoredProcedure };
-                command.Parameters.AddRange(_parameters(subModuleVM, subModuleVM.SubModuleID == 0? "SELECT_PERMISSIONS" : ""));
-                using (var dr = command.ExecuteReader()){
+                command.Parameters.AddWithValue("@auxID", auxID);
+                command.Parameters.AddWithValue("@Case", "SELECT_PERMISSIONS");
+
+                using (var dr = command.ExecuteReader())
+                {
                     res.HasRow(dr);
                     while (dr.Read())
                     {
-                        res.Data.Add(new SubModuleVM {
+                        res.Data.Add(new SubModuleVM
+                        {
                             ModuleID = GetInt(dr, "ModuleID"),
                             MoDescription = GetString(dr, "MoDescription"),
                             MoController = GetString(dr, "MoController"),
@@ -35,13 +41,14 @@ namespace WebAppTruck.Models.Services
                             SubStatus = GetString(dr, "SubStatus"),
                             SubPosition = GetInt(dr, "SubPosition"),
                             SubRDate = GetDateTime(dr, "SubRDate"),
-                            IsPermissionAply = GetInt(dr, "IsPermissionAply")
-
-
+                            PerStatus = GetString(dr, "PerStatus"),
+                            auxID = auxID,
+                            PermissionID = GetInt(dr, "PermissionID")
                         });
                     }
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 res.Error(ex);
             }
@@ -49,8 +56,10 @@ namespace WebAppTruck.Models.Services
             {
                 Close();
             }
+
             return res;
         }
+
         public ResponseVM<List<SubModuleVM>> List(SubModuleVM subModuleVM)
         {
             ResponseVM<List<SubModuleVM>> res = new ResponseVM<List<SubModuleVM>>()
@@ -137,6 +146,9 @@ namespace WebAppTruck.Models.Services
                 new SqlParameter("@ModuleID", submoduleVM.ModuleID),
                 new SqlParameter("@MoDescription", submoduleVM.MoDescription),
                 new SqlParameter("@MoController", submoduleVM.MoController),
+                new SqlParameter("@PermissionID", submoduleVM.PermissionID),
+                new SqlParameter("@auxID", submoduleVM.auxID),
+                new SqlParameter("@PerStatus", submoduleVM.PerStatus),
                 new SqlParameter("@Case", action)
             };
         }

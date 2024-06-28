@@ -27,10 +27,13 @@ namespace WebAppTruck.Controllers
         {
            return Json(submoduleSrv.AddUpdate(submoduleVM));
         }
-    [HttpPost]
-        public JsonResult ListPermission(SubModuleVM submoduleVM)
+        [HttpPost]
+        public JsonResult ListPermission(long auxID)
         {
-            return Json(submoduleSrv.ListPermission(submoduleVM));
+            
+
+            return Json(submoduleSrv.ListPermission(auxID));
         }
+
     }
 }

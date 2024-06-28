@@ -35,5 +35,13 @@ namespace WebAppTruck.Controllers
         {
             return Json(_permissionSrv.AddUpdate(permissionVM));
         }
+
+        [HttpPost]
+        public JsonResult AssignPermission(long profileID, List<long> permissionIDs, List<long> submodulesIDs)
+        {
+            var result = _permissionSrv.AssignPermissions(profileID, permissionIDs, submodulesIDs);
+            return Json(result);
+        }
+
     }
 }

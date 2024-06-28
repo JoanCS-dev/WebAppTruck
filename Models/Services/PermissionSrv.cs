@@ -84,6 +84,55 @@ namespace WebAppTruck.Models.Services
             return res;
         }
 
+        public ResponseVM AssignPermissions(long profileID, List<long> permissionIDs, List<long> submodulesIDs)
+        {
+            var res = new ResponseVM();
+
+            try
+            {
+                using (var command = new SqlCommand("SPPermission", Open()))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                   
+                    var permissionVM = new PermissionVM
+                    {
+                        ProfileID = profileID
+                    };
+
+                   
+                    string permissionIDsString = string.Join(",", permissionIDs);
+                    string submodulesIDsString = string.Join(",", submodulesIDs);
+                   
+                    command.Parameters.Add(new SqlParameter("@ProfileID", profileID));
+                    command.Parameters.Add(new SqlParameter("@PermissionIDs", permissionIDsString));
+                    command.Parameters.Add(new SqlParameter("@SubmodulesIDs", submodulesIDsString));
+                    command.Parameters.Add(new SqlParameter("@Case", "ASSIGN_PERMISSIONS"));
+
+                    // Ejecuta el procedimiento almacenado y procesa el resultado
+                    using (var dr = command.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            res.DBCatchResponseInOneLine(dr);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                res.Error(ex);
+            }
+            finally
+            {
+                Close();
+            }
+
+            return res;
+        }
+
+
+
         private SqlParameter[] _parameters(PermissionVM permissionVM, string action)
         {
             return new SqlParameter[]
