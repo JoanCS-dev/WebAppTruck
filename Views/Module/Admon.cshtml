@@ -133,10 +133,6 @@
                     <label for="txtPosition">Posición <span class="Required">*</span></label>
                     <input type="number" id="txtPosition" class="form-control" />
                 </div>
-                <div class="form-group">
-                    <label for="txtRDate">Fecha <span class="Required">*</span></label>
-                    <input type="datetime-local" id="txtRDate" class="form-control" />
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -171,10 +167,6 @@
                 <div class="form-group">
                     <label for="txtPosition">Posición <span class="Required">*</span></label>
                     <input type="number" id="txtSubPosition" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label for="txtRDate">Fecha <span class="Required">*</span></label>
-                    <input type="datetime-local" id="txtSubRDate" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label>Modulo</label>
@@ -437,24 +429,6 @@
                         $("#txtIcon").val(moduleData.moIcon);
                         $("#chkStatus").prop("checked", moduleData.moStatus);
                         $("#txtPosition").val(moduleData.moPosition);
-
-                        let moRDate = moduleData.moRDate;
-
-                        let timestampMatch = moRDate.match(/\/Date\((\d+)\)\//);
-                        if (timestampMatch) {
-                            let timestamp = parseInt(timestampMatch[1], 10);
-                            let date = new Date(timestamp);
-                            let isoDate = date.toISOString().slice(0, 16);
-                            $("#txtRDate").val(isoDate);
-                        } else {
-                            let date = new Date(moRDate);
-                            if (!isNaN(date.getTime())) {
-                                let isoDate = date.toISOString().slice(0, 16);
-                                $("#txtRDate").val(isoDate);
-                            } else {
-                                $("#txtRDate").val('');
-                            }
-                        }
                         $("#modalModule").modal("show");
                     } else {
                         console.log("No se encontraron datos para el ModuleID:", moduleID);
@@ -482,22 +456,6 @@
                         $("#txtAction").val(submodule.subAction);
                         $("#chkStatusS").prop("checked", submodule.subStatus);
                         $("#txtSubPosition").val(submodule.subPosition);
-                        let subRDate = submodule.subRDate;
-                        let timestampMatch = subRDate.match(/\/Date\((\d+)\)\//);
-                        if (timestampMatch) {
-                            let timestamp = parseInt(timestampMatch[1], 10);
-                            let date = new Date(timestamp);
-                            let isoDate = date.toISOString().slice(0, 16);
-                            $("#txtSubRDate").val(isoDate);
-                        } else {
-                            let date = new Date(subRDate);
-                            if (!isNaN(date.getTime())) {
-                                let isoDate = date.toISOString().slice(0, 16);
-                                $("#txtSubRDate").val(isoDate);
-                            } else {
-                                $("#txtSubRDate").val('');
-                            }
-                        }
                         $("#listModulo").val(submodule.moduleID);
                         $("#modalSubModule").modal("show");
                     } else {
