@@ -67,6 +67,11 @@
             font-size: 17px;
             margin-bottom: 10px;
         }
+
+        .fas.fa-folder-open,
+        .fas.fa-folder {
+            font-size: 20px;
+        }
     </style>
 }
 
@@ -92,7 +97,7 @@
 <div class="card">
     <div class="card-body">
         <div class="module-title">
-             Despliega y haz click derecho en el árbol de menú, para ver las opciones
+            Despliega y haz click derecho en el árbol de menú, para ver las opciones
         </div> <br>
         <div class="treeview" id="treeview"></div>
     </div>
@@ -234,38 +239,38 @@
                     }
                 });
             });
-        });
 
-        $("#btnSaveSubModule").click(function () {
-            const dateValue = $("#txtSubRDate").val();
-            const data_submodule = {
-                subModuleID: $("#_id_submodule_").val(),
-                subDescription: $("#txtSubDescription").val(),
-                subAction: $("#txtAction").val(),
-                subStatus: $("#chkStatusS").is(":checked") ? 1 : 0,
-                subPosition: $("#txtSubPosition").val(),
-                subRDate: dateValue ? new Date(dateValue).toISOString() : null,
-                moduleID: $("#listModulo").val(),
-            };
+            $("#btnSaveSubModule").click(function () {
+                const dateValue = $("#txtSubRDate").val();
+                const data_submodule = {
+                    subModuleID: $("#_id_submodule_").val(),
+                    subDescription: $("#txtSubDescription").val(),
+                    subAction: $("#txtAction").val(),
+                    subStatus: $("#chkStatusS").is(":checked") ? 1 : 0,
+                    subPosition: $("#txtSubPosition").val(),
+                    subRDate: dateValue ? new Date(dateValue).toISOString() : null,
+                    moduleID: $("#listModulo").val(),
+                };
 
-            $.ajax({
-                url: "/Submodule/AddUpdate",
-                data: data_submodule,
-                type: "POST",
-                beforeSend: () => { },
-                success: function (res) {
-                    if (res.ok) {
-                        mostrarToast("Exito", res.messege, "success");
-                        cargarSubModulos();
-                        $("#modalSubModule").modal("hide");
-                        LimpiarFormularioSubModule();
-                    } else {
-                        mostrarToast("Error", res.messege, "error");
+                $.ajax({
+                    url: "/Submodule/AddUpdate",
+                    data: data_submodule,
+                    type: "POST",
+                    beforeSend: () => { },
+                    success: function (res) {
+                        if (res.ok) {
+                            mostrarToast("Exito", res.messege, "success");
+                            cargarSubModulo();
+                            $("#modalSubModule").modal("hide");
+                            LimpiarFormularioSubModule();
+                        } else {
+                            mostrarToast("Error", res.messege, "error");
+                        }
+                    },
+                    error: function () {
+                        alert("Ocurrió un error interno, por favor inténtalo más tarde");
                     }
-                },
-                error: function () {
-                    alert("Ocurrió un error interno, por favor inténtalo más tarde");
-                }
+                });
             });
         });
 
@@ -276,7 +281,6 @@
                 dataType: "JSON",
                 contentType: "application/json; charset=utf-8;",
                 success: function (res) {
-                    console.log("Datos de módulos recibidos:", res);
                     if (res.ok) {
                         let html = `<option value="-1">Seleccione</option>`;
                         $.each(res.data, (index, value) => {
@@ -306,14 +310,13 @@
                 dataType: "JSON",
                 contentType: "application/json; charset=utf-8;",
                 success: function (res) {
-                    console.log("Datos de submódulos recibidos:", res);
                     if (res.ok) {
                         const submodulos = res.data;
                         if (Array.isArray(submodulos)) {
                             modulos.forEach(modulo => {
                                 modulo.subModules = submodulos.filter(sub => sub.moduleID === modulo.moduleID);
                             });
-                            construirTreeView(modulos);
+                            TreeView(modulos);
                         } else {
                             mostrarToast("Error", "El formato de datos de los submódulos es incorrecto.", "error");
                         }
@@ -334,101 +337,93 @@
             $(this).find(".treeview-toggle").toggleClass("fa-folder fa-folder-open");
         });
 
-            $("#treeview").on("contextmenu", ".module-item", function (e) {
-                e.preventDefault();
-                var moduleId = $(this).data("id");
-                menuModulo(e, moduleId);
-            });
+        $("#treeview").on("contextmenu", ".module-item", function (e) {
+            e.preventDefault();
+            var moduleId = $(this).data("id");
+            menuModulo(e, moduleId);
+        });
 
-            $("#treeview").on("contextmenu", ".submodule-item", function (e) {
-                e.preventDefault();
-                var subModuleId = $(this).data("id");
-                menuSubModulo(e, subModuleId);
-            });
+        $("#treeview").on("contextmenu", ".submodule-item", function (e) {
+            e.preventDefault();
+            var subModuleId = $(this).data("id");
+            menuSubModulo(e, subModuleId);
+        });
 
-            function construirTreeView(modulos) {
-                const treeView = $("#treeview");
-                treeView.empty();
+        function TreeView(modulos) {
+            const treeView = $("#treeview");
+            treeView.empty();
 
-                if (Array.isArray(modulos)) {
-                    modulos.forEach(modulo => {
-                        const moduloElement = $("<li>").addClass("treeview-item module-item").attr("data-id", modulo.moduleID);
-                        const folderElement = $("<div>").addClass("treeview-folder");
-                        const toggleIcon = $("<i>").addClass("fas fa-folder treeview-toggle");
-                        folderElement.append(toggleIcon);
-                        folderElement.append($("<span>").addClass("modulo-nombre").text(modulo.moDescription));
-                        moduloElement.append(folderElement);
+            if (Array.isArray(modulos)) {
+                modulos.forEach(modulo => {
+                    const moduloElement = $("<li>").addClass("treeview-item module-item").attr("data-id", modulo.moduleID);
+                    const folderElement = $("<div>").addClass("treeview-folder");
+                    const toggleIcon = $("<i>").addClass("fas fa-folder treeview-toggle");
+                    folderElement.append(toggleIcon);
+                    folderElement.append($("<span>").addClass("modulo-nombre").text(modulo.moDescription));
+                    moduloElement.append(folderElement);
 
-                        if (Array.isArray(modulo.subModules) && modulo.subModules.length > 0) {
-                            const subModulosList = $("<ul>").addClass("submodulos-list").hide();
-                            modulo.subModules.forEach(subModulo => {
-                                const subModuloElement = $("<li>").addClass("treeview-submodulo submodule-item").attr("data-id", subModulo.subModuleID);
-                                const subFolderElement = $("<div>").addClass("treeview-folder");
-                                const subToggleIcon = $("<i>").addClass("fas fa-folder treeview-toggle");
-                                subFolderElement.append(subToggleIcon);
-                                subFolderElement.append($("<span>").addClass("submodulo-nombre").text(subModulo.subDescription));
-                                subModuloElement.append(subFolderElement);
-                                subModulosList.append(subModuloElement);
-                            });
-                            moduloElement.append(subModulosList);
-                        }
+                    if (Array.isArray(modulo.subModules) && modulo.subModules.length > 0) {
+                        const subModulosList = $("<ul>").addClass("submodulos-list").hide();
+                        modulo.subModules.forEach(subModulo => {
+                            const subModuloElement = $("<li>").addClass("treeview-submodulo submodule-item").attr("data-id", subModulo.subModuleID);
+                            const subFolderElement = $("<div>").addClass("treeview-folder");
+                            const subToggleIcon = $("<i>").addClass("fas fa-folder treeview-toggle");
+                            subFolderElement.append(subToggleIcon);
+                            subFolderElement.append($("<span>").addClass("submodulo-nombre").text(subModulo.subDescription));
+                            subModuloElement.append(subFolderElement);
+                            subModulosList.append(subModuloElement);
+                        });
+                        moduloElement.append(subModulosList);
+                    }
 
-                        treeView.append(moduloElement);
-                    });
-                    treeView.find(".module-item").on("contextmenu", function (e) {
-                        e.preventDefault();
-                        menuModulo(e, $(this).attr("data-id"));
-                    });
-                    treeView.find(".submodule-item").on("contextmenu", function (e) {
-                        e.preventDefault();
-                        menuSubModulo(e, $(this).attr("data-id"));
-                    });
+                    treeView.append(moduloElement);
+                });
+            } else {
+                console.error("El formato de datos de los módulos es incorrecto o no es un arreglo.");
+            }
+        }
 
-                } else {
-                    console.error("El formato de datos de los módulos es incorrecto o no es un arreglo.");
+        function menuModulo(e, moduleId) {
+            e.preventDefault();
+            $('.context-menu').remove();
+            const menu = $("<div>").addClass("context-menu")
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-edit"></i> Editar Módulo')
+            .on("click", function () { ShowModalModuleEdit(moduleId); }))
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-plus"></i> Agregar Submódulo')
+            .on("click", function () { agregarSubModulo(moduleId); }));
+            $("body").append(menu);
+
+            menu.css({ top: e.pageY, left: e.pageX }).show();
+
+            $(document).on("click.menuModulo", function (event) {
+                if (!$(event.target).closest(".context-menu").length) {
+                    menu.remove();
+                    $(document).off("click.menuModulo");
                 }
-            }
+            });
+        }
 
-            function menuModulo(e, moduleId) {
-                e.preventDefault();
-                $('.context-menu').remove();
-                const menu = $("<div>").addClass("context-menu")
-                .append($("<div>").addClass("context-menu-item")
-                .html('<i class="fas fa-edit"></i> Editar Módulo')
-                .on("click", function () { ShowModalModuleEdit(moduleId); }))
-                .append($("<div>").addClass("context-menu-item")
-                .html('<i class="fas fa-plus"></i> Agregar Submódulo')
-                .on("click", function () { agregarSubModulo(moduleId); }));
-                $("body").append(menu);
+        function menuSubModulo(e, subModuleId) {
+            e.preventDefault();
+            $('.context-menu').remove();
+            const menu = $("<div>").addClass("context-menu")
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-edit"></i> Editar Submódulo')
+            .on("click", function () { ShowModalSubModuleEdit(subModuleId); }));
+            $("body").append(menu);
 
-                menu.css({ top: e.pageY, left: e.pageX }).show();
+            menu.css({ top: e.pageY, left: e.pageX }).show();
 
-                $(document).on("click.menuModulo", function (event) {
-                    if (!$(event.target).closest('.context-menu').length) {
-                        menu.remove();
-                        $(document).off("click.menuModulo");
-                    }
-                });
-            }
+            $(document).on("click.menuSubModulo", function (event) {
+                if (!$(event.target).closest(".context-menu").length) {
+                    menu.remove();
+                    $(document).off("click.menuSubModulo");
+                }
+            });
+}
 
-            function menuSubModulo(e, subModuleId) {
-                e.preventDefault();
-                $('.context-menu').remove();
-                const menu = $("<div>").addClass("context-menu")
-                .append($("<div>").addClass("context-menu-item")
-                .html('<i class="fas fa-edit"></i> Editar Submódulo')
-                .on("click", function () { ShowModalSubEdit(subModuleId); }));
-                $("body").append(menu);
-
-                menu.css({ top: e.pageY, left: e.pageX }).show();
-
-                $(document).on("click.menuSubModulo", function (event) {
-                    if (!$(event.target).closest('.context-menu').length) {
-                        menu.remove();
-                        $(document).off("click.menuSubModulo");
-                    }
-                });
-            }
 
         function ShowModalModuleEdit(_moduleID) {
             const data_module_id = { moduleID: _moduleID };
@@ -555,12 +550,12 @@
             }
 
             const alertHTML = `
-                <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
-                    <div class="bg-${tipo} me-3 icon-item">${icon}</div>
-                    <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
-                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            `;
+                    <div class="alert alert-${tipo} border-0 d-flex align-items-center" role="alert">
+                        <div class="bg-${tipo} me-3 icon-item">${icon}</div>
+                        <p class="mb-0 flex-1">${titulo} ${mensaje}</p>
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
 
             const alert = $(alertHTML);
 
