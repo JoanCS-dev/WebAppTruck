@@ -116,7 +116,7 @@
 
             <span class="mx-1 mx-sm-2 text-300">|</span>
 
-            <button class="btn btn-success btn-sm text-dark" type="button" id="btnModule" data-bs-toggle="tooltip"
+            <button class="btn btn-success btn-sm " type="button" id="btnModule" data-bs-toggle="tooltip"
                 data-bs-placement="top" aria-label="Modulo" data-bs-original-title="Agregar Modulo">
                 Agregar
                 <i class="fas fa-plus fa-w-16"></i>
@@ -251,12 +251,12 @@
                     beforeSend: () => { },
                     success: function (res) {
                         if (res.ok) {
-                            mostrarToast("Éxito", res.messege, "success");
+                            mostrarToast("Éxito", res.message, "success");
                             cargarModulos();
                             $("#modalModule").modal("hide");
                             LimpiarFormularioModule();
                         } else {
-                            mostrarToast("Error", res.messege, "error");
+                            mostrarToast("Error en Modulos, ", res.message, "error");
                         }
                     },
                     error: function () {
@@ -284,12 +284,12 @@
                     beforeSend: () => { },
                     success: function (res) {
                         if (res.ok) {
-                            mostrarToast("Exito", res.messege, "success");
+                            mostrarToast("Exito", res.message, "success");
                             cargarSubModulos();
                             $("#modalSubModule").modal("hide");
                             LimpiarFormularioSubModule();
                         } else {
-                            mostrarToast("Error", res.messege, "error");
+                            mostrarToast("Error", res.message, "error");
                         }
                     },
                     error: function () {
@@ -319,7 +319,7 @@
                             mostrarToast("Error", "El formato de datos de los módulos es incorrecto.", "error");
                         }
                     } else {
-                        mostrarToast("Error", res.messege, "error");
+                        mostrarToast("Error en Modulos, ", res.message, "error");
                     }
                 },
                 error: function () {
@@ -346,7 +346,7 @@
                             mostrarToast("Error", "El formato de datos de los submódulos es incorrecto.", "error");
                         }
                     } else {
-                        mostrarToast("Error", res.messege, "error");
+                        mostrarToast("Error en Submodulos, ", res.message, "error");
                     }
                 },
                 error: function () {
@@ -545,7 +545,7 @@
                         $("#listModulo").val(submodule.moduleID);
                         $("#modalSubModule").modal("show");
                     } else {
-                        mostrarToast("Error", res.messege, "error");
+                        mostrarToast("Error", res.message, "error");
                     }
                 },
                 error: function () {

@@ -68,28 +68,28 @@
                   </div>
                 </div>
                 @* PAGINA PRINCIPAL *@
-                <a class="nav-link dropdown-indicator" href="#homenav" role="button" data-bs-toggle="collapse"
-                  aria-expanded="true" aria-controls="homenav">
+                <a class=" nav-link dropdown-indicator" href="#homenav" role="button" data-bs-toggle="collapse"
+                  aria-expanded="false" aria-controls="homenav">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"><span class="fas fa-home"></span></span><span
                       class="nav-link-text ps-1">Página principal</span>
                   </div>
                 </a>
-                <ul class="nav collapse show" id="homenav">
+                <ul class="nav collapse " id="homenav">
                   <li class="nav-item">
-                    <a class="nav-link active" href="/Home/Index">
+                    <a class="nav-link drop" href="/Home/Index">
                       <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Inicio</span></div>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/Home/Test">
+                    <a class="nav-link drop" href="/Home/Test">
                       <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Test</span></div>
                     </a>
                   </li>
                 </ul>
 
                 @* MODULO *@
-                <a class="nav-link dropdown-indicator" href="#modulenav" role="button" data-bs-toggle="collapse"
+                <a class=" nav-link dropdown-indicator" href="#modulenav" role="button" data-bs-toggle="collapse"
                   aria-expanded="false" aria-controls="modulenav">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"><span class="fas fa-box"></span></span><span
@@ -98,13 +98,13 @@
                 </a>
                 <ul class="nav collapse" id="modulenav">
                   <li class="nav-item">
-                    <a class="nav-link active" href="/Module/Admon">
+                    <a class="nav-link drop" href="/Module/Admon">
                       <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Admon</span></div>
                     </a>
                   </li>
                 </ul>
                 @* PERFIL *@
-                <a class="nav-link dropdown-indicator" href="#perfilnav" role="button" data-bs-toggle="collapse"
+                <a class=" nav-link dropdown-indicator" href="#perfilnav" role="button" data-bs-toggle="collapse"
                   aria-expanded="false" aria-controls="perfilnav">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"><span class="fas fa-user-shield"></span></span><span
@@ -113,7 +113,7 @@
                 </a>
                 <ul class="nav collapse" id="perfilnav">
                   <li class="nav-item">
-                    <a class="nav-link active" href="/Profiles/Admon">
+                    <a class="nav-link drop" href="/Profiles/Admon">
                       <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Admon</span></div>
                     </a>
                   </li>
@@ -121,7 +121,7 @@
 
                 @* CUENTAS *@
 
-                <a class="nav-link dropdown-indicator" href="#accountnav" role="button" data-bs-toggle="collapse"
+                <a class=" nav-link dropdown-indicator" href="#accountnav" role="button" data-bs-toggle="collapse"
                   aria-expanded="false" aria-controls="accountnav">
                   <div class="d-flex align-items-center">
                     <span class="nav-link-icon"><span class="fas fa-users"></span></span><span
@@ -130,7 +130,7 @@
                 </a>
                 <ul class="nav collapse" id="accountnav">
                   <li class="nav-item">
-                    <a class="nav-link active" href="/Account/Admon">
+                    <a class="nav-link drop " href="/Account/Admon">
                       <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Admon</span></div>
                     </a>
                   </li>
@@ -389,6 +389,33 @@
 
   <script>
 
+
+    //script para mostrar en que ubicacion estoy y mostrarlo en el slidebar
+    document.addEventListener('DOMContentLoaded', (event) => {
+      //cargamos la url donde estamos ubicados
+      const currentUrl = window.location.pathname;
+    
+      //seleccionamos el elemento al cual le cargaremos las clases
+      const navLinks = document.querySelectorAll('.drop');
+      
+      //iteramos sobre los enlaces y si coinciden con la url actual les agregamos la clase active y si la colapsible esta abierta le agregamos show
+      navLinks.forEach(link => {
+        
+        if (link.getAttribute("href") === currentUrl) {
+          console.log(link.getAttribute("href"));
+          link.classList.add('active');
+          const collapse = link.closest('.collapse');
+          if (collapse) {
+            collapse.classList.add('show');
+            const toggle = document.querySelector(`a[href="#${collapse.id}"]`);
+            if (toggle) {
+              toggle.setAttribute('aria-expanded', 'true');
+            }
+
+          }
+        }
+      })
+    });
     function logout(event) {
       event.preventDefault();
       document.getElementById('logoutForm').submit();
