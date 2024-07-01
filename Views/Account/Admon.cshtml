@@ -43,7 +43,7 @@
             <th class="text-900 sort">Correo</th>
             <th class="text-900 sort">Descripción</th>
             <th class="text-900 sort">Estatus</th>
-            <th class="text-900 sort">Acciones</th>
+            <th class="text-900 text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -103,8 +103,6 @@
             <label for="validationCustom02" class="form-label">Correo <span class="Required">*</span></label>
             <input placeholder="Escribe tu correo electrónico" type="email" class="form-control" name="email"
               id="EmailAddress" value="" required>
-
-
           </div>
           <div class="col-md-6" id="divPass">
             <label for="validationCustom02" class="form-label">Contraseña <span class="Required">*</span></label>
@@ -166,7 +164,7 @@
     $(function () {
       limpiarFormulario();
       limpiarFormPass();
-      
+      cargarAccount();
       $(document).ready(function () {
         $.validator.addMethod("noNumeric", function (value, element) {
           return this.optional(element) || !/\d/.test(value);
@@ -244,8 +242,6 @@
 
       })
 
-
-      cargarAccount();
       $("#ChangePassword").click(() => {
         var AccountID = $("#id_account").val();
         var AcPassword = $("#passChange").val();
@@ -293,10 +289,13 @@
         cargarProfile();
         limpiarFormulario();
         console.log("account loaded");
-        $("#group_btn").hide();
+         const boton = `
+                        
+                      `;
+            $("#group_btn").html(boton);
         $("#divPass").show();
         $("#modalFinal").modal("show");
-
+        
       });
       (() => {
         'use strict';
@@ -418,6 +417,16 @@
       tabla = $("#tmain").DataTable({
         responsive: true,
         data: lista,
+        "emptyTable": "Sin historial",
+        columnDefs: [
+                {
+                    orderable: false,
+                    targets: 5, // en la columna 5 el check
+                    sortable: false
+
+                }
+            ],
+
         columns: [
           {
             className: 'dt-control',
@@ -442,15 +451,15 @@
             render: (value, type, row) => {
               let status = '';
                 if(row.acStatus == 'Activo'){
-                    status = `<a class="dropdown-item text-warning" onclick="handleAccountStatus(${row.accountID}, 'Deactivate');" href="#!">Desactivar</a>`;
+                    status = `<a class="dropdown-item text-warning" onclick="handleAccountStatus(${row.accountID}, 'Deactivate');">Desactivar</a>`;
                 }else if(row.acStatus == 'Pendiente'){
-                    status = `<a class="dropdown-item text-success" onclick="handleAccountStatus(${row.accountID}, 'Activate');" href="#!">Activar</a>`;
+                    status = `<a class="dropdown-item text-success" onclick="handleAccountStatus(${row.accountID}, 'Activate');">Activar</a>`;
                 }
 
               return `
              <div class="dropdown font-sans-serif position-static text-end"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
                 <div class="dropdown-menu dropdown-menu-end border py-0">
-                  <div class="py-2"><a class="dropdown-item" onclick="ShowModalEdit(${value});" href="#">Edit</a> ${status}</div>
+                  <div class="py-2"><a class="dropdown-item" onclick="ShowModalEdit(${value});" >Edit</a> ${status}</div>
                 </div>
               </div>
               `;
@@ -469,22 +478,22 @@
         },
         buttons: ['excel']
       });
-      tabla.on('click', 'td.dt-control', function (e) {
+      $('#tmain tbody').on('click', 'td.dt-control', function (e) {
         let tr = e.target.closest('tr');
         let row = tabla.row(tr);
 
         if (row.child.isShown()) {
-          // This row is already open - close it
+          
           row.child.hide();
         }
         else {
-          // Open this row
+          
           row.child(format(row.data())).show();
         }
       });
     }
     function format(d) {
-      // `d` is the original data object for the row
+      
       return (
         '<dl>' +
         '<dt>Nombre completo</dt>' +
@@ -558,6 +567,7 @@
           if (response.ok) {
             mostrarToast("Éxito", response.message, "success");
             cargarAccount();  
+            
           } else {
             mostrarToast("Error", response.message, "error");
           }
@@ -575,7 +585,7 @@
       $("#nombre").val("");
       $("#inicial").val("");
       $("#apellido").val("");
-      $("#email").val("");
+      $("#EmailAddress").val("");
       $("#user").val("");
       $("#number").val("");
       $("#pass").val("");
@@ -591,6 +601,7 @@
     }
 
     function ShowModalEdit(accountID) {
+        
       const data_account_id = {
         accountVM: {
           AccountID: accountID

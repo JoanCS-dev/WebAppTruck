@@ -37,7 +37,7 @@
                         <th>Descripción</th>
                         <th>Estatus</th>
                         <th>Fecha</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,10 +67,7 @@
                     <input type="checkbox" id="chkStatusP" class="form-check-input" />
                     <label class="form-check-label" for="chkStatus">Activo/Inactivo) </label>
                 </div>
-                <div class="form-group">
-                    <label for="txtRDateP">Fecha <span class="Required">*</span></label>
-                    <input type="datetime-local" id="txtRDateP" class="form-control" />
-                </div>
+               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -85,23 +82,35 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Permisos</h5>
+                <h5 class="modal-title">Agregar Permisos al Perfil</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="table-responsive">
-                    <table class="table table-hover table-striped nowrap" id="tmainPermisos">
-                        <thead class="bg-200">
-                            <tr>
-                                <th class="text-900 sort">Modulo</th>
-                                <th class="text-900 sort">Submodulo</th>
-                                <th class="text-900 sort">URL</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+
+                <div class="card shadow-none">
+                    
+                    <div class="card-body px-0 pt-0">
+                        <table id="tmainPermisos" class="table table-sm mb-0 overflow-hidden data-table fs-10"
+                            data-datatables='{"responsive":false,"pagingType":"simple","lengthChange":false,"searching":false,"pageLength":8,"language":{"info":"_START_ to _END_ Items of _TOTAL_"}}'>
+                            <thead class="bg-200">
+                                <tr>
+                                    <th class="text-900  white-space-nowrap">
+                                        <div class="form-check mb-0 d-flex align-items-center"><input
+                                                class="form-check-input" id="checkbox-bulk-item-select" type="checkbox"
+                                                data-bulk-select='{"body":"table-simple-pagination-body","actions":"table-simple-pagination-actions","replacedElement":"table-simple-pagination-replace-element"}' />
+                                        </div>
+                                    </th>
+                                    <th class="text-900 pe-5  white-space-nowrap">Modulo</th>
+                                    <th class="text-900 pe-1 align-middle white-space-nowrap">Submodulo</th>
+                                    <th class="text-900 pe-1 align-middle white-space-nowrap">URL</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody class="list" id="table-simple-pagination-body">
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -130,7 +139,7 @@
                 ProfileID: $("#_id_profiles_").val() || 0,
                 ProDescription: $("#txtDescriptionP").val(),
                 ProStatus: $("#chkStatusP").is(":checked") ? 1 : 0,
-                ProRDate: dateValue ? new Date(dateValue).toISOString() : null
+                ProRDate: ""
             };
 
             $.ajax({
@@ -198,19 +207,28 @@
 
             tabla = $("#tmainPermisos").DataTable({
                 data: listas,
+                "emptyTable": "Sin historial",
+                columnDefs: [
+                    {
+                        orderable: false,
+                        targets: 0, 
+                        sortable: false
+
+                    }
+                ],
                 columns: [
+                    { data: "perStatus",
+                    render: function (value, type, row) {
+                            return `<td class="align-middle" style="width: 28px;">
+            <div class="form-check mb-0"><input class="form-check-input" type="checkbox" id="simple-pagination-item-0" data-bulk-select-row="data-bulk-select-row" ata-permissionid="${row.permissionID}" ${value === 'Active' ? 'checked' : ''} data-submoduleid="${row.subModuleID}"/></div>
+          </td>`;
+                    },
+
+                    },
                     { data: "moDescription", title: "Modulo" },
                     { data: "subDescription", title: "Submodulo" },
-                    { data: "moController", title: "URL" },
-                    {
-                        data: "perStatus",
-                        render: function (value, type, row) {
-                            return `<div class="form-check">
-                                    <input class="form-check-input" type="checkbox" data-permissionid="${row.permissionID}" ${value === 'Active' ? 'checked' : ''} data-submoduleid="${row.subModuleID}" />
-                                </div>`;
-                        },
-                       
-                    }
+                    { data: "moController", title: "URL" }
+                    
                 ],
                 language: {
                     url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
@@ -267,9 +285,28 @@
 
             tabla = $("#tmainProfiles").DataTable({
                 data: lista,
+                "emptyTable": "Sin historial",
+                columnDefs: [
+                    {
+                        orderable: false,
+                        targets: 3,
+                        sortable: false
+
+                    }
+                ],
                 columns: [
                     { data: "proDescription" },
-                    { data: "proStatus" },
+                    { data: "proStatus",
+                        render: function (value) {
+                            if(value === 1){
+                                return `<span class="badge badge rounded-pill badge-subtle-success">Activo<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>`;
+                            }else if(value === 0){
+                                 return `<span class="badge badge rounded-pill badge-subtle-success">Activo<span class="ms-1 fas fa-check" data-fa-transform="shrink-2"></span></span>`;
+                            }
+
+                            return value === 1? "Activo" : "Inactivo";
+                        }
+                    },
                     {
                         data: "proRDate", render: function (data) {
 
@@ -296,19 +333,19 @@
                         data: "profileID",
                         render: (value, type, row) => {
                             let status = '';
-                if(row.proStatus == 1){
-                    status = `<a class="dropdown-item text-warning" onclick="Desactivate(${row.profileID});" href="#!">Desactivar</a>`;
-                }else if(row.proStatus == 0){
-                    status = `<a class="dropdown-item text-success" onclick="Activate(${row.profileID});" href="#!">Activar</a>`;
-                }
+                            if (row.proStatus == 1) {
+                                status = `<a class="dropdown-item text-warning" onclick="Desactivate(${row.profileID});" href="#!">Desactivar</a>`;
+                            } else if (row.proStatus == 0) {
+                                status = `<a class="dropdown-item text-success" onclick="Activate(${row.profileID});" href="#!">Activar</a>`;
+                            }
 
-              return `
-             <div class="dropdown font-sans-serif position-static text-end"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
-                <div class="dropdown-menu dropdown-menu-end border py-0">
-                  <div class="py-2"><a class="dropdown-item" onclick="ShowModalProfileEdit(${value});" href="#">Edit</a> ${status} <a class="dropdown-item text-info" onclick="ShowModalPermission(${row.profileID});" href="#!">Permisos</a> </div>
+                            return `
+                 <div class="dropdown font-sans-serif position-static text-end"><button class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false"><span class="fas fa-ellipsis-h fs-10"></span></button>
+                    <div class="dropdown-menu dropdown-menu-end border py-0">
+                      <div class="py-2"><a class="dropdown-item" onclick="ShowModalProfileEdit(${value});" href="#">Edit</a> ${status} <a class="dropdown-item text-info" onclick="ShowModalPermission(${row.profileID});" href="#!">Permisos</a> </div>
+                    </div>
                 </div>
-            </div>
-              `;
+                  `;
                         }
                     }
                 ],
@@ -372,11 +409,8 @@
         function ShowModalPermission(profileID) {
             cargarPermisos(profileID);
 
-            // Mostrar el modal
             $('#modalPermisos').modal('show');
             console.log(profileID);
-            
-            // Asignar función al botón "Guardar Cambios"
             $('#modalPermisos .btn-primary').off().on('click', function () {
                 asignarPermisos(profileID);
                 $('#modalPermisos').modal('hide');
