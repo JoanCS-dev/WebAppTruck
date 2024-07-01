@@ -10,10 +10,12 @@
 
         .treeview-item {
             list-style: none;
+            margin: 5px 0;
         }
 
         .treeview-item span {
             cursor: pointer;
+            font-weight: 500;
         }
 
         .submodulo {
@@ -24,53 +26,83 @@
             cursor: pointer;
             display: flex;
             align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
         }
 
         .treeview-toggle {
             margin-right: 10px;
+            font-size: 18px;
+            color: #495057;
+        }
+
+        .treeview-folder .fa-folder {
+            display: inline-block;
+        }
+
+        .treeview-folder .fa-folder-open {
+            display: none;
+        }
+
+        .treeview-folder.open .fa-folder {
+            display: none;
+        }
+
+        .treeview-folder.open .fa-folder-open {
+            display: inline-block;
         }
 
         .treeview-file {
             cursor: pointer;
             color: #6c757d;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .treeview-file:hover {
+            background-color: #f8f9fa;
         }
 
         .context-menu {
             position: absolute;
             background-color: #fff;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             display: none;
             border-radius: 4px;
             padding: 4px 0;
+            font-size: 14px;
         }
 
         .context-menu-item {
-            padding: 4px 10px;
+            padding: 8px 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            font-size: 14px;
         }
 
         .context-menu-item i {
-            font-size: 14px;
+            font-size: 16px;
             margin-right: 8px;
+            color: #495057;
         }
 
         .context-menu-item:hover {
-            background-color: #f0f0f0;
+            background-color: #f8f9fa;
         }
 
         .module-title {
-            font-size: 17px;
+            font-size: 18px;
+            font-weight: 600;
             margin-bottom: 10px;
         }
 
         .fas.fa-folder-open,
         .fas.fa-folder {
             font-size: 20px;
+            color: #007bff;
         }
     </style>
 }
@@ -188,6 +220,7 @@
 
         $(document).ready(function () {
             cargarModulos();
+            cargarSubModulos();
 
             $("#btnModule").click(function () {
                 LimpiarFormularioModule();
@@ -252,7 +285,7 @@
                     success: function (res) {
                         if (res.ok) {
                             mostrarToast("Exito", res.messege, "success");
-                            cargarSubModulo();
+                            cargarSubModulos();
                             $("#modalSubModule").modal("hide");
                             LimpiarFormularioSubModule();
                         } else {
@@ -323,11 +356,15 @@
         }
 
         $(document).on("click", ".treeview-folder > span", function () {
-            var $folder = $(this).closest(".treeview-folder").parent();
-            var $subModulosList = $folder.find("ul.submodulos-list").first();
-            $subModulosList.toggle(200);
-            $(this).find(".treeview-toggle").toggleClass("fa-folder fa-folder-open");
-        });
+            var $folder = $(this).closest(".treeview-folder");
+            var $subModulosList = $folder.next("ul.submodulos-list").first();
+            var $toggleIcon = $folder.find(".treeview-toggle");
+
+            $subModulosList.collapse('toggle');
+
+            $folder.toggleClass("open");
+            $toggleIcon.toggleClass("fa-folder fa-folder-open");
+        })
 
         $("#treeview").on("contextmenu", ".module-item .treeview-folder", function (e) {
             var moduleId = $(this).closest(".module-item").data("id");
@@ -353,7 +390,7 @@
                     moduloElement.append(folderElement);
 
                     if (Array.isArray(modulo.subModules) && modulo.subModules.length > 0) {
-                        const subModulosList = $("<ul>").addClass("submodulos-list").hide();
+                        const subModulosList = $("<ul>").addClass("submodulos-list collapse").attr("id", "module-" + modulo.moduleID);
                         modulo.subModules.forEach(subModulo => {
                             const subModuloElement = $("<li>").addClass("treeview-submodulo submodule-item").attr("data-id", subModulo.subModuleID);
                             const subFolderElement = $("<div>").addClass("treeview-folder");
@@ -364,6 +401,7 @@
                             subModulosList.append(subModuloElement);
                         });
                         moduloElement.append(subModulosList);
+                        folderElement.attr("data-bs-toggle", "collapse").attr("href", "#module-" + modulo.moduleID).attr("role", "button").attr("aria-expanded", "false");
                     }
 
                     treeView.append(moduloElement);
@@ -374,44 +412,92 @@
         }
 
         function menuModulo(e, moduleId) {
-        e.preventDefault();
-        $('.context-menu').remove();
-        const menu = $("<div>").addClass("context-menu")
-        .append($("<div>").addClass("context-menu-item")
-        .html('<i class="fas fa-edit"></i> Editar Módulo')
-        .on("click", function () { ShowModalModuleEdit(moduleId); }))
-        .append($("<div>").addClass("context-menu-item")
-        .html('<i class="fas fa-plus"></i> Agregar Submódulo')
-        .on("click", function () { agregarSubModulo(moduleId); }));
-        $("body").append(menu);
+            e.preventDefault();
+            $('.context-menu').remove();
+            const menu = $("<div>").addClass("context-menu")
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-edit"></i> Editar Módulo')
+            .on("click", function () { ShowModalModuleEdit(moduleId); }))
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-plus"></i> Agregar Submódulo')
+            .on("click", function () { agregarSubModulo(moduleId); }))
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-arrow-up"></i> Mover hacia Arriba')
+            .on("click", function () { MoverModuloArriba(moduleId); }))
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-arrow-down"></i> Mover hacia Abajo')
+            .on("click", function () { MoverModuloAbajo(moduleId); }));
+            $("body").append(menu);
 
-        menu.css({ top: e.pageY, left: e.pageX }).show();
+            menu.css({ top: e.pageY, left: e.pageX }).show();
 
-        $(document).on("click.menuModulo", function (event) {
-            if (!$(event.target).closest(".context-menu").length) {
-                menu.remove();
-                $(document).off("click.menuModulo");
+            $(document).on("click.menuModulo", function (event) {
+                if (!$(event.target).closest(".context-menu").length) {
+                    menu.remove();
+                    $(document).off("click.menuModulo");
                 }
             });
         }
 
         function menuSubModulo(e, subModuleId) {
-        e.preventDefault();
-        $('.context-menu').remove();
-        const menu = $("<div>").addClass("context-menu")
-        .append($("<div>").addClass("context-menu-item")
-        .html('<i class="fas fa-edit"></i> Editar Submódulo')
-        .on("click", function () { ShowModalSubEdit(subModuleId); }));
-        $("body").append(menu);
+            e.preventDefault();
+            $('.context-menu').remove();
+            const menu = $("<div>").addClass("context-menu")
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-edit"></i> Editar Submódulo')
+            .on("click", function () { ShowModalSubEdit(subModuleId); }))
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-arrow-up"></i> Mover hacia Arriba')
+            .on("click", function () { MoverSubModuloArriba(subModuleId); }))
+            .append($("<div>").addClass("context-menu-item")
+            .html('<i class="fas fa-arrow-down"></i> Mover hacia Abajo')
+            .on("click", function () { MoverSubModuloAbajo(subModuleId); }));
+            $("body").append(menu);
 
-        menu.css({ top: e.pageY, left: e.pageX }).show();
+            menu.css({ top: e.pageY, left: e.pageX }).show();
 
-        $(document).on("click.menuSubModulo", function (event) {
-            if (!$(event.target).closest(".context-menu").length) {
-                menu.remove();
-                $(document).off("click.menuSubModulo");
+            $(document).on("click.menuSubModulo", function (event) {
+                if (!$(event.target).closest(".context-menu").length) {
+                    menu.remove();
+                    $(document).off("click.menuSubModulo");
                 }
             });
+        }
+
+        function MoverModuloArriba(moduleId) {
+            var $currentModule = $(`[data-id=${moduleId}]`).closest(".treeview-item");
+            var $previousModule = $currentModule.prev(".treeview-item");
+
+            if ($previousModule.length) {
+                $currentModule.insertBefore($previousModule);
+            }
+        }
+
+        function MoverModuloAbajo(moduleId) {
+            var $currentModule = $(`[data-id=${moduleId}]`).closest(".treeview-item");
+            var $nextModule = $currentModule.next(".treeview-item");
+
+            if ($nextModule.length) {
+                $currentModule.insertAfter($nextModule);
+            }
+        }
+
+        function MoverSubModuloArriba(subModuleId) {
+            var $currentSubModule = $(`[data-id=${subModuleId}]`).closest(".treeview-submodulo");
+            var $previousSubModule = $currentSubModule.prev(".treeview-submodulo");
+
+            if ($previousSubModule.length) {
+                $currentSubModule.insertBefore($previousSubModule);
+            }
+        }
+
+        function MoverSubModuloAbajo(subModuleId) {
+            var $currentSubModule = $(`[data-id=${subModuleId}]`).closest(".treeview-submodulo");
+            var $nextSubModule = $currentSubModule.next(".treeview-submodulo");
+
+            if ($nextSubModule.length) {
+                $currentSubModule.insertAfter($nextSubModule);
+            }
         }
 
         function ShowModalModuleEdit(_moduleID) {
